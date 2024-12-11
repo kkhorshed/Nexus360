@@ -1,293 +1,261 @@
-# Nexus360 Platform Architecture
+# Nexus360 System Design
 
-## 1. Platform Overview
+## System Architecture
 
-Nexus360 is an enterprise platform that hosts multiple independent applications while providing shared infrastructure and services. The platform is designed for scalability, maintainability, and seamless integration between applications.
+### Overview
+Nexus360 is a microservices-based platform integrating multiple business applications with centralized authentication.
 
-### Core Applications
+```mermaid
+graph TD
+    A[Client Browser] --> B[Auth Service]
+    A --> C[CRM App]
+    A --> D[AI Chat]
+    B --> E[Azure AD]
+    C --> B
+    D --> B
+```
 
-1. **CRM Application**
-   - Contact management
-   - Deal pipeline
-   - Company profiles
-   - Activity tracking
+### Components
 
-2. **AI Chat Application**
-   - Natural language processing
-   - Conversational AI
-   - Knowledge base integration
-   - Chat analytics
+#### 1. Auth Service (Port 3006)
+- Azure AD integration
+- Token management
+- User profile handling
+- CORS configuration
+- Security middleware
 
-3. **Sales Compensation Application**
-   - Commission calculation
-   - Performance metrics
-   - Payout management
-   - Incentive tracking
+#### 2. CRM App (Port 3010)
+- React-based frontend
+- Deal management
+- Product catalog
+- User interface
+- Authentication integration
 
-4. **Sales Forecasting Application**
-   - Predictive analytics
-   - Revenue forecasting
-   - Pipeline analysis
-   - Trend visualization
+#### 3. AI Chat (Port 3020)
+- Chat interface
+- AI integration
+- Real-time communication
+- Authentication integration
 
-5. **Marketing Application**
-   - Campaign management
-   - Lead generation
-   - Marketing analytics
-   - Content management
+## Authentication Flow
 
-## 2. Platform Architecture
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as CRM/Chat App
+    participant A as Auth Service
+    participant AD as Azure AD
 
-### Platform Services
+    U->>C: Access Application
+    C->>A: Check Auth
+    A->>AD: Redirect to Azure Login
+    AD->>A: Auth Code
+    A->>AD: Token Request
+    AD->>A: Access Token
+    A->>C: User Profile + Token
+    C->>U: Authenticated Session
+```
 
-1. **Admin Service (Port 3005)**
-   - Azure AD user management
-   - Application access control
-   - Role-based permissions
-   - User-application mapping
+## Data Flow
 
-2. **Integration Hub (Port 3002)**
-   - Inter-application communication
-   - External API gateway
-   - Event bus management
-   - Data synchronization
+### Authentication Data
+```typescript
+interface AuthToken {
+    accessToken: string;
+    expiresAt: number;
+    refreshToken?: string;
+}
 
-3. **Notification Service (Port 3003)**
-   - Cross-application notifications
-   - Email integration
-   - Push notifications
-   - Alert management
+interface UserProfile {
+    id: string;
+    displayName: string;
+    email: string;
+    jobTitle?: string;
+}
+```
 
-4. **Analytics Service (Port 3004)**
-   - Platform-wide analytics
-   - Cross-application reporting
-   - Data warehousing
-   - Business intelligence
+### Storage Strategy
+- Tokens: Secure localStorage
+- User Profile: localStorage
+- Application State: React Context
+- API Cache: Memory
 
-### Shared Packages
+## Security Architecture
 
-1. **UI Package (`/packages/ui`)**
-   - Shared component library
-   - Theme management
-   - Layout components
-   - Common UI utilities
+### Authentication
+- Azure AD SSO
+- Token-based auth
+- Secure token storage
+- Automatic token refresh
 
-2. **API Client (`/packages/api-client`)**
-   - Service API interfaces
-   - Request/response types
-   - API utilities
-   - Error handling
+### Authorization
+- Role-based access
+- Resource-level permissions
+- Scope validation
+- Token validation
 
-3. **Utils Package (`/packages/utils`)**
-   - Common utilities
-   - Type definitions
-   - Shared constants
-   - Helper functions
+### Data Protection
+- HTTPS everywhere
+- CORS protection
+- XSS prevention
+- CSRF protection
 
-### Application Services
+## Integration Patterns
 
-#### CRM Application (Ports 3010-3019)
-- Contact Service (3010)
-- Company Service (3011)
-- Deal Service (3012)
-- Activity Service (3013)
+### Service Communication
+```mermaid
+graph LR
+    A[Auth Service] --> B[Azure AD]
+    C[CRM App] --> A
+    D[AI Chat] --> A
+    A --> E[Graph API]
+```
 
-#### AI Chat Application (Ports 3020-3029)
-- Chat Service (3020)
-- NLP Service (3021)
-- Knowledge Base Service (3022)
-- Chat Analytics Service (3023)
+### Event Flow
+1. Authentication Events
+2. Profile Updates
+3. Session Management
+4. Error Handling
 
-#### Sales Compensation (Ports 3030-3039)
-- Commission Service (3030)
-- Performance Service (3031)
-- Payout Service (3032)
-- Rule Engine Service (3033)
+## Scalability Design
 
-#### Sales Forecasting (Ports 3040-3049)
-- Forecast Service (3040)
-- Analysis Service (3041)
-- Model Service (3042)
-- Data Processing Service (3043)
+### Horizontal Scaling
+- Stateless services
+- Load balancing
+- Session management
+- Cache strategy
 
-#### Marketing Application (Ports 3050-3059)
-- Campaign Service (3050)
-- Lead Service (3051)
-- Content Service (3052)
-- Analytics Service (3053)
+### Vertical Scaling
+- Resource optimization
+- Performance monitoring
+- Database indexing
+- Query optimization
 
-## 3. Technology Stack
+## Monitoring & Logging
 
-### Frontend
-- **Framework**: React 18+ with TypeScript
-- **State Management**: 
-  - Redux for application state
-  - React Query for server state
-- **UI Components**: 
-  - Shared component library (@nexus360/ui)
-  - Application-specific components
-- **Routing**: React Router v6
-- **Build Tool**: Vite
-- **Testing**: Jest and React Testing Library
+### Health Checks
+- Service status
+- Authentication status
+- API availability
+- Resource usage
 
-### Backend
-- **Runtime**: Node.js 18+
-- **Frameworks**:
-  - Express.js for REST APIs
-  - NestJS for complex services
-  - FastAPI for AI/ML services
-- **API Documentation**: OpenAPI/Swagger
-- **Validation**: Zod
-- **Testing**: Jest
+### Logging Strategy
+- Centralized logging
+- Error tracking
+- Performance metrics
+- User activity
 
-### Databases
-- **Primary Database**: PostgreSQL 14+
-  - Separate database per application
-  - Shared platform databases
-- **Cache Layer**: Redis
-  - Application caching
-  - Rate limiting
-- **Search Engine**: Elasticsearch
-  - Full-text search
-  - Analytics storage
-
-### AI/ML Stack
-- **Framework**: TensorFlow
-- **NLP**: spaCy
-- **Analytics**: scikit-learn
-- **Vector Store**: Pinecone
-
-### Message Queue
-- **Event Bus**: Apache Kafka
-- **Task Queue**: Redis Bull
-
-### DevOps
-- **Containerization**: Docker
-- **Orchestration**: Kubernetes
-- **CI/CD**: GitHub Actions
-- **Monitoring**: ELK Stack
-- **Logging**: ELK Stack
-
-## 4. Application Architecture
+## Development Architecture
 
 ### Project Structure
 ```
 nexus360/
-├── apps/                    # Micro-frontend applications
+├── apps/
 │   ├── crm/
-│   ├── ai-chat/
-│   ├── sales-comp/
-│   ├── forecasting/
-│   └── marketing/
-├── packages/               # Shared packages
-│   ├── ui/                # Shared UI components
-│   ├── api-client/        # API client utilities
-│   └── utils/             # Common utilities
-├── platform/              # Platform-level services
-│   ├── integration/       # Integration service
-│   └── notification/      # Notification service
-├── services/              # Backend services
-│   ├── admin-service/     # Admin service
-│   ├── analytics-service/
-│   ├── contact-service/
-│   ├── integration-service/
-│   ├── lead-service/
-│   ├── notification-service/
-│   ├── sales-service/
-│   └── task-service/
-└── docs/                  # Documentation
-    ├── architecture/
-    ├── database/
-    ├── deployment/
-    └── setup/
+│   └── ai-chat/
+├── services/
+│   ├── auth-service/
+│   └── shared/
+├── packages/
+│   ├── ui/
+│   └── utils/
+└── docs/
 ```
 
-## 5. Security Architecture
+### Development Flow
+1. Feature branches
+2. Local development
+3. Testing environment
+4. Production deployment
 
-### Authorization
-- Role-based access control
-- Application-level permissions
-- Resource-level permissions
-- API security
+## Error Handling
 
-### Data Security
-- End-to-end encryption
-- Data isolation
-- Audit logging
-- Compliance tools
+### Strategy
+- Global error handling
+- Service-specific errors
+- User-friendly messages
+- Error logging
 
-## 6. Integration Architecture
+### Error Types
+```typescript
+interface AppError {
+    code: string;
+    message: string;
+    details?: any;
+}
+```
 
-### Internal Integration
-- Event-driven communication
-- Service mesh
-- Shared data models
-- Cross-application workflows
+## Performance Optimization
 
-### External Integration
-- REST APIs
-- GraphQL endpoints
-- Webhooks
-- File transfers
+### Frontend
+- Code splitting
+- Lazy loading
+- Cache management
+- Bundle optimization
 
-## 7. Deployment Architecture
+### Backend
+- Response caching
+- Query optimization
+- Connection pooling
+- Resource management
 
-### Infrastructure
-- Kubernetes clusters
-- Container registry
-- PostgreSQL databases
-- Redis cache
+## Future Considerations
+
+### Planned Features
+1. Additional services integration
+2. Enhanced security features
+3. Advanced monitoring
+4. Performance improvements
+
+### Scalability Plans
+1. Service mesh implementation
+2. Container orchestration
+3. Global distribution
+4. Cache optimization
+
+## Technical Specifications
+
+### Technology Stack
+- Frontend: React, TypeScript, Vite
+- Backend: Node.js, Express
+- Authentication: Azure AD
+- Tools: pnpm, ESLint, Jest
+
+### Infrastructure Requirements
+- Node.js 16+
+- SSL certificates
+- Azure subscription
+- Development tools
+
+## Deployment Architecture
+
+### Production Environment
+```mermaid
+graph TD
+    A[Load Balancer] --> B[Auth Service]
+    A --> C[CRM App]
+    A --> D[AI Chat]
+    B --> E[Azure AD]
+    F[CDN] --> C
+    F --> D
+```
 
 ### Deployment Strategy
-- Blue-green deployment
-- Canary releases
-- Feature flags
-- A/B testing
+1. Blue-green deployment
+2. Rolling updates
+3. Automated rollback
+4. Health monitoring
 
-### Scaling
-- Horizontal pod autoscaling
-- Vertical pod autoscaling
-- Database read replicas
-- Cache clustering
+## Documentation
 
-## 8. Monitoring Architecture
+### Technical Documentation
+- API documentation
+- Component documentation
+- Integration guides
+- Deployment guides
 
-### Application Monitoring
-- Performance metrics
-- Error tracking
-- User analytics
-- Service health
-
-### Infrastructure Monitoring
-- Resource utilization
-- Network metrics
-- Database performance
-- Cache statistics
-
-### Business Monitoring
-- Usage analytics
-- Business metrics
-- SLA monitoring
-- Cost analysis
-
-## 9. Development Workflow
-
-### Version Control
-- Monorepo structure using pnpm workspaces
-- Feature branches
-- Pull requests
-- Release management
-
-### CI/CD Pipeline
-- Automated testing
-- Code quality checks
-- Security scanning
-- Automated deployment
-
-### Testing Strategy
-- Unit testing
-- Integration testing
-- E2E testing
-- Performance testing
-
-This architecture provides a robust foundation for the Nexus360 platform and its applications, ensuring scalability, maintainability, and seamless integration while supporting independent application development and deployment.
+### User Documentation
+- User guides
+- Admin guides
+- Integration guides
+- Troubleshooting guides

@@ -1,66 +1,182 @@
-# Nexus360 CRM Application
+# Nexus360 CRM
 
-## Overview
-The CRM (Customer Relationship Management) application is part of the Nexus360 platform, providing tools for managing customer relationships, deals, and products.
+Modern CRM application with Azure AD authentication integration.
 
 ## Features
 
-### Deal Management
-- Deal Pipeline Board
-- Stage-based Deal Tracking
-- Deal Value and Probability Tracking
-- Expected Close Date Tracking
+- Azure AD Single Sign-On
+- User Profile Management
+- Deal Management
+- Product Catalog
+- Persistent Authentication
+- Responsive Layout
 
-### Product Catalog
-- Product Listing
-- Category Management
-- Pricing Information
-- Feature Tracking
-- Status Management
+## Getting Started
 
-## Structure
+### Prerequisites
 
-```
-src/
-├── components/
-│   ├── DealBoard.tsx       # Deal pipeline management
-│   └── ProductCatalog.tsx  # Product catalog management
-├── styles/
-│   └── globals.css        # Global styles
-├── App.tsx               # Main application layout
-└── main.tsx             # Application entry point
+- Node.js 16+
+- npm or pnpm
+- Running auth-service
+
+### Installation
+
+```bash
+cd apps/crm
+npm install
+# or
+pnpm install
 ```
 
-## Navigation
+### Development
 
-The CRM application includes the following main sections:
-- Dashboard: Overview of key metrics
-- Deals: Pipeline view of all deals
-- Products: Product catalog management
-- Customers: Customer management
-- Settings: Application settings
+```bash
+npm run dev
+# or
+pnpm dev
+```
+
+Application will be available at http://localhost:3010
+
+## Architecture
+
+### Components
+
+#### Authentication
+- **Header**: User profile display and authentication status
+- **PrivateRoute**: Protected route wrapper
+- **AuthContext**: Authentication state management
+
+#### Core Features
+- **DealBoard**: Deal management interface
+- **ProductCatalog**: Product listing and management
+- **AddDealForm**: Deal creation form
+- **AddProductForm**: Product creation form
+
+### Authentication Flow
+
+1. User visits CRM app
+2. If not authenticated, redirected to auth service
+3. After successful auth, redirected back with token
+4. User profile displayed in header
+5. Authentication persists via localStorage
+
+### State Management
+
+- Authentication state in localStorage
+- User profile in localStorage
+- React context for global state
+- Component-level state for UI
+
+## Configuration
+
+### Environment Variables
+
+Create `.env` file:
+
+```env
+VITE_AUTH_URL=http://localhost:3006
+VITE_API_URL=http://localhost:3006/api
+```
+
+### Build Configuration
+
+vite.config.ts settings:
+```typescript
+{
+  server: {
+    port: 3010
+  },
+  build: {
+    outDir: 'dist'
+  }
+}
+```
+
+## Components
+
+### Header
+
+```typescript
+interface User {
+  displayName: string;
+  email: string;
+  jobTitle?: string;
+}
+
+const Header: React.FC = () => {
+  // User profile display
+  // Authentication status
+  // Logout functionality
+}
+```
+
+### Routes
+
+- `/dashboard`: Main dashboard
+- `/deals`: Deal management
+- `/products`: Product catalog
+- `/customers`: Customer management
+- `/settings`: App settings
+
+## Styling
+
+- Ant Design components
+- CSS Modules for custom styling
+- Responsive design
+- Theme customization
 
 ## Development
 
-### Running the Application
-```bash
-cd apps/crm
-pnpm install
-pnpm run dev
+### Code Structure
+
+```
+src/
+├── components/     # Reusable components
+├── routes/        # Route components
+├── styles/        # CSS modules
+└── main.tsx       # Entry point
 ```
 
-The application will be available at `http://localhost:3010`
+### Adding New Features
 
-### Dependencies
-- React
-- React Router DOM
-- Ant Design
-- @ant-design/icons
-- @ant-design/cssinjs
+1. Create component in `components/`
+2. Add styles in `styles/`
+3. Update routes if needed
+4. Add to main layout
 
-## Integration
+### Testing
 
-The CRM app integrates with:
-- Authentication Service: For user authentication
-- Platform Services: For shared functionality
-- Frontend: As a micro-frontend application
+```bash
+npm test
+# or
+pnpm test
+```
+
+## Build
+
+```bash
+npm run build
+# or
+pnpm build
+```
+
+Outputs to `dist/` directory.
+
+## Security
+
+- Secure token storage
+- Protected routes
+- XSS prevention
+- CSRF protection
+
+## Contributing
+
+1. Create feature branch
+2. Add tests
+3. Update documentation
+4. Submit pull request
+
+## License
+
+MIT License

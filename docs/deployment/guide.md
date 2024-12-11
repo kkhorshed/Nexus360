@@ -1,175 +1,257 @@
-# CRM System Deployment Guide
+# Nexus360 Deployment Guide
 
-## System Requirements
+Comprehensive guide for deploying Nexus360 platform.
 
-- Node.js (v18 or higher recommended)
-- PostgreSQL (v13 or higher)
-- npm or yarn package manager
+## Architecture Overview
 
-## Pre-deployment Setup
+### Services
+- Auth Service (Port 3006)
+- CRM App (Port 3010)
+- AI Chat (Port 3020)
 
-### 1. Database Setup
+### Dependencies
+- Node.js 16+
+- npm or pnpm
+- Azure AD Application
+- PostgreSQL Database (optional)
 
-1. Install PostgreSQL if not already installed
-2. Create a new database named `crm_auth_db`
-3. Initialize the database by running:
-   ```bash
-   cd services/auth-service
-   npm run db:init
-   ```
+## Pre-deployment Checklist
 
-### 2. Environment Configuration
+### Azure AD Setup
+1. Register application in Azure AD
+2. Configure redirect URIs
+3. Generate client secret
+4. Note down credentials:
+   - Client ID
+   - Client Secret
+   - Tenant ID
 
-#### Auth Service Configuration
-Create `.env` file in `services/auth-service/` with the following variables:
+### Environment Configuration
+
+#### Auth Service (.env)
 ```env
 # Azure AD Configuration
-AZURE_AD_CLIENT_ID=your_client_id
-AZURE_AD_CLIENT_SECRET=your_client_secret
-AZURE_AD_TENANT_ID=your_tenant_id
-AZURE_AD_REDIRECT_URI=http://localhost:8081/auth/callback
+AZURE_AD_TENANT_ID=your-tenant-id
+AZURE_AD_CLIENT_ID=your-client-id
+AZURE_AD_CLIENT_SECRET=your-client-secret
+AZURE_AD_REDIRECT_URI=https://your-domain/api/auth/callback
 
-# Frontend URL
-FRONTEND_URL=http://localhost:3000
-
-# Session Secret
-SESSION_SECRET=your_session_secret
-
-# PostgreSQL Configuration
-POSTGRES_USER=your_postgres_user
-POSTGRES_PASSWORD=your_postgres_password
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_DB=crm_auth_db
-
-# Node Environment
+# API Configuration
+PORT=3006
 NODE_ENV=production
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS=https://your-crm-domain,https://your-chat-domain
 ```
 
-#### Frontend Configuration
-Create `.env` file in `frontend/` with:
+#### CRM App (.env)
 ```env
-VITE_AUTH_SERVICE_URL=http://localhost:8081
-```
-
-## Installation
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm run install-all
-   ```
-
-## Building the Application
-
-### 1. Build Auth Service
-```bash
-cd services/auth-service
-npm run build
-```
-
-### 2. Build Frontend
-```bash
-cd frontend
-npm run build
+VITE_AUTH_URL=https://your-auth-domain
+VITE_API_URL=https://your-auth-domain/api
 ```
 
 ## Deployment Steps
 
-### 1. Auth Service Deployment
+### 1. Build Applications
 
-1. Ensure PostgreSQL is running and accessible
-2. Start the auth service:
-   ```bash
-   cd services/auth-service
-   npm start
-   ```
+```bash
+# Build all applications
+npm run build
 
-### 2. Frontend Deployment
+# Individual builds
+cd apps/crm && npm run build
+cd apps/ai-chat && npm run build
+```
 
-1. After building, deploy the contents of `frontend/dist` to your web server
-2. Configure your web server (nginx/apache) to serve the static files
-3. For SPA routing, configure the web server to redirect all requests to index.html
+### 2. Server Setup
 
-## Azure SSO Configuration
+#### Requirements
+- Ubuntu 20.04 LTS or similar
+- Nginx
+- PM2 or similar process manager
+- SSL certificates
 
-1. Register your application in Azure AD
-2. Configure the following:
-   - Redirect URIs
-   - Client ID and Secret
-   - Required permissions for Microsoft Graph API
-3. Update the auth service .env file with your Azure credentials
+#### Nginx Configuration
 
-## Production Considerations
+```nginx
+# Auth Service
+server {
+    listen 443 ssl;
+    server_name auth.your-domain.com;
 
-1. Use process managers like PM2 for Node.js services
-2. Set up SSL certificates for HTTPS
-3. Configure proper CORS settings
-4. Use secure session storage
-5. Implement proper logging
-6. Set up monitoring and alerts
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
 
-## Health Checks
+    location / {
+        proxy_pass http://localhost:3006;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
 
-Monitor the following endpoints:
-- Auth Service: `GET /health`
-- Frontend: Serve a static health.html
+# CRM App
+server {
+    listen 443 ssl;
+    server_name crm.your-domain.com;
 
-## Troubleshooting
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
 
-Common issues and solutions:
+    location / {
+        root /path/to/crm/dist;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
 
-1. Database Connection Issues
-   - Verify PostgreSQL is running
-   - Check database credentials
-   - Ensure database is initialized
+### 3. Process Management
 
-2. Azure SSO Issues
-   - Verify Azure AD configuration
-   - Check redirect URIs
-   - Validate client credentials
+#### PM2 Configuration (ecosystem.config.js)
+```javascript
+module.exports = {
+  apps: [
+    {
+      name: 'auth-service',
+      script: 'services/auth-service/dist/index.js',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3006
+      }
+    }
+  ]
+};
+```
 
-3. Frontend Connection Issues
-   - Verify auth service URL in frontend .env
-   - Check CORS configuration
-   - Validate SSL certificates if using HTTPS
+#### Start Services
+```bash
+pm2 start ecosystem.config.js
+```
 
-## Backup and Recovery
+### 4. Security Configuration
 
-1. Database Backup
-   ```bash
-   pg_dump -U your_postgres_user crm_auth_db > backup.sql
-   ```
+#### Firewall Rules
+```bash
+# Allow HTTP/HTTPS
+ufw allow 80
+ufw allow 443
 
-2. Environment Configuration Backup
-   - Keep secure copies of all .env files
-   - Document any custom configuration changes
+# Allow SSH
+ufw allow 22
+```
 
-## Security Checklist
+#### SSL Setup
+```bash
+# Using certbot
+certbot --nginx -d auth.your-domain.com
+certbot --nginx -d crm.your-domain.com
+```
 
-- [ ] SSL/TLS certificates installed
-- [ ] Environment variables properly set
-- [ ] Database access restricted
-- [ ] Azure AD permissions configured
-- [ ] CORS policies set
-- [ ] Session security configured
-- [ ] Rate limiting enabled
-- [ ] Logging configured
-- [ ] Monitoring set up
+## Monitoring
+
+### Health Checks
+- Auth Service: https://auth.your-domain.com/api/health
+- Monitor response times and error rates
+
+### Logging
+- Configure centralized logging
+- Set up error notifications
+- Monitor resource usage
+
+## Backup Strategy
+
+### Database Backups
+- Daily automated backups
+- Secure offsite storage
+- Regular restore testing
+
+### Configuration Backups
+- Version control for configurations
+- Backup environment variables
+- Document all custom settings
 
 ## Scaling Considerations
 
-1. Database
-   - Consider connection pooling
-   - Implement caching where appropriate
-   - Monitor query performance
+### Horizontal Scaling
+- Load balancer configuration
+- Session management
+- Cache synchronization
 
-2. Auth Service
-   - Deploy multiple instances behind load balancer
-   - Implement session sharing if using multiple instances
+### Vertical Scaling
+- CPU/Memory monitoring
+- Disk space management
+- Database optimization
+
+## Troubleshooting
+
+### Common Issues
+
+1. Authentication Errors
+   - Check Azure AD configuration
+   - Verify redirect URIs
+   - Check SSL certificates
+
+2. CORS Issues
+   - Verify allowed origins
+   - Check request headers
+   - Confirm SSL configuration
+
+3. Performance Issues
    - Monitor resource usage
+   - Check database queries
+   - Review application logs
 
-3. Frontend
-   - Use CDN for static assets
-   - Implement caching strategies
-   - Consider containerization
+## Maintenance
+
+### Regular Tasks
+- SSL certificate renewal
+- Security updates
+- Database optimization
+- Log rotation
+
+### Emergency Procedures
+- Service restoration steps
+- Rollback procedures
+- Contact information
+
+## Security Best Practices
+
+1. Access Control
+   - Implement least privilege
+   - Regular access review
+   - Strong password policy
+
+2. Network Security
+   - Use WAF
+   - DDoS protection
+   - Regular security scans
+
+3. Data Protection
+   - Encrypt sensitive data
+   - Regular backups
+   - Secure key management
+
+## Updates and Upgrades
+
+### Update Process
+1. Backup current state
+2. Test updates in staging
+3. Deploy to production
+4. Verify functionality
+5. Monitor for issues
+
+### Version Control
+- Tag releases
+- Document changes
+- Maintain changelog
+
+## Support
+
+### Contact Information
+- Technical support
+- Emergency contacts
+- Vendor support
+
+### Documentation
+- Keep deployment guide updated
+- Document custom configurations
+- Maintain troubleshooting guides

@@ -1,172 +1,184 @@
 # Auth Service
 
-A robust authentication service using Azure AD (Microsoft Identity Platform) with comprehensive user management capabilities through Microsoft Graph API.
+Authentication service for Nexus360 platform using Azure AD.
 
 ## Features
 
-- Azure AD authentication with OAuth2 flow
-- Token management with caching and auto-refresh
-- User management (search, get by ID, groups)
-- Rate limiting for auth endpoints
-- Comprehensive error handling
-- Request tracking with unique IDs
-- Full test coverage
+- Azure AD Single Sign-On (SSO)
+- Token-based authentication
+- User profile management
+- Cross-origin resource sharing (CORS)
+- Persistent authentication
+- Secure token storage
 
-## Architecture
+## Configuration
 
-The service follows a clean architecture pattern with clear separation of concerns:
+### Environment Variables
 
-```
-src/
-├── controllers/    # Request handlers
-├── services/      # Business logic
-├── middleware/    # Express middleware
-├── errors/        # Custom error types
-├── types/         # TypeScript interfaces
-└── utils/         # Shared utilities
-```
+Create a `.env` file in the service root:
 
-## Setup
+```env
+# Azure AD Configuration
+AZURE_AD_TENANT_ID=your-tenant-id
+AZURE_AD_CLIENT_ID=your-client-id
+AZURE_AD_CLIENT_SECRET=your-client-secret
+AZURE_AD_REDIRECT_URI=http://localhost:3006/api/auth/callback
 
-1. Install dependencies:
-```bash
-npm install
-```
+# API Configuration
+PORT=3006
+NODE_ENV=development
 
-2. Configure environment variables:
-```bash
-cp .env.example .env
-```
+# CORS Configuration
+CORS_ALLOWED_ORIGINS=http://localhost:3010,http://localhost:3020
 
-Required environment variables:
-- `AZURE_AD_CLIENT_ID`: Azure AD application client ID
-- `AZURE_AD_CLIENT_SECRET`: Azure AD application client secret
-- `AZURE_AD_TENANT_ID`: Azure AD tenant ID
-- `AZURE_AD_REDIRECT_URI`: OAuth callback URL
-- `PORT`: Service port (default: 3001)
-- `NODE_ENV`: Environment (development/production)
-
-## Development
-
-Start the service in development mode:
-```bash
-npm run dev
-```
-
-Run tests:
-```bash
-npm test                # Run all tests
-npm run test:watch     # Run tests in watch mode
-npm run test:coverage  # Run tests with coverage report
-```
-
-Lint code:
-```bash
-npm run lint      # Check for linting issues
-npm run lint:fix  # Auto-fix linting issues
-```
-
-Build for production:
-```bash
-npm run build
+# Logging
+LOG_LEVEL=info
+LOG_FORMAT=json
 ```
 
 ## API Endpoints
 
 ### Authentication
 
-- `GET /api/auth/login`: Initiate login flow
-- `GET /api/auth/callback`: Handle OAuth callback
+#### `GET /api/auth/login`
+Initiates Azure AD login flow.
+
+#### `GET /api/auth/callback`
+Handles Azure AD callback with authorization code.
 
 ### User Management
 
-- `GET /api/users`: Get all users
-- `GET /api/users/search?query=`: Search users
-- `GET /api/users/:userId`: Get user by ID
-- `GET /api/users/:userId/groups`: Get user's groups
+#### `GET /api/users`
+Get all users (requires authentication).
 
-### Health Check
+#### `GET /api/users/:userId`
+Get user by ID (requires authentication).
 
-- `GET /api/health`: Service health status
+#### `GET /api/users/search`
+Search users by query (requires authentication).
 
-## Security Features
+#### `GET /api/users/:userId/groups`
+Get user's groups (requires authentication).
 
-1. **Rate Limiting**
-   - 100 requests per 15 minutes for auth endpoints
-   - Customizable limits per route
+## Authentication Flow
 
-2. **Error Handling**
-   - Custom error types for different scenarios
-   - Environment-aware error details
-   - Comprehensive error logging
+1. User attempts to access protected resource
+2. Redirected to `/api/auth/login`
+3. Azure AD authentication process
+4. Callback received at `/api/auth/callback`
+5. User profile retrieved and token generated
+6. Redirected back to application with token and profile
 
-3. **Token Management**
-   - Automatic token refresh
-   - In-memory token cache
-   - Token expiration handling
+## Development
 
-4. **Request Tracking**
-   - Unique request IDs
-   - Detailed request logging
-   - Error correlation
+### Prerequisites
 
-## Testing
+- Node.js 16+
+- npm or pnpm
+- Azure AD Application credentials
 
-The service includes comprehensive test coverage:
+### Installation
 
-1. **Unit Tests**
-   - Service layer tests
-   - Controller tests
-   - Middleware tests
-   - Error handling tests
+```bash
+npm install
+# or
+pnpm install
+```
 
-2. **Integration Tests**
-   - Authentication flow tests
-   - User management tests
-   - Error scenarios tests
+### Running
 
-## Error Handling
+```bash
+npm run dev
+# or
+pnpm dev
+```
 
-Custom error types for different scenarios:
+### Testing
 
-- `AuthenticationError`: Authentication-related errors
-- `ValidationError`: Input validation errors
-- `UserNotFoundError`: User lookup errors
-- `GraphAPIError`: Microsoft Graph API errors
-- `ConfigurationError`: Service configuration errors
+```bash
+npm test
+# or
+pnpm test
+```
 
-## Best Practices
+## Security
 
-1. **Security**
-   - Helmet for security headers
-   - CORS configuration
-   - Rate limiting
-   - Secure token handling
+### Token Management
 
-2. **Performance**
-   - Token caching
-   - Connection pooling
-   - Request limiting
+- Access tokens stored securely
+- Token refresh mechanism
+- Token validation middleware
+- Secure cookie handling
 
-3. **Reliability**
-   - Comprehensive error handling
-   - Request tracking
-   - Health monitoring
+### CORS Configuration
 
-4. **Maintainability**
-   - Clean architecture
-   - TypeScript for type safety
-   - Comprehensive documentation
-   - Full test coverage
+- Whitelist of allowed origins
+- Credential support
+- Pre-flight request handling
+
+### Error Handling
+
+- Custom error types
+- Consistent error responses
+- Detailed logging
+- Rate limiting
+
+## Architecture
+
+### Components
+
+- **ADController**: Handles auth endpoints
+- **ADService**: Azure AD integration
+- **TokenCache**: Token management
+- **ErrorHandler**: Error processing
+
+### Dependencies
+
+- @azure/msal-node
+- @microsoft/microsoft-graph-client
+- express
+- winston
+
+## Deployment
+
+### Production Setup
+
+1. Configure environment variables
+2. Set NODE_ENV to 'production'
+3. Configure proper CORS origins
+4. Enable secure cookies
+5. Set up logging
+
+### Health Checks
+
+- `/api/health` endpoint
+- Azure AD connectivity check
+- Token validation check
+
+## Troubleshooting
+
+### Common Issues
+
+1. CORS errors
+   - Verify allowed origins
+   - Check credentials mode
+
+2. Token errors
+   - Check Azure AD configuration
+   - Verify token expiration
+   - Clear browser cache
+
+3. Callback errors
+   - Verify redirect URI
+   - Check Azure AD permissions
 
 ## Contributing
 
-1. Create a feature branch
-2. Make changes
-3. Add tests
-4. Update documentation
-5. Submit pull request
+1. Create feature branch
+2. Add tests
+3. Update documentation
+4. Submit pull request
 
 ## License
 
-MIT
+MIT License
