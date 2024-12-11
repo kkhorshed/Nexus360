@@ -1,0 +1,91 @@
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+  padding: 20px;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.logo {
+  height: 48px;
+  object-fit: contain;
+}
+
+.welcomeSection {
+  text-align: center;
+}
+
+.welcomeTitle {
+  margin: 0 !important;
+  color: #1a1a1a;
+}
+
+.welcomeText {
+  display: block;
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.loginSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.ssoButton {
+  height: 48px;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.ssoButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.helperText {
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .loginCard {
+    max-width: 100%;
+  }
+
+  .welcomeTitle {
+    font-size: 24px !important;
+  }
+
+  .welcomeText {
+    font-size: 14px;
+  }
+
+  .ssoButton {
+    height: 44px;
+    font-size: 15px;
+  }
+}

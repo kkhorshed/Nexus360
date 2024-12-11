@@ -1,0 +1,87 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+}
+
+.logoContainer {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100% - 250px); /* Align with contentWrapper width minus sider width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logo {
+  height: 80%; /* Adjusted size to 80% */
+  width: auto;
+}
+
+.badge {
+  cursor: pointer;
+  position: relative;
+}
+
+.badge :global(.ant-badge-count) {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  transform: scale(0.8);
+}
+
+.icon {
+  font-size: 18px;
+  color: #64748b;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  background-color: #f8fafc;
+  color: #1f2937;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  height: 40px;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.userInfo:hover {
+  background-color: #f8fafc;
+}
+
+.userName {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notification {
+  padding: 12px 16px;
+  color: #64748b;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.notification:hover {
+  background-color: #f8fafc;
+  color: #1f2937;
+}

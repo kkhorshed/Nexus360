@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD Authentication Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .login-btn {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .login-btn:hover {
+            background-color: #106ebe;
+        }
+        #userInfo {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .error {
+            background-color: #fde8e8;
+            color: #c81e1e;
+        }
+        .success {
+            background-color: #e8fde8;
+            color: #1ec81e;
+        }
+    </style>
+</head>
+<body>
+    <h1>Azure AD Authentication Test</h1>
+    <div class="container">
+        <a href="/api/auth/login" class="login-btn">Login with Azure AD</a>
+        <div id="status"></div>
+        <div id="userInfo"></div>
+    </div>
+
+    <script>
+        // Handle callback
+        window.onload = async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+            
+            if (code) {
+                try {
+                    const response = await fetch(`/api/auth/callback?code=${encodeURIComponent(code)}`);
+                    const data = await response.json();
+                    
+                    if (data.user) {
+                        document.getElementById('status').innerHTML = `
+                            <div class="status success">
+                                Authentication successful!
+                            </div>
+                        `;
+                        document.getElementById('userInfo').textContent = 
+                            JSON.stringify(data.user, null, 2);
+                    }
+                } catch (error) {
+                    document.getElementById('status').innerHTML = `
+                        <div class="status error">
+                            Authentication failed: ${error.message}
+                        </div>
+                    `;
+                }
+            } else if (error) {
+                document.getElementById('status').innerHTML = `
+                    <div class="status error">
+                        Authentication error: ${error}
+                    </div>
+                `;
+            }
+        };
+    </script>
+</body>
+</html>

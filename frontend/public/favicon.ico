@@ -1,0 +1,2244 @@
+<!doctype html><!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]--><!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]--><!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]--><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    
+    <link rel="shortcut icon" href="https://www.cequens.com/hubfs/favicon.ico">
+    
+
+    
+
+    <title></title>
+    <meta name="description" content="">
+
+    
+    
+    
+    
+    
+      
+    
+
+
+    
+
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:description" content="">
+    <meta property="og:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="">
+
+    
+
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.cequens.com/hubfs/web-2021/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.cequens.com/hubfs/web-2021/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.cequens.com/hubfs/web-2021/favicon/favicon-16x16.png">
+    <link rel="manifest" href="https://www.cequens.com/hubfs/web-2021/favicon/site.webmanifest">
+    <link rel="mask-icon" href="https://www.cequens.com/hubfs/web-2021/favicon/safari-pinned-tab.svg" color="#f03034">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+
+    <link fetchpriority="high" rel="preload" href="https://www.cequens.com/hubfs/web-2021/logos/cequens-logo.svg" as="image" crossorigin>
+
+    <!-- Font Preload -->
+    <link rel="preload" href="https://www.cequens.com/hubfs/root/fonts/tt-interphases/TT_Interphases_Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://www.cequens.com/hubfs/root/fonts/tt-interphases/TT_Interphases_Italic.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://www.cequens.com/hubfs/root/fonts/tt-interphases/TT_Interphases_Medium.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://www.cequens.com/hubfs/root/fonts/tt-interphases/TT_Interphases_DemiBold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://www.cequens.com/hubfs/root/fonts/tt-interphases/TTInterphases-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://www.cequens.com/hubfs/website-peacock/src/fonts/scarlet-icons/scarlet-icons.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Thumbnail -->
+    <meta property="og:image" content="https://www.cequens.com/hubfs/website-peacock/src/images/cequens-thumbnail.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="CEQUENS.">
+    <meta name="twitter:image" content="https://www.cequens.com/hubfs/website-peacock/src/images/cequens-thumbnail.png">
+    <meta name="twitter:image:alt" content="CEQUENS.">
+  
+    <style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:content-box !important;box-sizing:content-box !important;vertical-align:middle}.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px}.hs-breadcrumb-menu-divider:before{content:'›';padding-left:10px}.hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 20px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:none;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1px, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;width:1px}
+</style>
+
+
+      
+    
+<link rel="stylesheet" href="https://www.cequens.com/hs-fs/hub/4060184/hub_generated/template_assets/127731686794/1725893926428/cequens-peacock/css/styles.min.css">
+<link rel="stylesheet" href="https://www.cequens.com/hs-fs/hub/4060184/hub_generated/template_assets/120312596293/1690828546924/cequens-peacock/css/templates/system.min.css">
+<link rel="stylesheet" href="https://www.cequens.com/hs-fs/hub/4060184/hub_generated/module_assets/129844849288/1733307208692/module_129844849288_navbar.min.css">
+<link rel="stylesheet" href="https://www.cequens.com/hs-fs/hub/4060184/hub_generated/module_assets/129082949750/1721141162823/module_129082949750_footer.min.css">
+    
+      <script>
+          function onElementReady(querySelector, callBack) {
+              if (document.querySelector(querySelector)) {
+                  callBack();
+              } else {
+                  setTimeout(() => onElementReady.call(this, ...arguments), 100);
+              }
+          }
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.2/cdn.min.js" defer></script>
+      
+    
+<script defer src="https://www.cequens.com/hs-fs/hub/4060184/hub_generated/template_assets/127730318732/1693260734434/cequens-peacock/js/scripts.min.js"></script>
+
+    
+<!--  Added by GoogleTagManager integration -->
+<script>
+var _hsp = window._hsp = window._hsp || [];
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+
+var useGoogleConsentModeV2 = true;
+var waitForUpdateMillis = 1000;
+
+
+
+var hsLoadGtm = function loadGtm() {
+    if(window._hsGtmLoadOnce) {
+      return;
+    }
+
+    if (useGoogleConsentModeV2) {
+
+      gtag('set','developer_id.dZTQ1Zm',true);
+
+      gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'wait_for_update': waitForUpdateMillis
+      });
+
+      _hsp.push(['useGoogleConsentModeV2'])
+    }
+
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T4MD32Q');
+
+    window._hsGtmLoadOnce = true;
+};
+
+_hsp.push(['addPrivacyConsentListener', function(consent){
+  if(consent.allowed || (consent.categories && consent.categories.analytics)){
+    hsLoadGtm();
+  }
+}]);
+
+</script>
+
+<!-- /Added by GoogleTagManager integration -->
+
+    <link rel="canonical" href="https://www.cequens.com/404">
+
+<meta property="fb:pages" content="396505557038033">
+
+<meta property="og:logo" content="/hubfs/root/img/cq-logo.svg">
+<meta name="msvalidate.01" content="D659EED0367780B50386C2F088C38350">
+<meta property="og:url" content="https://www.cequens.com/404">
+<meta name="twitter:card" content="summary">
+<meta http-equiv="content-language" content="en">
+
+
+
+
+
+
+  <meta name="generator" content="HubSpot"></head>
+  <body>
+<!--  Added by GoogleTagManager integration -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T4MD32Q" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- /Added by GoogleTagManager integration -->
+
+    
+      
+    <div id="hs_cos_wrapper_module_16922128259695" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module"><!-- Banner -->
+<section class="cq-banner bg-gradient-red py-4" role="alert" x-data="{ open: true }" x-init="sessionStorage.getItem('showBanner') == 'closed'? open = false : open = true;" x-show="open" style="display: none;" x-transition.delay.800ms x-transition:enter.duration.400ms x-transition:leave.duration.400ms>
+    <div class="container">
+        <div class="row">
+            <div class="col-10 col-md-11">
+                <div class="display-7 text-white">
+                    <div class="gap-3" style="text-align: center; display: flex; align-items: center; justify-content: center;"><img class="rounded-1" src="https://www.cequens.com/hs-fs/hubfs/meta.png?width=59&amp;name=meta.png" width="59" loading="lazy" alt="meta-business-partner" style="height: auto; max-width: 100%; width: 59px;" srcset="https://www.cequens.com/hs-fs/hubfs/meta.png?width=30&amp;name=meta.png 30w, https://www.cequens.com/hs-fs/hubfs/meta.png?width=59&amp;name=meta.png 59w, https://www.cequens.com/hs-fs/hubfs/meta.png?width=89&amp;name=meta.png 89w, https://www.cequens.com/hs-fs/hubfs/meta.png?width=118&amp;name=meta.png 118w, https://www.cequens.com/hs-fs/hubfs/meta.png?width=148&amp;name=meta.png 148w, https://www.cequens.com/hs-fs/hubfs/meta.png?width=177&amp;name=meta.png 177w" sizes="(max-width: 59px) 100vw, 59px">Business Partner | <img class="rounded-1" src="https://www.cequens.com/hubfs/GSAM_member.png" loading="lazy" alt="GSMA-member" style="height: 28px; max-width: 100%;"></div>
+                </div>
+            </div>
+
+            <div class="col-2 col-md-1 text-end">
+                <span type="button" class="close link-light link-opacity-75-hover" data-dismiss="alert" aria-label="Close" @click="open = false; sessionStorage.setItem('showBanner', 'closed')">
+                    <i aria-hidden="true" class="s-icon s-icon-20 s-icon__x-circle"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End > Banner --></div>
+    <div id="hs_cos_wrapper_module_16922128399646" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module"><!-- Navbar -->
+<div class="top-nav d-flex align-items-center justify-content-center justify-content-xl-between bg-light py-5">
+    <div class="container d-flex align-items-center justify-content-center justify-content-xl-end">
+        
+
+        <div class="d-flex align-items-center">
+            
+            <a class="top-nav__link text-dark display-8 fw-normal pe-5" href="https://support.cequens.com/" target="_blank" rel="noopener noreferrer">Support</a>
+            <div class="separator"></div>
+            <a class="top-nav__link text-dark display-8 fw-normal ps-5" href="https://console.cequens.com/login" target="_blank" rel="noopener noreferrer">Login</a>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-xl sticky-top bg-white shadow-sm" x-data="{navOpen: false, toggle() {this.navOpen = ! this.navOpen} }">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="https://www.cequens.com/hubfs/web-2021/logos/cequens-logo.svg" alt="CEQUENS." width="220">
+        </a>
+
+        <div class="d-xl-none" x-show="navOpen === false" :class="{'d-block' : navOpen===false, 'd-none' :
+      navOpen===true}">
+            <span id="hs_cos_wrapper_module_16922128399646_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_cta" style="" data-hs-cos-general-type="widget" data-hs-cos-type="cta"><!--HubSpot Call-to-Action Code --><span class="hs-cta-wrapper" id="hs-cta-wrapper-40be892f-4022-4ba0-9432-a4fc21859363"><span class="hs-cta-node hs-cta-40be892f-4022-4ba0-9432-a4fc21859363" id="hs-cta-40be892f-4022-4ba0-9432-a4fc21859363"><!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]--><a href="https://cta-redirect.hubspot.com/cta/redirect/4060184/40be892f-4022-4ba0-9432-a4fc21859363"><img class="hs-cta-img" id="hs-cta-img-40be892f-4022-4ba0-9432-a4fc21859363" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/4060184/40be892f-4022-4ba0-9432-a4fc21859363.png" alt="Book demo &nbsp;"></a></span><script charset="utf-8" src="/hs/cta/cta/current.js"></script><script type="text/javascript"> hbspt.cta._relativeUrls=true;hbspt.cta.load(4060184, '40be892f-4022-4ba0-9432-a4fc21859363', {"useNewLoader":"true","region":"na1"}); </script></span><!-- end HubSpot Call-to-Action Code --></span>
+        </div>
+
+        <button class="navbar-toggler collapsed shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" @click="toggle()">
+            <i class="s-icon s-icon-32 s-icon__menu" x-show="!navOpen"></i>
+            <i class="s-icon s-icon-32 s-icon__x" x-show="navOpen"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav navbar__mobile mx-auto mb-2 mb-xl-0 d-xl-none">
+                <!-- Products -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Products
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <!-- Applications -->
+                        <div class="dropdown-item dropdown" @click="$event.stopPropagation()">
+                            <p class="d-flex align-items-center fw-semibold dropdown-toggle pt-3 pb-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Applications
+                                <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold">
+                                </i>
+                            </p>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/omnichannel-chat">
+                                        CEQUENS Omnichannel Chat
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/mfa">
+                                        CEQUENS MFA
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/campaigns">
+                                        CEQUENS Campaigns
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/chatbots">
+                                        CEQUENS Bots
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/location-advertising">
+                                        Location Based Advertising
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/mobile-advertising">
+                                        Mobile Advertising
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/number-lookup">
+                                        CEQUENS Number Lookup
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/truenorth-gateway">
+                                        CEQUENS TrueNorth Gateway
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/ivr">
+                                        CEQUNES IVR
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/cequens-omnilink">
+                                        CEQUENS OmniLink Studio
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/ai-agent">
+                                        CEQUENS AI Agent
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <!-- End > Applications -->
+
+                        <!-- Communication APIs -->
+                        <div class="dropdown-item dropdown" @click="$event.stopPropagation()">
+                            <p class="d-flex align-items-center fw-semibold dropdown-toggle pt-3 pb-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Communication APIs
+                                <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold">
+                                </i>
+                            </p>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/sms-api">
+                                        SMS API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/messenger-api">
+                                        Messenger API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/whatsapp-business-api">
+                                        WhatsApp Business API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/apple-business-chat-api">
+                                        Apple Business Chat API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/instagram-api">
+                                        Instagram API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/voice">
+                                        Voice API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/push-notification-api">
+                                        Push Notification API
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/google-business-messenger-api">
+                                        Google GBM API
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <!-- End > Communication APIs -->
+
+                        <!-- Connectivity -->
+                        <div class="dropdown-item dropdown" @click="$event.stopPropagation()">
+                            <p class="d-flex align-items-center fw-semibold dropdown-toggle pt-3 pb-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Connectivity
+                                <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold">
+                                </i>
+                            </p>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/sip">
+                                        SIP
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/short-long-codes">
+                                        Short &amp; Long Codes
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/products/ms-teams-phone">
+                                        Microsoft Teams Enterprise Voice
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <!-- End > Connectivity -->
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/products">
+                                All Products
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- End > Products -->
+
+                <!-- Solutions -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Solutions
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <!-- Industries -->
+                        <div class="dropdown-item dropdown" @click="$event.stopPropagation()">
+                            <p class="d-flex align-items-center fw-semibold dropdown-toggle pt-3 pb-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Industries
+                                <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold">
+                                </i>
+                            </p>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/bfsi">
+                                        BFSI &amp; Fintech
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/retail-ecommerce">
+                                        Retail
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/logistics-delivery">
+                                        Logistics &amp; Delivery
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/healthcare">
+                                        Healthcare
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/platforms">
+                                        Platforms
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <!-- End > Industries -->
+
+                        <!-- Use Cases -->
+                        <div class="dropdown-item dropdown" @click="$event.stopPropagation()">
+                            <p class="d-flex align-items-center fw-semibold dropdown-toggle pt-3 pb-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Use Cases
+                                <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold">
+                                </i>
+                            </p>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/digital-authentication">
+                                        Digital Authentication
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/marketing-communications">
+                                        Marketing Communications
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/customer-support">
+                                        Customer Support
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/solutions/intelligent-engagement">
+                                        Intelligent Engagement
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        <!-- End > Use Cases -->
+                    </ul>
+                </li>
+                <!-- End > Solutions -->
+
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.cequens.com/telco">Telco</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.cequens.com/pricing">Pricing</a>
+                </li>
+
+                <!-- Resources -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Resources
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/blog">Blog</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/blog/tag/customer-story">Success Stories</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/news-events">News &amp;
+                                Events</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/knowledge-hub">
+                                Knowledgehub
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- End > Resources -->
+
+                <!-- About -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        About Us
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- About -->
+                        <div class="dropdown-item dropdown" @click="$event.stopPropagation()">
+                            <p class="d-flex align-items-center fw-semibold dropdown-toggle pt-3 pb-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                About Us
+                                <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold">
+                                </i>
+                            </p>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/advantage">
+                                        CEQUENS Advantage
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/our-team">
+                                        Our Team
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/testimonials">
+                                        Customer Insights
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/contact">
+                                        Contact Us
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a class="dropdown-item" href="https://www.cequens.com/our-promise">
+                                        Our Promise
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End > About -->
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/offices">
+                                Our Offices
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://www.cequens.com/careers" target="_blank" rel="noopener noreferrer">
+                                Career Opportunities
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- End > About -->
+            </ul>
+
+            <!-- Desktop -->
+            <ul class="navbar-nav navbar__desktop mx-auto mb-2 mb-xl-0 d-none d-xl-flex">
+                <!-- Products Nav Tab -->
+                <li class="nav-item dropdown position-static" x-data="{ open: false }">
+                    <div class="custom-nav-link dropdown-toggle cursor-pointer d-flex align-items-center" @click="open = !open" :class="{'text-primary bg-light': open}">
+                        Products
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </div>
+
+                    <div x-show="open" @click.away="open = false" class="drop-menu bg-light container overflow-hidden px-0 rounded-bottom-4 shadow position-absolute z-3
+                        start-50 translate-middle-x" style="display: none;" x-transition:enter.duration.500ms x-transition:leave.duration.400ms>
+                        <div class="grid gap-0" x-data="{ selectedTab: 'application' }">
+                            <!-- Left Section -->
+                            <div class="g-col-4 bg-white p-6 p-xxl-8">
+                                <a class="fw-bold display-5 display-xxl-4 link-gray mb-6 d-flex align-items-center hover-icon-primary" href="https://www.cequens.com/products">
+                                    Our Products
+                                    <i class=" mx-3 fw-bold s-icon s-icon-24 s-icon__arrow-right"></i>
+                                </a>
+
+                                <!-- Tabs -->
+                                <div class="d-flex align-items-center gap-6 p-4 rounded cursor-pointer mb-4 text-gray border border-light-subtle hover-light" @click="selectedTab = 'application'" :class="{'bg-light': selectedTab === 'application'}">
+                                    <i class="s-icon s-icon-20 s-icon__applications"></i>
+                                    <p class="fw-semibold display-7 display-xxl-5" :class="{'text-primary': selectedTab === 'application'}">Applications</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-6 p-4 rounded cursor-pointer mb-4 text-gray border border-light-subtle hover-light" @click="selectedTab = 'communication'" :class="{'bg-light': selectedTab === 'communication'}">
+                                    <i class="s-icon s-icon-20 s-icon__communication-apis"></i>
+                                    <p class="fw-semibold display-7 display-xxl-5" :class="{'text-primary': selectedTab === 'communication'}">Communication APIs
+                                    </p>
+                                </div>
+                                <div class="d-flex align-items-center gap-6 p-4 rounded cursor-pointer text-gray border border-light-subtle hover-light" @click="selectedTab = 'connectivity'" :class="{'bg-light': selectedTab === 'connectivity'}">
+                                    <i class="s-icon s-icon-20 s-icon__connectivity"></i>
+                                    <p class="fw-semibold display-7 display-xxl-5" :class="{'text-primary': selectedTab === 'connectivity'}">Connectivity</p>
+                                </div>
+                            </div>
+                            <!-- Right Section -->
+                            <div class="g-col-8 bg-light py-6 py-xxl-8 px-5">
+
+                                <!-- Application Content -->
+                                <div x-show="selectedTab === 'application'">
+                                    <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">
+                                        Applications
+                                    </h4>
+
+                                    <div class="grid gap-5">
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/omnichannel-chat">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-omni-channel-chat"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS Omnichannel Chat
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Omnichannel communication solution
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/mfa">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-mfa"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS MFA
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Secure multi-factor authentication
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/campaigns">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-campaign"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS Campaigns
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Targeted messaging and promotions platform
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/chatbots">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-bots"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS Bots
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Automated conversational AI assistants
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/location-advertising">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__location-based-advertising"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Location Based Advertising
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Targeted ads based on location
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/mobile-advertising">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__mobile-advertising"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Mobile Advertising
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Reach audiences through mobile devices
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/number-lookup">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-number-lookup"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS Number Lookup
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Number validation and Home Location Register
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/truenorth-gateway">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-truenorth-gateway"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS TrueNorth Gateway
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Robust messaging gateway solution
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/ivr">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__cequens-ivr"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUNES IVR
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Interactive voice response solutions
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/cequens-omnilink">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__omni-link"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS OmniLink Studio
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Enhancing and unifying customer communications
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                        <!-- Application Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/ai-agent">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__ai-agent"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        CEQUENS AI Agent
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Empowering customers with advanced conversational AI
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Application Link -->
+                                        
+                                    </div>
+                                </div>
+
+                                <!-- Communication APIs Content -->
+                                <div x-show="selectedTab === 'communication'">
+                                    <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">
+                                        Communication APIs
+                                    </h4>
+
+                                    <div class="grid gap-5">
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/sms-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__sms-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        SMS API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Streamlined text messaging integration
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/messenger-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__messenger-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Messenger API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Engage customers on Messenger by Meta
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/whatsapp-business-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__whatsapp-business-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        WhatsApp Business API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        WhatsApp communication for businesses
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/apple-business-chat-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__apple-business-chat-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Apple Business Chat API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Apple-powered business messaging solutions
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/instagram-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__instagram-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Instagram API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Visual communication, seamless integration
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/voice">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__voice-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Voice API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Seamless integrated voice solutions
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/push-notification-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__push-notification-api"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Push Notification API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Effortless push notification management
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                        <!-- Communication APIs Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/google-business-messenger-api">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__google"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Google GBM API
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Business messaging with Google
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End  > Communication APIs Link -->
+                                        
+                                    </div>
+                                </div>
+
+                                <!-- Connectivity Content -->
+                                <div x-show="selectedTab === 'connectivity'">
+                                    <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">
+                                        Connectivity
+                                    </h4>
+
+                                    <div class="grid gap-5">
+                                        
+                                        <!-- Connectivity Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/sip">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__sip"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        SIP
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        VoIP protocol for efficient telephony
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Connectivity Link -->
+                                        
+                                        <!-- Connectivity Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/short-long-codes">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__short-long-codes"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Short &amp; Long Codes
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Versatile numbering solutions for communication
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Connectivity Link -->
+                                        
+                                        <!-- Connectivity Link -->
+                                        <div class="g-col-4 px-4 py-3 rounded hover-dark hover-icon-primary">
+                                            <a class="d-flex align-items-start" href="https://www.cequens.com/products/ms-teams-phone">
+                                                <i class="s-icon s-icon-20 text-gray me-6 s-icon__ms-teams-phone"></i>
+
+                                                <div>
+                                                    <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                        Microsoft Teams Enterprise Voice
+                                                    </h5>
+                                                    <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                        Seamlessly integrate your communication                                           
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- End > Connectivity Link -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Solutions Nav Tab -->
+                <li class="nav-item dropdown position-static" x-data="{ open: false }">
+                    <div class="custom-nav-link dropdown-toggle cursor-pointer d-flex align-items-center" @click="open = !open" :class="{'text-primary bg-light': open}">
+                        Solutions
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </div>
+                    <div x-show="open" @click.away="open = false" class="drop-menu bg-light container overflow-hidden px-0 rounded-bottom-4 shadow position-absolute z-3
+                        start-50 translate-middle-x" style="display: none;" x-transition:enter.duration.500ms x-transition:leave.duration.400ms>
+                        <div class="grid gap-0">
+                            <!-- Left Section -->
+                            <div class="g-col-6 bg-light p-6 p-xxl-8 border-end">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">Industries</h4>
+
+                                <div class="grid gap-5">
+                                    
+                                    <!-- Industry -->
+                                    <div class="g-col-6 px-4 py-3 rounded hover-light hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/bfsi">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__bfsi-fintech"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    BFSI &amp; Fintech
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Enhancing finance and fintech with personalization
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Industry -->
+                                    
+                                    <!-- Industry -->
+                                    <div class="g-col-6 px-4 py-3 rounded hover-light hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/retail-ecommerce">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__retail"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Retail
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Seamless connections for modern retail and e-commerce
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Industry -->
+                                    
+                                    <!-- Industry -->
+                                    <div class="g-col-6 px-4 py-3 rounded hover-light hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/logistics-delivery">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__logistics"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Logistics &amp; Delivery
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Efficient solutions for global logistics and supply chain
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Industry -->
+                                    
+                                    <!-- Industry -->
+                                    <div class="g-col-6 px-4 py-3 rounded hover-light hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/healthcare">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__healthcare"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Healthcare
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Connecting and transforming the healthcare experience
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Industry -->
+                                    
+                                    <!-- Industry -->
+                                    <div class="g-col-6 px-4 py-3 rounded hover-light hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/platforms">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__platform"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Platforms
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Facilitating platform growth, efficiency and cost optimization
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Industry -->
+                                    
+                                </div>
+
+                            </div>
+
+                            <!-- Right Section -->
+                            <div class="g-col-6 bg-white py-6 py-xxl-8 px-5">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">Use Cases</h4>
+
+                                <div class="grid gap-5">
+                                    
+                                    <!-- Use Case -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/digital-authentication">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__authentication"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Digital Authentication
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Multifactor authentication for secure digital transactions
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Use Case -->
+                                    
+                                    <!-- Use Case -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/marketing-communications">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__marketing-communications"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Marketing Communications
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Powerful and instant marketing communications
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Use Case -->
+                                    
+                                    <!-- Use Case -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/customer-support">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__customer-support-24"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Customer Support
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Improving customer service performance and ROI
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Use Case -->
+                                    
+                                    <!-- Use Case -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/solutions/intelligent-engagement">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__digital-engagement"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Intelligent Engagement
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Engaging customers simply and intelligently
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Use Case -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Telco Nav Tab -->
+                <li class="d-flex nav-item">
+                    <a class="custom-nav-link" href="https://www.cequens.com/telco">Telco</a>
+                </li>
+
+                <!-- Pricing Nav Tab -->
+                <li class="d-flex nav-item">
+                    <a class="custom-nav-link" href="https://www.cequens.com/pricing">Pricing</a>
+                </li>
+
+                <!-- Resources Nav Tab -->
+                <li class="nav-item dropdown position-static" x-data="{ open: false }">
+                    <div class="custom-nav-link dropdown-toggle cursor-pointer d-flex align-items-center" @click="open = !open" :class="{'text-primary bg-light': open}">
+                        Resources
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </div>
+                    <div x-show="open" @click.away="open = false" class="drop-menu bg-light container overflow-hidden px-0 rounded-bottom-4 shadow position-absolute z-3
+                        start-50 translate-middle-x" style="display: none;" x-transition:enter.duration.500ms x-transition:leave.duration.400ms>
+                        <div class="grid gap-0">
+
+                            <!-- Left Section -->
+                            <div class="g-col-4 bg-white p-6 p-xxl-8 border d-flex flex-column flex-wrap">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">Blogs</h4>
+
+                                <!-- Blog Card -->
+                                <div class="d-flex flex-column gap-6 mb-7">
+                                    
+                                    
+                                    <article class="row align-items-center gx-5 position-relative">
+                                        <div class="col-6">
+                                            <div class="ratio ratio-16x9">
+                                                <img src="https://www.cequens.com/hubfs/198x111-min-1.png" class="rounded-3 object-fit-cover" alt="EX, diversity, and other trends reshaping the corporate landscape" loading="lazy">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 d-flex flex-column">
+                                            <h5 class="display-7 fw-bold text-dark mb-4">
+                                                EX, diversity, and other trends reshaping the corporate landscape
+                                            </h5>
+
+                                            <div class="d-flex flex-column gap-3">
+                                                <div class="display-8 fw-semibold text-secondary">
+                                                    <time>Oct 2, 2024</time>
+                                                </div>
+                                                
+                                                <div class="text-secondary">
+                                                    
+                                                    
+                                                    <span class="py-2 px-3 rounded bg-secondary-subtle fw-medium display-8">
+                                                        MEA Insights
+                                                    </span>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <a class="position-absolute top-0 right-0 w-100 h-100" href="https://www.cequens.com/blog/ex-diversity-and-other-trends-reshaping-the-corporate-landscape"></a>
+                                    </article>
+                                    
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-auto">
+                                    <a class="d-flex align-items-center link-dark hover-icon-primary" href="https://www.cequens.com/blog">
+                                        <p class="display-7 fw-semibold me-6">Explore more</p>
+                                        <i class="s-icon s-icon-24 s-icon__arrow-right"></i>
+                                    </a>
+
+                                    <a class="d-flex align-items-center link-dark hover-icon-primary" href="https://www.cequens.com/blog/tag/customer-story">
+                                        <p class="display-7 fw-semibold me-6">Success Stories</p>
+                                        <i class="s-icon s-icon-24 s-icon__arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Center Section -->
+                            <div class="g-col-4 bg-white py-6 py-xxl-8 px-6 border d-flex flex-column flex-wrap">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">News &amp; Events</h4>
+
+                                <div class="d-flex flex-column gap-6 mb-7">
+                                    
+                                    
+                                    <article class="row align-items-center gx-5 position-relative">
+                                        <div class="col-6">
+                                            <div class="ratio ratio-16x9">
+                                                <img src="https://www.cequens.com/hubfs/198x111-Nov-04-2024-10-55-04-7889-AM.png" class="rounded-3 object-fit-cover" alt="CEQUENS Achieves SOC 2 Type II Certification, Reinforcing Commitment to Security and Data Protection" loading="lazy">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 d-flex flex-column">
+                                            <h5 class="display-7 fw-bold text-dark mb-4">
+                                                CEQUENS Achieves SOC 2 Type II Certification, Reinforcing Commitment to Security and Data Protection
+                                            </h5>
+
+                                            <div class="d-flex flex-column gap-3">
+                                                <div class="display-8 fw-semibold text-secondary">
+                                                    <time>Nov 4, 2024</time>
+                                                </div>
+                                                
+                                                <div class="text-secondary">
+                                                    
+                                                    
+                                                    <span class="py-2 px-3 rounded bg-secondary-subtle fw-medium display-8">
+                                                        CEQUENS News
+                                                    </span>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <a class="position-absolute top-0 right-0 w-100 h-100" href="https://www.cequens.com/news-events/cequens-achieves-soc-2-type-ii-certification-reinforcing-commitment-to-security-and-data-protection"></a>
+                                    </article>
+                                    
+                                </div>
+
+                                <a class="d-flex align-items-center link-dark hover-icon-primary mt-auto" href="https://www.cequens.com/news-events">
+                                    <p class="display-7 fw-semibold me-6">Explore More</p>
+                                    <i class="s-icon s-icon-24 s-icon__arrow-right"></i>
+                                </a>
+                            </div>
+
+                            <!-- Right Section -->
+                            <div class="g-col-4 bg-white py-6 py-xxl-8 px-6 border d-flex flex-column flex-wrap">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">
+                                    Knowledgehub
+                                </h4>
+
+                                <div class="grid gap-5 mb-7">
+                                    <!-- Knowledgehub links -->
+                                    
+                                        <div class="g-col-6 p-5 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column" href="https://www.cequens.com/knowledge-hub/documents">
+                                            <i class="mb-2 s-icon s-icon-24 text-gray s-icon__file-text"></i>
+                                            <p class="display-7 fw-semibold text-gray">
+                                                Document
+                                            </p>
+                                        </a>
+                                    </div>
+                                    
+                                        <div class="g-col-6 p-5 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column" href="https://developer.cequens.com/" target="_blank" rel="nofollow noopener">
+                                            <i class="mb-2 s-icon s-icon-24 text-gray s-icon__integration"></i>
+                                            <p class="display-7 fw-semibold text-gray">
+                                                Developer’s Hub
+                                            </p>
+                                        </a>
+                                    </div>
+                                    
+                                        <div class="g-col-6 p-5 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column" href="https://www.cequens.com/knowledge-hub/tutorials">
+                                            <i class="mb-2 s-icon s-icon-24 text-gray s-icon__video"></i>
+                                            <p class="display-7 fw-semibold text-gray">
+                                                Tutorials
+                                            </p>
+                                        </a>
+                                    </div>
+                                    
+                                        <div class="g-col-6 p-5 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column" href="https://www.cequens.com/knowledge-hub/glossary">
+                                            <i class="mb-2 s-icon s-icon-24 text-gray s-icon__list-check"></i>
+                                            <p class="display-7 fw-semibold text-gray">
+                                                Glossary
+                                            </p>
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- End > Knowledgehub links -->
+                                </div>
+
+                                <a class="d-flex align-items-center link-dark hover-icon-primary mt-auto" href="https://www.cequens.com/knowledge-hub">
+                                    <p class="display-7 fw-semibold me-6">
+                                        Explore more
+                                    </p>
+                                    <i class="s-icon s-icon-24 s-icon__arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- About Us Nav Tab -->
+                <li class="nav-item dropdown position-static" x-data="{ open: false }">
+                    <div class="custom-nav-link dropdown-toggle cursor-pointer d-flex align-items-center" @click="open = !open" :class="{'text-primary bg-light': open}">
+                        About Us
+                        <i class="s-icon s-icon-16 s-icon__chevron-down ms-2 fw-bold"></i>
+                    </div>
+                    <div x-show="open" @click.away="open = false" class="drop-menu bg-light container overflow-hidden px-0 rounded-bottom-4 shadow position-absolute z-3
+                        start-50 translate-middle-x" style="display: none;" x-transition:enter.duration.500ms x-transition:leave.duration.400ms>
+                        <div class="grid gap-0">
+                            <!-- Top Left Section -->
+                            <div class="g-col-7 bg-white p-6 py-xxl-8 border">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">About Us</h4>
+
+                                <div class="grid gap-5">
+                                    
+                                    <!-- About links -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/advantage">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__plus-circle"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    CEQUENS Advantage
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    What makes CEQUENS stand out
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > About links -->
+                                    
+                                    <!-- About links -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/our-team">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__users"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Our Team
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Our multidisciplinary team of experts
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > About links -->
+                                    
+                                    <!-- About links -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/testimonials">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__bookmark"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Customer Insights
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Customer stories, our inspiration
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > About links -->
+                                    
+                                    <!-- About links -->
+                                    <div class="g-col-6 p-4 rounded hover-light hover-icon-primary bg-light">
+                                        <a class="d-flex align-items-start" href="https://www.cequens.com/contact">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__phone-call"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-2">
+                                                    Contact Us
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Connect to upgrade your connections
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > About links -->
+                                    
+                                </div>
+
+                            </div>
+
+                            <!-- Top Right Section -->
+                            <div class="g-col-5 bg-white p-6 py-xxl-8 border">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">Our Offices</h4>
+
+                                <div class="row align-items-center gx-5 position-relative">
+                                    <div class="col-6 rounded overflow-hidden">
+                                        <img class="w-100 h-100 rounded object-fit-cover" srcset="https://www.cequens.com/hs-fs/hubfs/website-peacock/src/images/about/offices/dubai.png?length=448&amp;name=dubai.png 224w 2x, https://www.cequens.com/hs-fs/hubfs/website-peacock/src/images/about/offices/dubai.png?length=224&amp;name=dubai.png 224w" src="https://www.cequens.com/hubfs/website-peacock/src/images/about/offices/dubai.png" alt="Dubai" loading="lazy">
+                                    </div>
+
+                                    <div class="col-6 d-flex flex-column mt-5">
+                                        <h5 class="display-7 display-xxl-6 fw-bold text-dark mb-4">
+                                            Serving Customers From Across the Globe
+                                        </h5>
+
+                                        <div class="mb-6 d-flex flex-column gap-4">
+                                            <a href="https://goo.gl/maps/HHA4ohGkH8hZj8nQ8" class="d-flex align-items-center gap-5" target="_blank" rel="noopener noreferrer">
+                                                <i class="s-icon s-icon-20 text-secondary s-icon__map-pin"></i>
+                                                <p class="display-8 display-xxl-7 text-secondary">
+                                                    Dubai, UAE
+                                                </p>
+                                            </a>
+                                            <a href="https://goo.gl/maps/BFDqyRmj96n5BQw98" class="d-flex align-items-center gap-5" target="_blank" rel="noopener noreferrer">
+                                                <i class="s-icon s-icon-20 text-secondary s-icon__map-pin"></i>
+                                                <p class="display-8 display-xxl-7 text-secondary">
+                                                    Cairo, Egypt
+                                                </p>
+                                            </a>
+                                        </div>
+
+                                        <a class="d-flex justify-content-between align-items-center link-dark hover-icon-primary" href="https://www.cequens.com/offices">
+                                            <p class="display-8 display-xxl-7 fw-semibold me-6">See All</p>
+                                            <i class="s-icon s-icon-20 s-icon__arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Left Section -->
+                            <div class="g-col-7 bg-light p-6 py-xxl-8 border">
+                                <a class="fw-bold display-5 display-xxl-4 link-gray mb-6 d-flex align-items-center hover-icon-primary" href="https://www.cequens.com/our-promise">
+                                    Our Promise
+                                    <i class=" mx-3 fw-bold s-icon s-icon-24 s-icon__arrow-right"></i>
+                                </a>
+
+                                <div class="grid gap-5">
+                                    
+                                    <!-- Promise -->
+                                    <div class="g-col-4 p-5 p-xxl-6 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column align-items-center justify-content-center" href="https://www.cequens.com/our-promise">
+                                            <i class="s-icon s-icon-32 text-dark mb-6 s-icon__check-circle"></i>
+                                            <p class="fw-semibold text-dark display-7 display-xxl-6 text-center">
+                                                Reliability
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <!-- End > Promise -->
+                                    
+                                    <!-- Promise -->
+                                    <div class="g-col-4 p-5 p-xxl-6 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column align-items-center justify-content-center" href="https://www.cequens.com/our-promise">
+                                            <i class="s-icon s-icon-32 text-dark mb-6 s-icon__global-connectivity"></i>
+                                            <p class="fw-semibold text-dark display-7 display-xxl-6 text-center">
+                                                Scalability
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <!-- End > Promise -->
+                                    
+                                    <!-- Promise -->
+                                    <div class="g-col-4 p-5 p-xxl-6 hover-light hover-icon-primary rounded">
+                                        <a class="d-flex flex-column align-items-center justify-content-center" href="https://www.cequens.com/our-promise">
+                                            <i class="s-icon s-icon-32 text-dark mb-6 s-icon__personalization"></i>
+                                            <p class="fw-semibold text-dark display-7 display-xxl-6 text-center">
+                                                Customer-Centricity
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <!-- End > Promise -->
+                                    
+                                </div>
+                            </div>
+
+                            <!-- Bottom Right Section -->
+                            <div class="g-col-5 bg-light p-6 py-xxl-8 border">
+                                <h4 class="fw-bold display-5 display-xxl-4 text-gray mb-5 mb-xxl-6">All Career
+                                    Opportunities</h4>
+
+                                <div class="grid gap-5 mb-6">
+                                    
+                                    <!-- Career -->
+                                    <div class="g-col-6 py-3 px-4 rounded hover-border hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.linkedin.com/jobs/view/3682226352/">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__briefcase"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-5">
+                                                    Head of Sales
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Open position
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Career -->
+                                    
+                                    <!-- Career -->
+                                    <div class="g-col-6 py-3 px-4 rounded hover-border hover-icon-primary">
+                                        <a class="d-flex align-items-start" href="https://www.linkedin.com/jobs/view/3673773144">
+                                            <i class="s-icon s-icon-20 text-gray me-6 s-icon__briefcase"></i>
+
+                                            <div>
+                                                <h5 class="fw-semibold text-dark display-7 display-xxl-6 mb-5">
+                                                    Product Manager
+                                                </h5>
+                                                <p class="fw-medium display-8 display-xxl-7 text-secondary">
+                                                    Open position
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <!-- End > Career -->
+                                    
+                                </div>
+
+                                <a class="d-flex align-items-center justify-content-between link-dark hover-icon-primary" href="https://www.cequens.com/careers">
+                                    <p class="display-7 display-xxl-6 fw-semibold">View All Career Opportunities</p>
+                                    <i class="s-icon s-icon-24 s-icon__arrow-right"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="d-none d-xl-flex gap-4">
+                <span id="hs_cos_wrapper_module_16922128399646_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_cta" style="" data-hs-cos-general-type="widget" data-hs-cos-type="cta"><!--HubSpot Call-to-Action Code --><span class="hs-cta-wrapper" id="hs-cta-wrapper-d9328154-19b2-46b1-85c8-02103dbe4928"><span class="hs-cta-node hs-cta-d9328154-19b2-46b1-85c8-02103dbe4928" id="hs-cta-d9328154-19b2-46b1-85c8-02103dbe4928"><!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]--><a href="https://cta-redirect.hubspot.com/cta/redirect/4060184/d9328154-19b2-46b1-85c8-02103dbe4928" target="_blank" rel="noopener"><img class="hs-cta-img" id="hs-cta-img-d9328154-19b2-46b1-85c8-02103dbe4928" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/4060184/d9328154-19b2-46b1-85c8-02103dbe4928.png" alt="Get started"></a></span><script charset="utf-8" src="/hs/cta/cta/current.js"></script><script type="text/javascript"> hbspt.cta._relativeUrls=true;hbspt.cta.load(4060184, 'd9328154-19b2-46b1-85c8-02103dbe4928', {"useNewLoader":"true","region":"na1"}); </script></span><!-- end HubSpot Call-to-Action Code --></span>
+                <span id="hs_cos_wrapper_module_16922128399646_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_cta" style="" data-hs-cos-general-type="widget" data-hs-cos-type="cta"><!--HubSpot Call-to-Action Code --><span class="hs-cta-wrapper" id="hs-cta-wrapper-435354da-b1a8-47c7-b0eb-24d414ec521e"><span class="hs-cta-node hs-cta-435354da-b1a8-47c7-b0eb-24d414ec521e" id="hs-cta-435354da-b1a8-47c7-b0eb-24d414ec521e"><!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]--><a href="https://cta-redirect.hubspot.com/cta/redirect/4060184/435354da-b1a8-47c7-b0eb-24d414ec521e"><img class="hs-cta-img" id="hs-cta-img-435354da-b1a8-47c7-b0eb-24d414ec521e" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/4060184/435354da-b1a8-47c7-b0eb-24d414ec521e.png" alt="Book demo &nbsp;"></a></span><script charset="utf-8" src="/hs/cta/cta/current.js"></script><script type="text/javascript"> hbspt.cta._relativeUrls=true;hbspt.cta.load(4060184, '435354da-b1a8-47c7-b0eb-24d414ec521e', {"useNewLoader":"true","region":"na1"}); </script></span><!-- end HubSpot Call-to-Action Code --></span>
+            </div>
+        </div>
+</div></nav>
+<!-- End > Navbar --></div>
+
+    <section class="py-9 py-xxl-10 position-relative overflow-hidden bg-light">
+    <div class="container h-100 position-relative">
+        <div class="d-flex flex-column flex-wrap justify-content-center align-items-center text-center">
+            <div>
+                <svg class="img-fluid" xmlns="http://www.w3.org/2000/svg" width="178" height="179" viewbox="0 0 178 179" fill="none">
+                    <g clip-path="url(#clip0_13034_29216)">
+                        <path d="M45.3361 70.0312C45.3361 70.7689 45.6291 71.4763 46.1507 71.9979C46.6723 72.5195 47.3797 72.8125 48.1173 72.8125C48.8549 72.8125 49.5624 72.5195 50.0839 71.9979C50.6055 71.4763 50.8986 70.7689 50.8986 70.0312C50.8997 69.4932 51.0157 68.9615 51.2387 68.4719C51.4618 67.9822 51.7867 67.5457 52.1918 67.1916C53.8591 65.4685 54.7912 63.1646 54.7912 60.7669C54.7912 58.3692 53.8591 56.0654 52.1918 54.3422C51.7848 53.9877 51.4585 53.55 51.2349 53.0588C51.0114 52.5675 50.8957 52.034 50.8957 51.4942C50.8957 50.9544 51.0114 50.421 51.2349 49.9297C51.4585 49.4384 51.7848 49.0007 52.1918 48.6462C53.8683 46.9278 54.8022 44.6194 54.7923 42.2188C54.7923 41.4811 54.4993 40.7737 53.9777 40.2521C53.4561 39.7305 52.7487 39.4375 52.0111 39.4375C51.2734 39.4375 50.566 39.7305 50.0444 40.2521C49.5228 40.7737 49.2298 41.4811 49.2298 42.2188C49.2291 42.7584 49.1131 43.2917 48.8896 43.7828C48.6661 44.274 48.3402 44.7117 47.9337 45.0667C46.2674 46.7915 45.336 49.096 45.336 51.4942C45.336 53.8924 46.2674 56.1969 47.9337 57.9217C48.3402 58.2757 48.666 58.7127 48.8893 59.2033C49.1125 59.6938 49.228 60.2265 49.228 60.7655C49.228 61.3045 49.1125 61.8372 48.8893 62.3278C48.666 62.8183 48.3402 63.2553 47.9337 63.6093C46.2571 65.3252 45.3239 67.6323 45.3361 70.0312ZM67.5861 56.125C67.5861 56.8626 67.8791 57.5701 68.4007 58.0916C68.9223 58.6132 69.6297 58.9062 70.3673 58.9062C71.1049 58.9062 71.8124 58.6132 72.3339 58.0916C72.8555 57.5701 73.1486 56.8626 73.1486 56.125C73.1497 55.5869 73.2657 55.0553 73.4887 54.5656C73.7118 54.0759 74.0367 53.6394 74.4418 53.2853C76.1091 51.5622 77.0412 49.2584 77.0412 46.8607C77.0412 44.4629 76.1091 42.1591 74.4418 40.436C74.0348 40.0814 73.7085 39.6438 73.4849 39.1525C73.2614 38.6612 73.1457 38.1277 73.1457 37.588C73.1457 37.0482 73.2614 36.5147 73.4849 36.0234C73.7085 35.5321 74.0348 35.0945 74.4418 34.74C76.1183 33.0216 77.0522 30.7132 77.0423 28.3125C77.0423 27.5749 76.7493 26.8674 76.2277 26.3459C75.7061 25.8243 74.9987 25.5312 74.2611 25.5312C73.5234 25.5312 72.816 25.8243 72.2944 26.3459C71.7728 26.8674 71.4798 27.5749 71.4798 28.3125C71.4791 28.8521 71.3631 29.3854 71.1396 29.8766C70.9161 30.3677 70.5902 30.8055 70.1837 31.1605C68.5174 32.8852 67.586 35.1897 67.586 37.588C67.586 39.9862 68.5174 42.2907 70.1837 44.0154C70.5902 44.3694 70.916 44.8065 71.1392 45.297C71.3625 45.7876 71.478 46.3203 71.478 46.8593C71.478 47.3982 71.3625 47.931 71.1392 48.4215C70.916 48.9121 70.5902 49.3491 70.1837 49.7031C68.5071 51.4189 67.5739 53.7261 67.5861 56.125ZM116.814 58.9062C117.552 58.9062 118.259 58.6132 118.781 58.0916C119.302 57.5701 119.595 56.8626 119.595 56.125V33.875C119.595 33.1374 119.302 32.4299 118.781 31.9084C118.259 31.3868 117.552 31.0938 116.814 31.0938C116.077 31.0938 115.369 31.3868 114.848 31.9084C114.326 32.4299 114.033 33.1374 114.033 33.875V42.2188H111.252C110.514 42.2188 109.807 41.9257 109.285 41.4041C108.763 40.8826 108.47 40.1751 108.47 39.4375V33.875C108.47 33.1374 108.177 32.4299 107.656 31.9084C107.134 31.3868 106.427 31.0938 105.689 31.0938C104.952 31.0938 104.244 31.3868 103.723 31.9084C103.201 32.4299 102.908 33.1374 102.908 33.875V39.4375C102.908 41.6504 103.787 43.7727 105.352 45.3374C106.917 46.9022 109.039 47.7812 111.252 47.7812H114.033V56.125C114.033 56.8626 114.326 57.5701 114.848 58.0916C115.369 58.6132 116.077 58.9062 116.814 58.9062ZM125.158 39.4375V50.5625C125.158 52.7754 126.037 54.8977 127.602 56.4624C129.167 58.0272 131.289 58.9062 133.502 58.9062C135.715 58.9062 137.837 58.0272 139.402 56.4624C140.966 54.8977 141.845 52.7754 141.845 50.5625V39.4375C141.845 37.2246 140.966 35.1023 139.402 33.5376C137.837 31.9728 135.715 31.0938 133.502 31.0938C131.289 31.0938 129.167 31.9728 127.602 33.5376C126.037 35.1023 125.158 37.2246 125.158 39.4375ZM136.283 39.4375V50.5625C136.283 51.3001 135.99 52.0076 135.468 52.5291C134.947 53.0507 134.239 53.3438 133.502 53.3438C132.764 53.3438 132.057 53.0507 131.535 52.5291C131.013 52.0076 130.72 51.3001 130.72 50.5625V39.4375C130.72 38.6999 131.013 37.9924 131.535 37.4709C132.057 36.9493 132.764 36.6562 133.502 36.6562C134.239 36.6562 134.947 36.9493 135.468 37.4709C135.99 37.9924 136.283 38.6999 136.283 39.4375ZM152.97 39.4375V33.875C152.97 33.1374 152.677 32.4299 152.156 31.9084C151.634 31.3868 150.927 31.0938 150.189 31.0938C149.452 31.0938 148.744 31.3868 148.223 31.9084C147.701 32.4299 147.408 33.1374 147.408 33.875V39.4375C147.408 41.6504 148.287 43.7727 149.852 45.3374C151.417 46.9022 153.539 47.7812 155.752 47.7812H158.533V56.125C158.533 56.8626 158.826 57.5701 159.348 58.0916C159.869 58.6132 160.577 58.9062 161.314 58.9062C162.052 58.9062 162.759 58.6132 163.281 58.0916C163.802 57.5701 164.095 56.8626 164.095 56.125V33.875C164.095 33.1374 163.802 32.4299 163.281 31.9084C162.759 31.3868 162.052 31.0938 161.314 31.0938C160.577 31.0938 159.869 31.3868 159.348 31.9084C158.826 32.4299 158.533 33.1374 158.533 33.875V42.2188H155.752C155.014 42.2188 154.307 41.9257 153.785 41.4041C153.263 40.8826 152.97 40.1751 152.97 39.4375Z" fill="#F03034" />
+                        <path d="M169.1 18.3775C168.657 17.7874 167.999 17.3973 167.268 17.293C166.538 17.1887 165.796 17.3787 165.206 17.8213C164.616 18.2639 164.226 18.9227 164.122 19.6529C164.017 20.3832 164.207 21.1249 164.65 21.715C169.712 28.4213 172.447 36.5971 172.438 44.9997C172.426 55.3231 168.321 65.2206 161.021 72.5204C153.721 79.8202 143.823 83.9261 133.5 83.9371C127.56 83.9377 121.701 82.5661 116.379 79.9294C115.76 79.6253 115.05 79.5618 114.387 79.7514L102.906 83.0305V69.9586C102.906 69.3568 102.711 68.7713 102.35 68.2898C97.2864 61.582 94.5519 53.4041 94.5625 44.9997C94.5531 38.0335 96.4154 31.1927 99.9545 25.1925C103.494 19.1923 108.58 14.253 114.681 10.891C120.782 7.52902 127.674 5.8678 134.637 6.08101C141.6 6.29422 148.378 8.37404 154.262 12.103C154.886 12.4977 155.641 12.6284 156.361 12.4664C157.081 12.3045 157.707 11.8631 158.102 11.2394C158.496 10.6158 158.627 9.86089 158.465 9.14084C158.303 8.42079 157.862 7.79457 157.238 7.39993C148.522 1.87429 138.155 -0.44599 127.915 0.837154C117.675 2.1203 108.201 6.92688 101.118 14.4323C94.0347 21.9377 89.7843 31.674 89.0956 41.971C88.407 52.2679 91.3232 62.4835 97.3438 70.8653V86.7184C97.3439 87.1488 97.444 87.5734 97.6362 87.9586C97.8283 88.3438 98.1072 88.6791 98.451 88.9382C98.7947 89.1973 99.1939 89.373 99.6171 89.4516C100.04 89.5303 100.476 89.5096 100.89 89.3912L114.905 85.3862C120.728 88.1002 127.075 89.5043 133.5 89.4996C145.298 89.4857 156.608 84.7928 164.951 76.4505C173.293 68.1081 177.986 56.7975 178 44.9997C178.013 35.3929 174.888 26.0448 169.1 18.3775ZM52.8438 100.625H47.2812C42.1178 100.625 37.1659 102.676 33.5148 106.327C29.8637 109.978 27.8125 114.93 27.8125 120.093C27.8125 125.257 29.8637 130.209 33.5148 133.86C37.1659 137.511 42.1178 139.562 47.2812 139.562H91.7812C96.9447 139.562 101.897 137.511 105.548 133.86C109.199 130.209 111.25 125.257 111.25 120.093C111.25 114.93 109.199 109.978 105.548 106.327C101.897 102.676 96.9447 100.625 91.7812 100.625H63.9688C63.2311 100.625 62.5237 100.918 62.0021 101.439C61.4805 101.961 61.1875 102.668 61.1875 103.406C61.1875 104.144 61.4805 104.851 62.0021 105.373C62.5237 105.894 63.2311 106.187 63.9688 106.187H91.7812C95.4694 106.187 99.0065 107.652 101.614 110.26C104.222 112.868 105.688 116.405 105.688 120.093C105.688 123.782 104.222 127.319 101.614 129.927C99.0065 132.535 95.4694 134 91.7812 134H47.2812C43.5931 134 40.056 132.535 37.448 129.927C34.8401 127.319 33.375 123.782 33.375 120.093C33.375 116.405 34.8401 112.868 37.448 110.26C40.056 107.652 43.5931 106.187 47.2812 106.187H52.8438C53.5814 106.187 54.2888 105.894 54.8104 105.373C55.332 104.851 55.625 104.144 55.625 103.406C55.625 102.668 55.332 101.961 54.8104 101.439C54.2888 100.918 53.5814 100.625 52.8438 100.625Z" fill="#F03034" />
+                        <path d="M57.5943 112.565C57.0727 112.043 56.3654 111.75 55.6279 111.75C54.8904 111.75 54.1831 112.043 53.6616 112.565L50.0654 116.161L46.4693 112.565C45.9447 112.058 45.2422 111.778 44.5129 111.784C43.7837 111.791 43.0861 112.083 42.5705 112.599C42.0548 113.114 41.7623 113.812 41.756 114.541C41.7496 115.27 42.03 115.973 42.5366 116.497L46.1327 120.094L42.5366 123.69C42.2709 123.946 42.0591 124.253 41.9133 124.593C41.7675 124.932 41.6908 125.297 41.6876 125.666C41.6844 126.035 41.7548 126.402 41.8946 126.743C42.0345 127.085 42.241 127.396 42.5021 127.657C42.7633 127.918 43.0738 128.125 43.4156 128.264C43.7574 128.404 44.1236 128.475 44.4929 128.471C44.8622 128.468 45.2272 128.392 45.5665 128.246C45.9058 128.1 46.2127 127.888 46.4693 127.622L50.0654 124.026L53.6616 127.622C54.1861 128.129 54.8887 128.409 55.6179 128.403C56.3472 128.397 57.0447 128.104 57.5604 127.589C58.0761 127.073 58.3686 126.375 58.3749 125.646C58.3812 124.917 58.1009 124.214 57.5943 123.69L53.9981 120.094L57.5943 116.497C58.1157 115.976 58.4086 115.269 58.4086 114.531C58.4086 113.794 58.1157 113.086 57.5943 112.565ZM81.4741 127.622C81.9956 128.144 82.7029 128.437 83.4404 128.437C84.1779 128.437 84.8852 128.144 85.4068 127.622L89.0029 124.026L92.5991 127.622C93.1236 128.129 93.8262 128.409 94.5554 128.403C95.2847 128.397 95.9822 128.104 96.4979 127.589C97.0136 127.073 97.3061 126.375 97.3124 125.646C97.3187 124.917 97.0384 124.214 96.5318 123.69L92.9356 120.094L96.5318 116.497C97.0384 115.973 97.3187 115.27 97.3124 114.541C97.3061 113.812 97.0136 113.114 96.4979 112.599C95.9822 112.083 95.2847 111.791 94.5554 111.784C93.8262 111.778 93.1236 112.058 92.5991 112.565L89.0029 116.161L85.4068 112.565C84.8822 112.058 84.1797 111.778 83.4504 111.784C82.7212 111.791 82.0236 112.083 81.508 112.599C80.9923 113.114 80.6998 113.812 80.6935 114.541C80.6871 115.27 80.9675 115.973 81.4741 116.497L85.0702 120.094L81.4741 123.69C80.9527 124.211 80.6598 124.919 80.6598 125.656C80.6598 126.394 80.9527 127.101 81.4741 127.622Z" fill="#F03034" />
+                        <path d="M130.719 111.75H127.832C127.361 105.529 125.28 99.5378 121.794 94.3644C121.382 93.7522 120.743 93.3287 120.019 93.1871C119.295 93.0454 118.544 93.1973 117.932 93.6093C117.32 94.0213 116.896 94.6596 116.755 95.3838C116.613 96.108 116.765 96.8588 117.177 97.4711C120.575 102.511 122.385 108.453 122.375 114.531C122.375 115.269 122.668 115.976 123.19 116.498C123.711 117.019 124.419 117.312 125.156 117.312H130.719C131.456 117.312 132.164 117.606 132.685 118.127C133.207 118.649 133.5 119.356 133.5 120.094V131.219C133.5 131.956 133.207 132.664 132.685 133.185C132.164 133.707 131.456 134 130.719 134H127.938V125.656C127.938 124.919 127.644 124.211 127.123 123.69C126.601 123.168 125.894 122.875 125.156 122.875C124.419 122.875 123.711 123.168 123.19 123.69C122.668 124.211 122.375 124.919 122.375 125.656L122.436 142.344C122.427 150.455 119.201 158.232 113.466 163.967C107.73 169.703 99.9537 172.929 91.8424 172.938H47.3424C39.2266 172.926 31.4467 169.695 25.7108 163.954C19.9749 158.212 16.7516 150.429 16.7487 142.313L16.6875 136.751C16.6794 136.018 16.3829 135.319 15.8622 134.804C15.3414 134.289 14.6386 134 13.9062 134H8.34375C7.60612 134 6.89869 133.707 6.37711 133.185C5.85552 132.664 5.5625 131.956 5.5625 131.219V120.094C5.5625 119.356 5.85552 118.649 6.37711 118.127C6.89869 117.606 7.60612 117.312 8.34375 117.312H11.125V125.656C11.125 126.394 11.418 127.101 11.9396 127.623C12.4612 128.144 13.1686 128.438 13.9062 128.438C14.6439 128.438 15.3513 128.144 15.8729 127.623C16.3945 127.101 16.6875 126.394 16.6875 125.656V114.531C16.6971 106.42 19.9234 98.6441 25.6588 92.9088C31.3941 87.1734 39.1702 83.9471 47.2812 83.9375H89C89.7376 83.9375 90.4451 83.6445 90.9666 83.1229C91.4882 82.6013 91.7812 81.8939 91.7812 81.1562C91.7812 80.4186 91.4882 79.7112 90.9666 79.1896C90.4451 78.668 89.7376 78.375 89 78.375H47.2812C38.1764 78.3856 29.4099 81.8265 22.7286 88.0119C16.0474 94.1973 11.942 102.673 11.2307 111.75H8.34375C6.13085 111.75 4.00858 112.629 2.44383 114.194C0.879071 115.759 0 117.881 0 120.094L0 131.219C0 133.432 0.879071 135.554 2.44383 137.119C4.00858 138.683 6.13085 139.562 8.34375 139.562H11.1556L11.1862 142.344C11.1972 151.93 15.0101 161.12 21.7883 167.898C28.5665 174.676 37.7566 178.489 47.3424 178.5H91.8424C101.433 178.487 110.627 174.67 117.406 167.885C124.185 161.101 127.994 151.904 127.999 142.313L127.968 139.562H130.719C132.932 139.562 135.054 138.683 136.619 137.119C138.183 135.554 139.062 133.432 139.062 131.219V120.094C139.062 117.881 138.183 115.759 136.619 114.194C135.054 112.629 132.932 111.75 130.719 111.75Z" fill="#F03034" />
+                    </g>
+                    <defs>
+                        <clippath id="clip0_13034_29216">
+                            <rect width="178" height="178" fill="white" transform="translate(0 0.5)" />
+                        </clippath>
+                    </defs>
+                </svg>
+            </div>
+
+            <h1 class="display-2 display-xxl-1 fw-bold mt-6 mb-0">Page not found</h1>
+            <p class="text-secondary mt-6 mb-0">Sorry, but the page you are looking for could not be found</p>
+
+            <a class="btn btn-lg btn-primary mt-8" href="/"> Go to Homepage</a>
+        </div>
+    </div>
+</section>
+
+    <div id="hs_cos_wrapper_module_16922127831154" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module"><!-- Footer -->
+<footer class="cq-footer bg-dark">
+    <!-- Top Footer -->
+    <div class="container py-9 pt-xxl-10">
+        <div class="row">
+            <div class="col-12 col-lg-4 order-1 order-lg-0 mt-9 mt-lg-0">
+                <div class="pb-6 pb-xxl-8 text-center text-lg-start">
+                    <a href="/">
+                        <img class="footer__logo" src="https://www.cequens.com/hubfs/root/cequens-logo.svg" alt="CEQUENS." loading="lazy">
+                    </a>
+                    <p class="text-light display-7 display-xxl-6 mt-7">CEQUENS is a global communications and engagement solutions provider, helping organizations communicate efficiently and reliably</p>
+                </div>
+
+                <div class="border-top border-light border-opacity-50 py-6 py-xxl-8">
+                    <a class="d-inline-flex align-items-start display-7 display-xxl-6 link-light link-opacity-75-hover" href="mailto:hello@cequens.com" target="_blank" rel="nofollow noopener">
+                        <i class="s-icon s-icon-32 s-icon-white s-icon__mail me-6"></i>
+                        hello@cequens.com
+                    </a>
+
+                    <a class="d-inline-flex align-items-start display-7 display-xxl-6 link-light link-opacity-75-hover mt-6 mt-lg-7" href="https://goo.gl/maps/HHA4ohGkH8hZj8nQ8" target="_blank" rel="nofollow noopener">
+                        <i class="s-icon s-icon-32 s-icon-white s-icon__map-pin me-6"></i>
+                        One Central - The Offices 4, #206 - Dubai - United Arab Emirates
+                    </a>
+                </div>
+
+                <div class="border-top border-light border-opacity-50 pt-6 pt-xxl-8">
+                    <div class="text-center text-lg-start">
+                        
+                        
+                        
+                        <!-- Social Link -->
+                        <a class="d-inline-block link-light link-opacity-75-hover me-7" href="https://www.facebook.com/CEQUENS/" target="_blank" rel="nofollow noopener">
+                            <i class="s-icon s-icon-32 s-icon__logos-facebook"></i>
+                        </a>
+                        <!-- End > Social Link -->
+                        
+                        
+                        
+                        <!-- Social Link -->
+                        <a class="d-inline-block link-light link-opacity-75-hover me-7" href="https://www.linkedin.com/company/cequens/" target="_blank" rel="nofollow noopener">
+                            <i class="s-icon s-icon-32 s-icon__logos-linkedin"></i>
+                        </a>
+                        <!-- End > Social Link -->
+                        
+                        
+                        
+                        <!-- Social Link -->
+                        <a class="d-inline-block link-light link-opacity-75-hover me-7" href="https://twitter.com/cequens" target="_blank" rel="nofollow noopener">
+                            <i class="s-icon s-icon-32 s-icon__logos-twitter"></i>
+                        </a>
+                        <!-- End > Social Link -->
+                        
+                        
+                        
+                        <!-- Social Link -->
+                        <a class="d-inline-block link-light link-opacity-75-hover me-7" href="https://www.instagram.com/cequens.telecom/" target="_blank" rel="nofollow noopener">
+                            <i class="s-icon s-icon-32 s-icon__logos-instagram"></i>
+                        </a>
+                        <!-- End > Social Link -->
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-3 offset-lg-1">
+                <div class="accordion accordion-flush cq-footer__products-accordion" id="parent-products-accordion">
+                    <div class="accordion-item cq-footer__products-accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button display-5 display-xxl-4 text-light fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-products" aria-expanded="false" aria-controls="flush-products">
+                                Products
+                            </button>
+                        </h2>
+
+                        <div id="flush-products" class="accordion-collapse collapse" data-bs-parent="#parent-products-accordion">
+                            <div class="accordion-body p-0">
+                                <div class="accordion accordion-flush" id="products-accordion">
+                                    <!-- Applications -->
+                                    <div class="accordion-item mt-6 mt-lg-8">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed display-7 display-xxl-5 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-applications" aria-expanded="false" aria-controls="flush-applications">
+                                                Applications
+                                            </button>
+                                        </h3>
+
+                                        <div id="flush-applications" class="accordion-collapse collapse" data-bs-parent="#products-accordion">
+                                            <div class="accordion-body p-0">
+                                                <ul class="list-unstyled">
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/omnichannel-chat">
+                                                            CEQUENS Omnichannel Chat
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/mfa">
+                                                            CEQUENS MFA
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/campaigns">
+                                                            CEQUENS Campaigns
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/chatbots">
+                                                            CEQUENS Bots
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/location-advertising">
+                                                            Location Based Advertising
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/mobile-advertising">
+                                                            Mobile Advertising
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/number-lookup">
+                                                            CEQUENS Number Lookup
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/truenorth-gateway">
+                                                            CEQUENS TrueNorth Gateway
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/ivr">
+                                                            CEQUNES IVR
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/cequens-omnilink">
+                                                            CEQUENS OmniLink Studio
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/ai-agent">
+                                                            CEQUENS AI Agent
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Communication APIs -->
+                                    <div class="accordion-item mt-6 mt-lg-8">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed display-7 display-xxl-5 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-communication" aria-expanded="false" aria-controls="flush-communication">
+                                                Communication APIs
+                                            </button>
+                                        </h3>
+
+                                        <div id="flush-communication" class="accordion-collapse collapse" data-bs-parent="#products-accordion">
+                                            <div class="accordion-body p-0">
+                                                <ul class="list-unstyled">
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/sms-api">
+                                                            SMS API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/messenger-api">
+                                                            Messenger API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/whatsapp-business-api">
+                                                            WhatsApp Business API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/apple-business-chat-api">
+                                                            Apple Business Chat API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/instagram-api">
+                                                            Instagram API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/voice">
+                                                            Voice API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/push-notification-api">
+                                                            Push Notification API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/google-business-messenger-api">
+                                                            Google Business Messenger API
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Connectivity -->
+                                    <div class="accordion-item mt-6 mt-lg-8">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed display-7 display-xxl-5 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-connectivity" aria-expanded="false" aria-controls="flush-connectivity">
+                                                Connectivity
+                                            </button>
+                                        </h3>
+
+                                        <div id="flush-connectivity" class="accordion-collapse collapse" data-bs-parent="#products-accordion">
+                                            <div class="accordion-body p-0">
+                                                <ul class="list-unstyled">
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/ms-teams-phone">
+                                                            Microsoft Teams Enterprise Voice
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/sip">
+                                                            SIP
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/products/short-long-codes">
+                                                            Short &amp; Long Codes
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-2 mt-6 mt-lg-0">
+                <div class="accordion accordion-flush cq-footer__parent-accordion" id="industries-accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button display-5 display-xxl-4 text-light fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-industies" aria-expanded="false" aria-controls="flush-industies">
+                                Industries
+                            </button>
+                        </h2>
+
+                        <div id="flush-industies" class="accordion-collapse collapse" data-bs-parent="#industries-accordion">
+                            <div class="accordion-body p-0">
+                                <ul class="list-unstyled mt-6 mt-lg-8">
+                                    
+                                    <li class="mt-4 mt-lg-5">
+                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/solutions/bfsi">
+                                            BFSI &amp; Fintech
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="mt-4 mt-lg-5">
+                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/solutions/retail-ecommerce">
+                                            Retail
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="mt-4 mt-lg-5">
+                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/solutions/logistics-delivery">
+                                            Logistics &amp; Delivery
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="mt-4 mt-lg-5">
+                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/solutions/healthcare">
+                                            Healthcare
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="mt-4 mt-lg-5">
+                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/solutions/platforms">
+                                            Platforms
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-lg-2 mt-6 mt-lg-0">
+                <div class="accordion accordion-flush cq-footer__products-accordion" id="parent-other-accordion">
+                    <div class="accordion-item cq-footer__products-accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button display-5 display-xxl-4 text-light fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-other" aria-expanded="false" aria-controls="flush-other">
+                                Other Links
+                            </button>
+                        </h2>
+
+                        <div id="flush-other" class="accordion-collapse collapse" data-bs-parent="#parent-other-accordion">
+                            <div class="accordion-body p-0">
+                                <div class="accordion accordion-flush" id="other-accordion">
+                                    <!-- Resources -->
+                                    <div class="accordion-item mt-6 mt-lg-8">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed display-7 display-xxl-5 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-resources" aria-expanded="false" aria-controls="flush-resources">
+                                                Resources
+                                            </button>
+                                        </h3>
+
+                                        <div id="flush-resources" class="accordion-collapse collapse" data-bs-parent="#other-accordion">
+                                            <div class="accordion-body p-0">
+                                                <ul class="list-unstyled">
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/blog">
+                                                            Blogs
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/news-events">
+                                                            News &amp; Events
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/knowledge-hub">
+                                                            Knowledge Base 
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/knowledge-hub/glossary">
+                                                            Glossary
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- About Us -->
+                                    <div class="accordion-item mt-6 mt-lg-8">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed display-7 display-xxl-5 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-about" aria-expanded="false" aria-controls="flush-about">
+                                                About Us
+                                            </button>
+                                        </h3>
+
+                                        <div id="flush-about" class="accordion-collapse collapse" data-bs-parent="#other-accordion">
+                                            <div class="accordion-body p-0">
+                                                <ul class="list-unstyled">
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/advantage">
+                                                            CEQUENS Advantage
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/our-team">
+                                                            Our Team
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/offices">
+                                                            Our Offices
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/our-promise">
+                                                            Our Promise
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/testimonials">
+                                                            Customer Stories
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Careers -->
+                                    <div class="accordion-item mt-6 mt-lg-8">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed display-7 display-xxl-5 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-careers" aria-expanded="false" aria-controls="flush-careers">
+                                                Careers
+                                            </button>
+                                        </h3>
+
+                                        <div id="flush-careers" class="accordion-collapse collapse" data-bs-parent="#other-accordion">
+                                            <div class="accordion-body p-0">
+                                                <ul class="list-unstyled">
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/careers">
+                                                            CEQUENS Careers
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    <li class="mt-4 mt-lg-5">
+                                                        <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/employee-experience">
+                                                            Employee Experience
+                                                        </a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-unstyled mt-6 mt-lg-8">
+                                        
+                                        <li class="mt-4 mt-lg-5">
+                                            <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/telco">
+                                                Telco
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="mt-4 mt-lg-5">
+                                            <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/pricing">
+                                                Pricing
+                                            </a>
+                                        </li>
+                                        
+                                        <li class="mt-4 mt-lg-5">
+                                            <a class="fw-medium link-light link-opacity-75 link-opacity-50-hover" href="https://www.cequens.com/contact">
+                                                Contact Us
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="container py-7 py-xxl-8 border-top border-light border-opacity-50">
+        <div class="row">
+            <div class="col-12 col-lg-5 text-center text-lg-start mb-7 mb-lg-0">
+                <h6 class="text-light display-8 display-lg-7 fw-semibold">© 2024 CEQUENS. All rights reserved.</h6>
+            </div>
+
+            <div class="col-12 col-lg-7 d-flex flex-wrap justify-content-start justify-content-md-between mb-n4 mb-lg-6 mb-xxl-0">
+                
+                <a class="link-light display-8 display-xxl-7 fw-semibold me-5 me-xxl-6 mb-4 mb-lg-6 mb-xxl-0 link-opacity-75-hover" href="https://www.cequens.com/privacy-policy">
+                    Privacy Policy
+                </a>
+                
+                <a class="link-light display-8 display-xxl-7 fw-semibold me-5 me-xxl-6 mb-4 mb-lg-6 mb-xxl-0 link-opacity-75-hover" href="https://www.cequens.com/terms-and-conditions">
+                    Terms and Conditions
+                </a>
+                
+                <a class="link-light display-8 display-xxl-7 fw-semibold me-5 me-xxl-6 mb-4 mb-lg-6 mb-xxl-0 link-opacity-75-hover" href="https://www.cequens.com/security-policy">
+                    Information Security Policy
+                </a>
+                
+                <a class="link-light display-8 display-xxl-7 fw-semibold me-5 me-xxl-6 mb-4 mb-lg-6 mb-xxl-0 link-opacity-75-hover" href="https://www.cequens.com/hubfs/Downloadables/%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D8%A7%D8%AA+%D8%A7%D9%84%D8%AD%D8%AF+%D9%85%D9%86+%D8%A7%D9%84%D8%B1%D8%B3%D8%A7%D8%A6%D9%84+%D9%88%D8%A7%D9%84%D9%85%D9%83%D8%A7%D9%84%D9%85%D8%A7%D8%AA+%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%AD%D8%A7%D9%85%D9%8A%D8%A9.pdf" target="_blank" rel="nofollow noopener">
+                    CITC Regulations
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End > Footer --></div>
+
+
+    
+<!-- HubSpot performance collection script -->
+<script defer src="/hs/hsstatic/content-cwv-embed/static-1.1293/embed.js"></script>
+<script>
+var hsVars = hsVars || {}; hsVars['language'] = 'en';
+</script>
+
+<script src="/hs/hsstatic/cos-i18n/static-1.53/bundles/project.js"></script>
+
+<!-- Start of HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "standard-page"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/www.cequens.com\/404"]);
+_hsq.push(["setPageId", ""]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": null,
+    "legacyPageId": null,
+    "contentFolderId": null,
+    "contentGroupId": null,
+    "abTestId": null,
+    "languageVariantId": null,
+    "languageCode": "en",
+    
+    
+}]);
+</script>
+
+<script type="text/javascript" id="hs-script-loader" async defer src="/hs/scriptloader/4060184.js"></script>
+<!-- End of HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    render_id: "f9408a0a-ebbe-4d9c-91c0-2194473675f7",
+    ticks: 1733400265060,
+    page_id: 0,
+    
+    content_group_id: 0,
+    portal_id: 4060184,
+    app_hs_base_url: "https://app.hubspot.com",
+    cp_hs_base_url: "https://cp.hubspot.com",
+    language: "en",
+    analytics_page_type: "standard-page",
+    scp_content_type: "",
+    analytics_page_id: "null",
+    category_id: 1,
+    folder_id: 0,
+    is_hubspot_user: false
+}
+</script>
+
+
+<script defer src="/hs/hsstatic/HubspotToolsMenu/static-1.354/js/index.js"></script>
+
+
+
+
+  
+</body></html>

@@ -1,0 +1,166 @@
+/* Root layout container */
+.mainLayout {
+  min-height: 100vh;
+  background: #f0f2f5;
+  padding: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Header container */
+.headerContainer {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 64px;
+  position: sticky;
+  top: 16px;
+  z-index: 1000;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+
+/* Content wrapper */
+.contentWrapper {
+  display: flex;
+  gap: 8px;
+  height: calc(100vh - 96px);
+  position: relative;
+}
+
+/* Sider container */
+.siderContainer {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  overflow-y: auto;
+  flex-shrink: 0;
+  position: sticky;
+  top: 88px;
+  height: calc(100vh - 96px);
+}
+
+/* Main container */
+.mainContainer {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  min-height: calc(100vh - 96px);
+  position: relative;
+}
+
+/* Menu styles */
+.menu {
+  border-right: none;
+  padding: 12px 0;
+}
+
+.menu :global(.ant-menu-item) {
+  margin: 4px 12px;
+  padding: 0 12px !important;
+  border-radius: 6px;
+}
+
+.menu :global(.ant-menu-submenu-title) {
+  margin: 4px 12px;
+  padding: 0 12px !important;
+  border-radius: 6px;
+}
+
+.menu :global(.ant-menu-item:hover),
+.menu :global(.ant-menu-submenu-title:hover) {
+  background-color: #f5f5f5;
+}
+
+.menu :global(.ant-menu-item-selected) {
+  background-color: #e6f7ff;
+}
+
+/* Active state for toggle items */
+.menu :global(.ant-menu-item.active) {
+  background-color: #e6f7ff !important;
+}
+
+.menu :global(.ant-menu-item.active .anticon),
+.menu :global(.ant-menu-item.active span) {
+  color: #1890ff !important;
+}
+
+.menu :global(.ant-menu-item.active:hover) {
+  background-color: #e6f7ff !important;
+}
+
+/* Guide container styles */
+.guideContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.guideHeader {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.guideHeader h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.guideLinks {
+  display: flex;
+  gap: 8px;
+}
+
+/* Scrollbar styles */
+.siderContainer::-webkit-scrollbar,
+.mainContainer::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.siderContainer::-webkit-scrollbar-thumb,
+.mainContainer::-webkit-scrollbar-thumb {
+  background-color: #d9d9d9;
+  border-radius: 3px;
+  transition: background-color 0.3s;
+}
+
+.siderContainer::-webkit-scrollbar-thumb:hover,
+.mainContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #bfbfbf;
+}
+
+.siderContainer::-webkit-scrollbar-track,
+.mainContainer::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Ensure content doesn't overflow horizontally */
+.siderContainer,
+.mainContainer {
+  max-width: 100%;
+  overflow-x: hidden;
+}

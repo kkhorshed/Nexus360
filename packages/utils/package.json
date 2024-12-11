@@ -1,0 +1,16 @@
+{
+  "name": "@nexus360/utils",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "date-fns": "^2.30.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.0",
+    "typescript": "^5.0.0"
+  }
+}

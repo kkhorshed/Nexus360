@@ -1,0 +1,61 @@
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.pageWrapper {
+  height: 100%;
+}
+
+.mainFrame {
+  background: #fff;
+  border-radius: 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageHeader {
+  padding: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.pageDescription {
+  margin: 8px 0 0;
+  color: #666;
+}
+
+.pageContent {
+  flex: 1;
+  padding: 24px;
+  overflow: auto;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.layoutCard {
+  margin-bottom: 24px;
+}
+
+.layoutForm {
+  margin-top: 24px;
+}
+
+.previewSection {
+  margin-top: 24px;
+  border: 1px dashed #d9d9d9;
+  padding: 24px;
+  border-radius: 8px;
+}
