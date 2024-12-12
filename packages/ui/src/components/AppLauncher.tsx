@@ -62,6 +62,21 @@ const apps: App[] = [
 ];
 
 const AppLauncher: React.FC<AppLauncherProps> = ({ className }) => {
+  const handleAppClick = (url: string) => {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const authToken = urlParams.get('token');
+    const user = urlParams.get('user');
+
+    // Construct new URL with auth parameters
+    const newUrl = new URL(url);
+    if (authToken) newUrl.searchParams.append('token', authToken);
+    if (user) newUrl.searchParams.append('user', user);
+
+    // Navigate in same tab
+    window.location.href = newUrl.toString();
+  };
+
   return (
     <div className={className} style={{ padding: '20px' }}>
       <Row gutter={[24, 24]}>
@@ -69,7 +84,7 @@ const AppLauncher: React.FC<AppLauncherProps> = ({ className }) => {
           <Col xs={24} sm={12} md={8} lg={6} key={app.name}>
             <Card
               hoverable
-              onClick={() => window.open(app.url, '_blank', 'noopener,noreferrer')}
+              onClick={() => handleAppClick(app.url)}
               style={{ 
                 height: '100%',
                 display: 'flex',
