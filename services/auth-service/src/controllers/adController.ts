@@ -8,7 +8,7 @@ export class ADController {
 
   constructor() {
     this.adService = new ADService();
-    this.redirectUrl = process.env.REDIRECT_URL || 'http://localhost:3010';
+    this.redirectUrl = process.env.REDIRECT_URL || 'http://localhost:3000';
   }
 
   /**
@@ -61,7 +61,7 @@ export class ADController {
           user
         });
       } else {
-        // For browser requests, redirect to CRM with token
+        // For browser requests, redirect to app switcher with token
         const redirectUrl = new URL(this.redirectUrl);
         redirectUrl.searchParams.append('token', accessToken);
         redirectUrl.searchParams.append('user', JSON.stringify(user));
