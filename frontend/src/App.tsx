@@ -12,6 +12,8 @@ interface User {
   avatar?: string;
 }
 
+const AUTH_SERVICE_URL = 'http://localhost:3001';
+
 function App() {
   const { token } = theme.useToken();
   const [user, setUser] = useState<User | null>(null);
@@ -23,7 +25,7 @@ function App() {
     const userParam = urlParams.get('user');
 
     if (!authToken && !userParam) {
-      window.location.href = 'http://localhost:3006/api/auth/login';
+      window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
       return;
     }
 
@@ -43,7 +45,7 @@ function App() {
 
   const handleLogout = () => {
     // Clear auth token and user data
-    window.location.href = 'http://localhost:3006/api/auth/login';
+    window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
   };
 
   const MainLayout = () => (
