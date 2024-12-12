@@ -1,26 +1,50 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Layout, Typography, theme } from 'antd';
-import { AppLauncher } from '@nexus360/ui';
+import { AppLauncher, UserProfile } from '@nexus360/ui';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
+interface User {
+  name?: string;
+  email?: string;
+  avatar?: string;
+}
+
 function App() {
   const { token } = theme.useToken();
-  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     // Check if we have auth token in URL params (redirected from auth service)
     const urlParams = new URLSearchParams(window.location.search);
     const authToken = urlParams.get('token');
-    const user = urlParams.get('user');
+    const userParam = urlParams.get('user');
 
-    // If no auth token, redirect to auth service
-    if (!authToken && !user) {
+    if (!authToken && !userParam) {
       window.location.href = 'http://localhost:3006/api/auth/login';
+      return;
+    }
+
+    if (userParam) {
+      try {
+        const userData = JSON.parse(userParam);
+        setUser({
+          name: userData.displayName,
+          email: userData.userPrincipalName,
+          avatar: userData.avatar
+        });
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
     }
   }, []);
+
+  const handleLogout = () => {
+    // Clear auth token and user data
+    window.location.href = 'http://localhost:3006/api/auth/login';
+  };
 
   const MainLayout = () => (
     <Layout style={{ minHeight: '100vh' }}>
@@ -33,12 +57,19 @@ function App() {
           position: 'fixed',
           width: '100%',
           zIndex: 1000,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          justifyContent: 'space-between'
         }}
       >
         <Title level={3} style={{ color: 'white', margin: 0 }}>
           Nexus360
         </Title>
+        {user && (
+          <UserProfile 
+            user={user}
+            onLogout={handleLogout}
+          />
+        )}
       </Header>
       <Content 
         style={{ 

@@ -1,78 +1,69 @@
-import React, { useEffect } from 'react';
-import { Layout, Menu } from 'antd';
-import {
-  DashboardOutlined,
-  ShopOutlined,
-  DollarOutlined,
-  TeamOutlined,
-  BuildOutlined
-} from '@ant-design/icons';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import Header from './components/Header';
-import DealBoard from './components/DealBoard';
-import ProductCatalog from './components/ProductCatalog';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AppLayout } from '@nexus360/ui';
 
-const { Sider, Content } = Layout;
+interface User {
+  name?: string;
+  email?: string;
+  avatar?: string;
+}
 
-const App: React.FC = () => {
+const menuItems = [
+  { name: 'Dashboard', path: '/' },
+  { name: 'Contacts', path: '/contacts' },
+  { name: 'Leads', path: '/leads' },
+  { name: 'Reports', path: '/reports' }
+];
+
+function App() {
+  const [user, setUser] = useState<User | null>(null);
+
   useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
+    // Check if we have auth token in URL params (redirected from auth service)
+    const urlParams = new URLSearchParams(window.location.search);
+    const authToken = urlParams.get('token');
+    const userParam = urlParams.get('user');
+
+    if (!authToken && !userParam) {
       window.location.href = 'http://localhost:3006/api/auth/login';
+      return;
+    }
+
+    if (userParam) {
+      try {
+        const userData = JSON.parse(userParam);
+        setUser({
+          name: userData.displayName,
+          email: userData.userPrincipalName,
+          avatar: userData.avatar
+        });
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
     }
   }, []);
 
+  const handleLogout = () => {
+    // Clear auth token and user data
+    window.location.href = 'http://localhost:3006/api/auth/login';
+  };
+
   return (
-    <Router>
-      <Layout style={{ minHeight: '100vh' }}>
-        <Header />
-        <Layout>
-          <Sider width={200} style={{ background: '#fff' }}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['1']}
-              style={{ height: '100%', borderRight: 0 }}
-            >
-              <Menu.Item key="1" icon={<DashboardOutlined />}>
-                <Link to="/dashboard">Dashboard</Link>
-              </Menu.Item>
-              <Menu.Item key="2" icon={<DollarOutlined />}>
-                <Link to="/deals">Deals</Link>
-              </Menu.Item>
-              <Menu.Item key="3" icon={<ShopOutlined />}>
-                <Link to="/products">Products</Link>
-              </Menu.Item>
-              <Menu.Item key="4" icon={<TeamOutlined />}>
-                <Link to="/customers">Customers</Link>
-              </Menu.Item>
-              <Menu.Item key="5" icon={<BuildOutlined />}>
-                <Link to="/settings">Settings</Link>
-              </Menu.Item>
-            </Menu>
-          </Sider>
-          <Layout style={{ padding: '0 24px 24px' }}>
-            <Content style={{ 
-              background: '#fff', 
-              padding: 24, 
-              margin: '16px 0', 
-              borderRadius: 8,
-              minHeight: 280 
-            }}>
-              <Routes>
-                <Route path="/dashboard" element={<div>Dashboard Content</div>} />
-                <Route path="/deals" element={<DealBoard />} />
-                <Route path="/products" element={<ProductCatalog />} />
-                <Route path="/customers" element={<div>Customers Content</div>} />
-                <Route path="/settings" element={<div>Settings Content</div>} />
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              </Routes>
-            </Content>
-          </Layout>
-        </Layout>
-      </Layout>
-    </Router>
+    <AppLayout 
+      appName="CRM"
+      menuItems={menuItems}
+      user={user || undefined}
+      onLogout={handleLogout}
+    >
+      <Routes>
+        <Route path="/" element={<div>Dashboard Content</div>} />
+        <Route path="/contacts" element={<div>Contacts Content</div>} />
+        <Route path="/leads" element={<div>Leads Content</div>} />
+        <Route path="/reports" element={<div>Reports Content</div>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AppLayout>
   );
-};
+}
 
 export default App;
