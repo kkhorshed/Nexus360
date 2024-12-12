@@ -24,40 +24,40 @@ interface App {
 
 const apps: App[] = [
   { 
-    name: 'AI Chat',
-    url: 'http://localhost:3020/',
-    icon: <MessageOutlined style={{ fontSize: '24px' }} />,
-    description: 'Intelligent conversational interface'
+    name: 'Admin',
+    url: 'http://localhost:3002/',
+    icon: <CrownOutlined style={{ fontSize: '24px' }} />,
+    description: 'Platform administration and user management'
   },
   { 
     name: 'CRM',
-    url: 'http://localhost:3010/',
+    url: 'http://localhost:3003/',
     icon: <TeamOutlined style={{ fontSize: '24px' }} />,
     description: 'Customer relationship management'
   },
   { 
     name: 'Forecasting',
-    url: 'http://localhost:3040/',
+    url: 'http://localhost:3004/',
     icon: <LineChartOutlined style={{ fontSize: '24px' }} />,
     description: 'Sales and revenue forecasting'
   },
   { 
     name: 'Marketing',
-    url: 'http://localhost:3050/',
+    url: 'http://localhost:3005/',
     icon: <FundProjectionScreenOutlined style={{ fontSize: '24px' }} />,
     description: 'Campaign and lead management'
   },
   { 
     name: 'Sales Compensation',
-    url: 'http://localhost:3030/',
+    url: 'http://localhost:3006/',
     icon: <DollarOutlined style={{ fontSize: '24px' }} />,
     description: 'Commission and incentive tracking'
   },
   { 
-    name: 'Admin',
-    url: 'http://localhost:3060/',
-    icon: <CrownOutlined style={{ fontSize: '24px' }} />,
-    description: 'Platform administration and user management'
+    name: 'AI Chat',
+    url: 'http://localhost:3007/',
+    icon: <MessageOutlined style={{ fontSize: '24px' }} />,
+    description: 'Intelligent conversational interface'
   }
 ];
 
