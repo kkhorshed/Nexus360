@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Table, Button, message, Space, Tag, Typography } from 'antd';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Table, Button, message, Space, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { UserOutlined, AppstoreOutlined, LoginOutlined, SyncOutlined } from '@ant-design/icons';
+import { AppLayout, PageWrapper } from '@nexus360/ui';
 
-const { Header, Content } = Layout;
 const { Title } = Typography;
 
 interface AzureADUser {
@@ -37,6 +38,12 @@ const App: React.FC = () => {
   const [userAccess, setUserAccess] = useState<UserAccess[]>([]);
   const [currentUser, setCurrentUser] = useState<AzureADUser | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
+
+  const menuItems = [
+    { name: 'Dashboard', path: '/' },
+    { name: 'Applications', path: '/applications' },
+    { name: 'Settings', path: '/settings' }
+  ];
 
   useEffect(() => {
     // Check URL parameters for auth token and user data
@@ -251,99 +258,107 @@ const App: React.FC = () => {
     },
   ];
 
+  const mappedUser = currentUser ? {
+    name: currentUser.displayName,
+    email: currentUser.userPrincipalName,
+    avatar: undefined
+  } : undefined;
+
   if (!authToken || !currentUser) {
     return (
-      <Layout style={{ minHeight: '100vh' }}>
-        <Content style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          background: '#f0f2f5'
-        }}>
-          <div style={{ 
-            textAlign: 'center',
-            background: '#fff',
-            padding: '48px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-          }}>
-            <Title level={2}>Nexus360 Admin</Title>
-            <Button 
-              type="primary" 
-              icon={<LoginOutlined />} 
-              size="large"
-              onClick={handleLogin}
-            >
-              Login with Azure AD
-            </Button>
-          </div>
-        </Content>
-      </Layout>
+      <Router>
+        <AppLayout
+          appName="Admin"
+          menuItems={menuItems}
+          onLogout={() => {/* Implement logout handler */}}
+        >
+          <PageWrapper title="Dashboard">
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center',
+              minHeight: '60vh'
+            }}>
+              <div style={{ 
+                textAlign: 'center',
+                background: '#fff',
+                padding: '48px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}>
+                <Title level={2}>Nexus360 Admin</Title>
+                <Button 
+                  type="primary" 
+                  icon={<LoginOutlined />} 
+                  size="large"
+                  onClick={handleLogin}
+                >
+                  Login with Azure AD
+                </Button>
+              </div>
+            </div>
+          </PageWrapper>
+        </AppLayout>
+      </Router>
     );
   }
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ 
-        background: '#1890ff', 
-        padding: '0 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-      }}>
-        <Title level={3} style={{ color: 'white', margin: 0 }}>
-          Nexus360 Admin
-        </Title>
-        <Space>
-          <span style={{ color: 'white' }}>
-            <UserOutlined /> {currentUser.displayName}
-          </span>
-        </Space>
-      </Header>
-      <Content style={{ padding: '24px' }}>
-        <div style={{ 
-          background: '#fff', 
-          padding: '24px', 
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-        }}>
+    <Router>
+      <AppLayout
+        appName="Admin"
+        menuItems={menuItems}
+        user={mappedUser}
+        onLogout={() => {/* Implement logout handler */}}
+      >
+        <PageWrapper
+          title="Dashboard"
+          description="User Management & Access Control"
+        >
           <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '16px'
+            background: '#fff', 
+            padding: '24px', 
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
           }}>
-            <Title level={4}>Azure AD Users</Title>
-            <Button
-              type="primary"
-              icon={<SyncOutlined />}
-              onClick={fetchAllUsers}
-              loading={loading}
-            >
-              Fetch All Users
-            </Button>
-          </div>
-          <Table
-            columns={columns}
-            dataSource={users}
-            loading={loading}
-            rowKey="id"
-            pagination={{ pageSize: 10 }}
-          />
-          {selectedUser && (
-            <div style={{ marginTop: '24px' }}>
-              <Title level={4}>Application Access</Title>
-              <Table
-                columns={accessColumns}
-                dataSource={userAccess}
-                rowKey={(record) => record.application.id}
-                pagination={false}
-              />
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '16px'
+            }}>
+              <Title level={4}>Azure AD Users</Title>
+              <Button
+                type="primary"
+                icon={<SyncOutlined />}
+                onClick={fetchAllUsers}
+                loading={loading}
+              >
+                Fetch All Users
+              </Button>
             </div>
-          )}
-        </div>
-      </Content>
-    </Layout>
+            <Table
+              columns={columns}
+              dataSource={users}
+              loading={loading}
+              rowKey="id"
+              pagination={{ pageSize: 10 }}
+            />
+            {selectedUser && (
+              <div style={{ marginTop: '24px' }}>
+                <Title level={4}>Application Access</Title>
+                <Table
+                  columns={accessColumns}
+                  dataSource={userAccess}
+                  rowKey={(record) => record.application.id}
+                  pagination={false}
+                />
+              </div>
+            )}
+          </div>
+        </PageWrapper>
+      </AppLayout>
+    </Router>
   );
 };
 

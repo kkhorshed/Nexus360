@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { PageWrapper, DataCard, DataTable } from '@nexus360/ui';
+import { AppLayout, PageWrapper, DataCard, DataTable } from '@nexus360/ui';
 import type { ColumnsType } from 'antd/es/table';
+
+interface User {
+    name?: string;
+    email?: string;
+    avatar?: string;
+}
 
 interface CampaignData {
     name: string;
@@ -12,7 +18,49 @@ interface CampaignData {
     conversion: number;
 }
 
+const AUTH_SERVICE_URL = 'http://localhost:3001';
+
 const App: React.FC = () => {
+    const [user, setUser] = useState<User | null>(null);
+
+    const menuItems = [
+        { name: 'Dashboard', path: '/' },
+        { name: 'Campaigns', path: '/campaigns' },
+        { name: 'Analytics', path: '/analytics' },
+        { name: 'Audience', path: '/audience' },
+        { name: 'Settings', path: '/settings' }
+    ];
+
+    useEffect(() => {
+        // Check if we have auth token in URL params (redirected from auth service)
+        const urlParams = new URLSearchParams(window.location.search);
+        const authToken = urlParams.get('token');
+        const userParam = urlParams.get('user');
+
+        if (!authToken && !userParam) {
+            window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
+            return;
+        }
+
+        if (userParam) {
+            try {
+                const userData = JSON.parse(userParam);
+                setUser({
+                    name: userData.displayName,
+                    email: userData.userPrincipalName,
+                    avatar: userData.avatar
+                });
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+            }
+        }
+    }, []);
+
+    const handleLogout = () => {
+        // Clear auth token and user data
+        window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
+    };
+
     const columns: ColumnsType<CampaignData> = [
         {
             title: 'Campaign Name',
@@ -93,49 +141,56 @@ const App: React.FC = () => {
 
     return (
         <Router>
-            <PageWrapper
-                title="Nexus360 Marketing"
-                description="Campaign Management & Analytics"
+            <AppLayout
+                appName="Marketing"
+                menuItems={menuItems}
+                user={user || undefined}
+                onLogout={handleLogout}
             >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-                    <DataCard
-                        title="Total Budget"
-                        value="$155K"
-                        trend={{
-                            value: 15,
-                            direction: 'up'
-                        }}
-                        className="bg-white shadow-md rounded-lg p-4"
-                    />
-                    <DataCard
-                        title="Total Leads"
-                        value="5,500"
-                        trend={{
-                            value: 25,
-                            direction: 'up'
-                        }}
-                        className="bg-white shadow-md rounded-lg p-4"
-                    />
-                    <DataCard
-                        title="Avg. Conversion"
-                        value="3.5%"
-                        trend={{
-                            value: 8,
-                            direction: 'up'
-                        }}
-                        className="bg-white shadow-md rounded-lg p-4"
-                    />
-                </div>
+                <PageWrapper
+                    title="Dashboard"
+                    description="Campaign Management & Analytics"
+                >
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                        <DataCard
+                            title="Total Budget"
+                            value="$155K"
+                            trend={{
+                                value: 15,
+                                direction: 'up'
+                            }}
+                            className="bg-white shadow-md rounded-lg p-4"
+                        />
+                        <DataCard
+                            title="Total Leads"
+                            value="5,500"
+                            trend={{
+                                value: 25,
+                                direction: 'up'
+                            }}
+                            className="bg-white shadow-md rounded-lg p-4"
+                        />
+                        <DataCard
+                            title="Avg. Conversion"
+                            value="3.5%"
+                            trend={{
+                                value: 8,
+                                direction: 'up'
+                            }}
+                            className="bg-white shadow-md rounded-lg p-4"
+                        />
+                    </div>
 
-                <div className="p-4">
-                    <DataTable<CampaignData>
-                        data={campaignData}
-                        columns={columns}
-                        rowKey="name"
-                        className="bg-white shadow-md rounded-lg"
-                    />
-                </div>
-            </PageWrapper>
+                    <div className="p-4">
+                        <DataTable<CampaignData>
+                            data={campaignData}
+                            columns={columns}
+                            rowKey="name"
+                            className="bg-white shadow-md rounded-lg"
+                        />
+                    </div>
+                </PageWrapper>
+            </AppLayout>
         </Router>
     );
 };

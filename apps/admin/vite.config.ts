@@ -8,9 +8,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@nexus360/ui': path.resolve(__dirname, '../../packages/ui/src'),
     },
   },
+  optimizeDeps: {
+    include: ['@nexus360/ui'],
+  },
   server: {
-    port: 3060,
+    port: 3002,
   },
 });

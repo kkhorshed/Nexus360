@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus360 Authentication</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <style>
+        :root {
+            --primary-color: #1890ff;
+            --secondary-color: #52c41a;
+            --background-color: #f0f2f5;
+            --text-color: #262626;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: white;
+            padding: 1rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .login-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .login-button:hover {
+            background-color: #096dd9;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .feature {
+            padding: 1rem;
+            border: 1px solid #e8e8e8;
+            border-radius: var(--border-radius);
+        }
+
+        .feature h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .footer {
+            background: white;
+            padding: 1rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">Nexus360</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1 class="title">Welcome to Nexus360</h1>
+            <p class="description">
+                Secure authentication service for the Nexus360 platform. Access all your applications with a single sign-on experience.
+            </p>
+            <a href="/api/auth/login" class="login-button">Sign in with Azure AD</a>
+
+            <div class="features">
+                <div class="feature">
+                    <h3>Single Sign-On</h3>
+                    <p>Access all Nexus360 applications with one secure login.</p>
+                </div>
+                <div class="feature">
+                    <h3>Secure Access</h3>
+                    <p>Enterprise-grade security with Azure AD integration.</p>
+                </div>
+                <div class="feature">
+                    <h3>Unified Platform</h3>
+                    <p>Seamlessly switch between different Nexus360 applications.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Nexus360. All rights reserved.</p>
+    </footer>
+</body>
+</html>

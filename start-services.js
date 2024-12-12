@@ -4,11 +4,15 @@ const path = require('path');
 // Configuration for all services
 const services = {
   platform: [
-    { name: 'auth', path: 'services/auth-service', port: 3006 }
+    { name: 'auth', path: 'services/auth-service', port: 3001 }
   ],
   apps: [
-    { name: 'crm', path: 'apps/crm', port: 3010 },
-    { name: 'ai-chat', path: 'apps/ai-chat', port: 3020 }
+    { name: 'admin', path: 'apps/admin', port: 3002 },
+    { name: 'crm', path: 'apps/crm', port: 3003 },
+    { name: 'forecasting', path: 'apps/forecasting', port: 3004 },
+    { name: 'marketing', path: 'apps/marketing', port: 3005 },
+    { name: 'sales-comp', path: 'apps/sales-comp', port: 3006 },
+    { name: 'ai-chat', path: 'apps/ai-chat', port: 3007 }
   ]
 };
 

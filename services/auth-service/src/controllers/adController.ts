@@ -8,7 +8,8 @@ export class ADController {
 
   constructor() {
     this.adService = new ADService();
-    this.redirectUrl = process.env.REDIRECT_URL || 'http://localhost:3000';
+    // Always redirect to the app switcher after authentication
+    this.redirectUrl = 'http://localhost:3000';
   }
 
   /**

@@ -17,7 +17,14 @@ const adController = new ADController();
 logger.info('Starting auth service with configuration:', config);
 
 // Basic security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      "img-src": ["'self'", "data:", "https:"],
+    },
+  },
+}));
 app.use(cors({
   origin: config.cors.allowedOrigins,
   credentials: true
@@ -35,8 +42,8 @@ const authLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again after 15 minutes'
 });
 
-// Static files
-app.use(express.static(path.join(__dirname, 'public')));
+// Static files - serve from root public directory
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // API Routes
 const apiRouter = express.Router();
@@ -70,7 +77,7 @@ app.use('/api', apiRouter);
 
 // Serve index.html for root path
 app.get('/', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 // Error handling middleware (must be last)
