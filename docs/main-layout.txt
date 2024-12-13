@@ -1,0 +1,95 @@
+Main Layout Structure:
+
++------------------------------------------+
+|              App.header                   |  64px height
++------------------+---------------------+
+|                  |                     |
+|                  |    PageWrapper      |
+|   App.sider      |  +--------------+  |
+|   (250px)        |  |  mainFrame   |  |
+|                  |  |  +--------+  |  |
+|                  |  |  | header |  |  |
+|                  |  |  +--------+  |  |
+|                  |  |  content     |  |
+|                  |  |              |  |
+|                  |  |              |  |
+|                  |  +--------------+  |
+|                  |                     |
++------------------+---------------------+
+
+Component Hierarchy:
+
+<Layout className="mainLayout">
+  <div className="header">
+    <Header />
+  </div>
+  <Layout className="contentLayout">
+    <Sider className="sider">
+      <Menu />
+    </Sider>
+    <Layout className="mainContent">
+      <Content className="content">
+        <PageWrapper>
+          <div className="mainFrame">
+            <div className="pageHeader">
+              <h1>{title}</h1>
+              <p>{description}</p>
+            </div>
+            <div className="pageContent">
+              {children}
+            </div>
+          </div>
+        </PageWrapper>
+      </Content>
+    </Layout>
+  </Layout>
+</Layout>
+
+CSS Properties:
+
+.mainLayout {
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+}
+
+.header {
+  height: 64px
+  flex: none
+}
+
+.contentLayout {
+  flex: 1
+  display: flex
+  height: calc(100vh - 64px)
+}
+
+.sider {
+  width: 250px
+  flex: none
+}
+
+.mainContent {
+  flex: 1
+}
+
+.content {
+  height: 100%
+  overflow: auto
+}
+
+.pageWrapper {
+  height: 100%
+  padding: 24px
+}
+
+.mainFrame {
+  height: 100%
+  display: flex
+  flex-direction: column
+}
+
+.pageContent {
+  flex: 1
+  overflow: hidden
+}
