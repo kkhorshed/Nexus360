@@ -2,28 +2,40 @@ import { Request, Response } from 'express';
 import { ADService } from '../services/adService';
 import { logger } from '../utils/logger';
 
+// Extend Express Session type
+declare module 'express-session' {
+  interface SessionData {
+    returnTo?: string;
+  }
+}
+
 export class ADController {
   private adService: ADService;
-  private redirectUrl: string;
+  private defaultRedirectUrl: string;
 
   constructor() {
     this.adService = new ADService();
-    // Always redirect to the app switcher after authentication
-    this.redirectUrl = 'http://localhost:3000';
+    this.defaultRedirectUrl = 'http://localhost:3000';
   }
 
   /**
    * Initiate login flow
    * @route GET /api/auth/login
    */
-  login = async (_req: Request, res: Response): Promise<void> => {
+  login = async (req: Request, res: Response): Promise<void> => {
     try {
       logger.info('Initiating login flow...');
       const authUrl = await this.adService.getAuthUrl();
       logger.info(`Generated auth URL: ${authUrl}`);
       
+      // Store the referrer URL in session or use default
+      const referrer = req.headers.referer || this.defaultRedirectUrl;
+      if (req.session) {
+        req.session.returnTo = referrer;
+      }
+      
       // Send JSON response for API calls
-      if (_req.headers.accept?.includes('application/json')) {
+      if (req.headers.accept?.includes('application/json')) {
         res.json({ loginUrl: authUrl });
       } else {
         // Redirect directly for browser requests
@@ -62,8 +74,16 @@ export class ADController {
           user
         });
       } else {
-        // For browser requests, redirect to app switcher with token
-        const redirectUrl = new URL(this.redirectUrl);
+        // Get the stored return URL or use default
+        const returnTo = req.session?.returnTo || this.defaultRedirectUrl;
+        
+        // Clear the stored return URL
+        if (req.session) {
+          delete req.session.returnTo;
+        }
+
+        // For browser requests, redirect to original app with token
+        const redirectUrl = new URL(returnTo);
         redirectUrl.searchParams.append('token', accessToken);
         redirectUrl.searchParams.append('user', JSON.stringify(user));
         res.redirect(redirectUrl.toString());

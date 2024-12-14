@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Typography, theme } from 'antd';
 import { AppLauncher, UserProfile } from '@nexus360/ui';
 
@@ -17,6 +17,8 @@ const AUTH_SERVICE_URL = 'http://localhost:3001';
 function App() {
   const { token } = theme.useToken();
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Check if we have auth token in URL params (redirected from auth service)
@@ -25,26 +27,48 @@ function App() {
     const userParam = urlParams.get('user');
 
     if (!authToken && !userParam) {
-      window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
-      return;
-    }
+      // Check if we have stored auth data
+      const storedUser = localStorage.getItem('user');
+      const storedToken = localStorage.getItem('token');
+      
+      if (!storedToken || !storedUser) {
+        window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
+        return;
+      }
 
-    if (userParam) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+        window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
+      }
+    } else if (authToken && userParam) {
       try {
         const userData = JSON.parse(userParam);
-        setUser({
+        const user = {
           name: userData.displayName,
           email: userData.userPrincipalName,
           avatar: userData.avatar
-        });
+        };
+        
+        // Store auth data
+        localStorage.setItem('token', authToken);
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        setUser(user);
+        
+        // Clear URL parameters and navigate to the same path
+        navigate(location.pathname, { replace: true });
       } catch (error) {
         console.error('Error parsing user data:', error);
       }
     }
-  }, []);
+  }, [navigate, location]);
 
   const handleLogout = () => {
     // Clear auth token and user data
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
   };
 

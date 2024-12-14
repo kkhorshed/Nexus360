@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
+import session from 'express-session';
 import rateLimit from 'express-rate-limit';
 import { config } from './config';
 import { logger, logStream } from './utils/logger';
@@ -30,10 +31,30 @@ app.use(cors({
   credentials: true
 }));
 
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
 // Request processing middleware
 app.use(express.json());
 app.use(morgan('combined', { stream: logStream }));
 app.use(addRequestId);
+
+// Store referer middleware
+app.use((req, res, next) => {
+  if (req.path === '/api/auth/login' && req.headers.referer) {
+    req.session.returnTo = req.headers.referer;
+  }
+  next();
+});
 
 // Rate limiting middleware
 const authLimiter = rateLimit({

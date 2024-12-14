@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Tooltip } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Link, useLocation, matchPath } from 'react-router-dom';
 import { UserProfile } from '../components/UserProfile';
-import cequensLogo from '../../public/cequens-logo.svg';
 
 const { Header, Content, Sider } = Layout;
 
@@ -24,19 +23,41 @@ const AppLayout: React.FC<AppLayoutProps> = ({
   user,
   onLogout
 }) => {
-  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
+
+  // Helper function to check if a path matches the current location
+  const isPathActive = (path: string) => {
+    return !!matchPath(path, location.pathname);
+  };
+
+  // Helper function to check if a menu item or any of its children is active
+  const isMenuItemActive = (item: { path: string; children?: { path: string }[] }) => {
+    if (isPathActive(item.path)) return true;
+    if (item.children) {
+      return item.children.some(child => isPathActive(child.path));
+    }
+    return false;
+  };
+
+  const renderMenuItem = (item: { name: string; path: string }) => (
+    <Menu.Item key={item.path}>
+      <Link to={item.path}>{item.name}</Link>
+    </Menu.Item>
+  );
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header className="ant-layout-header">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img 
-            src={cequensLogo} 
-            alt="CEQUENS Logo" 
-            style={{ height: 32, marginRight: 16, cursor: 'pointer' }} 
-            title="Go to Dashboard"
-          />
+          <Link to="/">
+            <img 
+              src="/cequens-logo.svg" 
+              alt="CEQUENS Logo" 
+              style={{ height: 32, marginRight: 16, cursor: 'pointer' }} 
+              title="Go to Dashboard"
+            />
+          </Link>
         </div>
         {user && (
           <UserProfile 
@@ -54,8 +75,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({
           onCollapse={(value) => setCollapsed(value)} 
           style={{ 
             transition: 'all 0.3s ease', 
-            background: '#fff', /* Set sidebar background to white */
-            paddingTop: 0 /* Remove any padding at the top */
+            background: '#fff',
+            paddingTop: 0
           }}
         >
           <Tooltip title={collapsed ? 'Expand Menu' : 'Collapse Menu'} placement="right">
@@ -70,20 +91,18 @@ const AppLayout: React.FC<AppLayoutProps> = ({
             mode="inline" 
             style={{ height: '100%', borderRight: 0 }} 
             selectedKeys={[location.pathname]}
+            defaultOpenKeys={menuItems
+              .filter(item => item.children && isMenuItemActive(item))
+              .map(item => item.name)
+            }
           >
             {menuItems.map((item) => (
               item.children ? (
                 <Menu.SubMenu key={item.name} title={item.name}>
-                  {item.children.map((child) => (
-                    <Menu.Item key={child.path}>
-                      <Link to={child.path}>{child.name}</Link>
-                    </Menu.Item>
-                  ))}
+                  {item.children.map((child) => renderMenuItem(child))}
                 </Menu.SubMenu>
               ) : (
-                <Menu.Item key={item.path}>
-                  <Link to={item.path}>{item.name}</Link>
-                </Menu.Item>
+                renderMenuItem(item)
               )
             ))}
           </Menu>

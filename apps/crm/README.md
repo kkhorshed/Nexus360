@@ -1,182 +1,96 @@
 # Nexus360 CRM
 
-Modern CRM application with Azure AD authentication integration.
+A modern, feature-rich Customer Relationship Management system built with React, TypeScript, and Material-UI.
 
 ## Features
 
-- Azure AD Single Sign-On
-- User Profile Management
-- Deal Management
-- Product Catalog
-- Persistent Authentication
-- Responsive Layout
+- **Dashboard**: Overview of key metrics and activities
+- **Contacts Management**: Track and manage customer information
+- **Leads Management**: Monitor and nurture potential opportunities
+- **Opportunities Management**: Track sales pipeline and deals
+- **Modern UI**: Clean and responsive interface using Material-UI
+- **Type Safety**: Built with TypeScript for better development experience
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- Material-UI (MUI)
+- React Router for navigation
+- React Query for data fetching
+- Vite for build tooling
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 16+
-- npm or pnpm
-- Running auth-service
-
-### Installation
-
+1. Install dependencies:
 ```bash
-cd apps/crm
-npm install
-# or
 pnpm install
 ```
 
-### Development
-
+2. Start the development server:
 ```bash
-npm run dev
-# or
 pnpm dev
 ```
 
-Application will be available at http://localhost:3010
-
-## Architecture
-
-### Components
-
-#### Authentication
-- **Header**: User profile display and authentication status
-- **PrivateRoute**: Protected route wrapper
-- **AuthContext**: Authentication state management
-
-#### Core Features
-- **DealBoard**: Deal management interface
-- **ProductCatalog**: Product listing and management
-- **AddDealForm**: Deal creation form
-- **AddProductForm**: Product creation form
-
-### Authentication Flow
-
-1. User visits CRM app
-2. If not authenticated, redirected to auth service
-3. After successful auth, redirected back with token
-4. User profile displayed in header
-5. Authentication persists via localStorage
-
-### State Management
-
-- Authentication state in localStorage
-- User profile in localStorage
-- React context for global state
-- Component-level state for UI
-
-## Configuration
-
-### Environment Variables
-
-Create `.env` file:
-
-```env
-VITE_AUTH_URL=http://localhost:3006
-VITE_API_URL=http://localhost:3006/api
-```
-
-### Build Configuration
-
-vite.config.ts settings:
-```typescript
-{
-  server: {
-    port: 3010
-  },
-  build: {
-    outDir: 'dist'
-  }
-}
-```
-
-## Components
-
-### Header
-
-```typescript
-interface User {
-  displayName: string;
-  email: string;
-  jobTitle?: string;
-}
-
-const Header: React.FC = () => {
-  // User profile display
-  // Authentication status
-  // Logout functionality
-}
-```
-
-### Routes
-
-- `/dashboard`: Main dashboard
-- `/deals`: Deal management
-- `/products`: Product catalog
-- `/customers`: Customer management
-- `/settings`: App settings
-
-## Styling
-
-- Ant Design components
-- CSS Modules for custom styling
-- Responsive design
-- Theme customization
-
-## Development
-
-### Code Structure
-
-```
-src/
-├── components/     # Reusable components
-├── routes/        # Route components
-├── styles/        # CSS modules
-└── main.tsx       # Entry point
-```
-
-### Adding New Features
-
-1. Create component in `components/`
-2. Add styles in `styles/`
-3. Update routes if needed
-4. Add to main layout
-
-### Testing
-
+3. Build for production:
 ```bash
-npm test
-# or
-pnpm test
-```
-
-## Build
-
-```bash
-npm run build
-# or
 pnpm build
 ```
 
-Outputs to `dist/` directory.
+## Project Structure
 
-## Security
+```
+src/
+├── components/         # Reusable UI components
+│   ├── common/        # Shared components
+│   └── layout/        # Layout components
+├── features/          # Feature-specific components
+│   ├── dashboard/
+│   ├── contacts/
+│   ├── leads/
+│   └── opportunities/
+├── theme/             # MUI theme configuration
+└── utils/            # Utility functions
+```
 
-- Secure token storage
-- Protected routes
-- XSS prevention
-- CSRF protection
+## Development Guidelines
+
+- Follow the established folder structure
+- Use TypeScript for all new code
+- Follow Material-UI best practices
+- Implement proper error handling
+- Write clean, maintainable code
+- Use proper TypeScript types and interfaces
+
+### UI Component Standards
+
+#### Layout Components
+The layout components (Header and Sidebar) follow a clean, modern design with sharp edges:
+
+##### Sidebar Component (`src/components/layout/Sidebar.tsx`)
+- Uses MUI Drawer with sharp edges
+- Features Cequens logo at the top
+- Menu items have no border radius for consistent styling
+- Features:
+  - Collapsible settings menu
+  - Active state highlighting
+  - Responsive design with mobile drawer
+
+##### Header Component (`src/components/layout/Header.tsx`)
+- Uses MUI AppBar with no elevation
+- Features sharp edges (no border radius) throughout
+- Contains:
+  - Search functionality
+  - Notifications system
+  - User profile menu
+  - Help section
 
 ## Contributing
 
-1. Create feature branch
-2. Add tests
-3. Update documentation
-4. Submit pull request
+1. Create a feature branch
+2. Make your changes
+3. Submit a pull request
 
 ## License
 
-MIT License
+MIT
