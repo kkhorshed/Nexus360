@@ -1,4 +1,3 @@
-import { useState, useMemo } from 'react';
 import {
   Box,
   Button,
@@ -22,143 +21,37 @@ import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import { useState } from 'react';
 import RightDrawer from '../../components/common/RightDrawer';
-import LeadForm from './LeadForm';
-import LeadCard from './LeadCard';
+import { DataFilter } from '../../components/common/DataFilter';
 import PageWrapper from '../../components/common/PageWrapper';
-import { DataFilter, FilterState, FilterCondition, applyFilters } from '../../components/common/DataFilter';
+import { LeadCard, LeadForm } from './components';
+import { TABLE_COLUMNS } from './constants';
+import { useLeads } from './hooks';
+import { getInitials, getStatusColor, getSourceIcon } from './utils/helpers';
 import { Lead } from './types';
+import { initialLeads } from './data/mockData';
 
 type ViewType = 'table' | 'card';
 
-const columns = [
-  { id: 'firstName', label: 'First Name', numeric: false },
-  { id: 'lastName', label: 'Last Name', numeric: false },
-  { id: 'email', label: 'Email', numeric: false },
-  { id: 'phone', label: 'Phone', numeric: false },
-  { id: 'company', label: 'Company', numeric: false },
-  { id: 'source', label: 'Source', numeric: false },
-  { id: 'status', label: 'Status', numeric: false },
-];
-
-// Sample data
-const initialLeads: Lead[] = [
-  {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    company: 'Acme Inc',
-    source: 'Website',
-    status: 'New'
-  },
-  // ... rest of the sample data
-];
-
 export default function Leads() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [formDrawerOpen, setFormDrawerOpen] = useState(false);
-  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [view, setView] = useState<ViewType>('table');
-  const [leads] = useState<Lead[]>(initialLeads);
-  const [filters, setFilters] = useState<FilterState>({});
-  const [activeConditions, setActiveConditions] = useState<FilterCondition[]>([]);
-
-  const filteredLeads = useMemo(() => {
-    return applyFilters(leads, activeConditions, (lead, field) => {
-      const value = lead[field as keyof Lead];
-      return value !== undefined ? String(value) : '';
-    });
-  }, [leads, activeConditions]);
-
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleAddClick = () => {
-    setEditingLead(null);
-    setFormDrawerOpen(true);
-  };
-
-  const handleEditClick = (lead: Lead) => {
-    setEditingLead(lead);
-    setFormDrawerOpen(true);
-  };
-
-  const handleFormClose = () => {
-    setFormDrawerOpen(false);
-    setEditingLead(null);
-  };
-
-  const handleSubmit = async (data: Partial<Lead>) => {
-    // TODO: Implement lead creation/update logic
-    console.log('Form submitted:', data);
-    handleFormClose();
-  };
-
-  const handleFilterChange = (newFilters: FilterState) => {
-    setFilters(newFilters);
-    setPage(0);
-    setFilterDrawerOpen(false);
-  };
-
-  const getStatusColor = (status: Lead['status']): 'info' | 'warning' | 'success' | 'error' => {
-    switch (status) {
-      case 'New':
-        return 'info';
-      case 'Contacted':
-      case 'Qualified':
-        return 'warning';
-      case 'Proposal':
-      case 'Negotiation':
-        return 'info';
-      case 'Won':
-        return 'success';
-      case 'Lost':
-        return 'error';
-      default:
-        return 'info';
-    }
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  const getSourceIcon = (source: string) => {
-    switch (source.toLowerCase()) {
-      case 'website':
-        return '🌐';
-      case 'referral':
-        return '👥';
-      case 'trade show':
-        return '🎪';
-      case 'linkedin':
-        return '💼';
-      case 'email campaign':
-        return '📧';
-      case 'cold call':
-        return '📞';
-      case 'partner':
-        return '🤝';
-      case 'webinar':
-        return '🎥';
-      default:
-        return '📌';
-    }
-  };
+  const {
+    leads,
+    page,
+    rowsPerPage,
+    formDrawerOpen,
+    filterDrawerOpen,
+    editingLead,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleAddClick,
+    handleEditClick,
+    handleFormClose,
+    handleSubmit,
+    handleFilterChange,
+    setFilterDrawerOpen
+  } = useLeads();
 
   const renderTableView = () => (
     <Paper 
@@ -183,7 +76,7 @@ export default function Leads() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredLeads
+            {leads
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((lead: Lead) => (
                 <TableRow 
@@ -244,7 +137,7 @@ export default function Leads() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={filteredLeads.length}
+        count={leads.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -255,7 +148,7 @@ export default function Leads() {
 
   const renderCardView = () => (
     <Grid container spacing={3}>
-      {filteredLeads
+      {leads
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((lead: Lead) => (
           <Grid item xs={12} sm={6} md={4} key={lead.id}>
@@ -282,7 +175,7 @@ export default function Leads() {
           <TablePagination
             rowsPerPageOptions={[8, 16, 24]}
             component="div"
-            count={filteredLeads.length}
+            count={leads.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -304,9 +197,9 @@ export default function Leads() {
               variant="outlined"
               startIcon={<FilterListIcon />}
               onClick={() => setFilterDrawerOpen(true)}
-              color={Object.keys(filters).length > 0 ? "primary" : "inherit"}
+              color={leads.length < initialLeads.length ? "primary" : "inherit"}
             >
-              Filters {Object.keys(filters).length > 0 && `(${Object.keys(filters).length})`}
+              Filters {leads.length < initialLeads.length && `(${leads.length}/${initialLeads.length})`}
             </Button>
           </Tooltip>
           <Tooltip title={view === 'table' ? 'Switch to card view' : 'Switch to table view'}>
@@ -335,9 +228,9 @@ export default function Leads() {
         title="Filter Leads"
       >
         <DataFilter
-          currentFilters={filters}
+          currentFilters={{}}
           onFilterLoad={handleFilterChange}
-          columns={columns}
+          columns={TABLE_COLUMNS}
           data={leads}
           storageKey="leadTableFilters"
         />

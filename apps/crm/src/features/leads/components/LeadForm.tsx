@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { TextField, Grid, MenuItem } from '@mui/material';
-import BaseForm from '../../components/common/BaseForm';
+import BaseForm from '../../../components/common/BaseForm';
+import { Lead, LeadFormData } from '../types';
+import { LEAD_SOURCES, LEAD_STATUSES } from '../constants';
 
 interface LeadFormProps {
-  initialData?: any;
-  onSubmit: (data: any) => void;
+  initialData: Lead | null;
+  onSubmit: (data: LeadFormData) => void | Promise<void>;
   onCancel: () => void;
 }
 
@@ -15,30 +17,10 @@ export default function LeadForm({ initialData, onSubmit, onCancel }: LeadFormPr
     e.preventDefault();
     setIsSubmitting(true);
     const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData) as unknown as LeadFormData;
     await onSubmit(data);
     setIsSubmitting(false);
   };
-
-  const sources = [
-    'Website',
-    'Referral',
-    'Social Media',
-    'Email Campaign',
-    'Trade Show',
-    'Cold Call',
-    'Other'
-  ];
-
-  const statuses = [
-    'New',
-    'Contacted',
-    'Qualified',
-    'Proposal',
-    'Negotiation',
-    'Won',
-    'Lost'
-  ];
 
   return (
     <BaseForm onSubmit={handleSubmit} onCancel={onCancel} isSubmitting={isSubmitting}>
@@ -94,9 +76,9 @@ export default function LeadForm({ initialData, onSubmit, onCancel }: LeadFormPr
             required
             name="source"
             label="Lead Source"
-            defaultValue={initialData?.source || ''}
+            defaultValue={initialData?.source || LEAD_SOURCES[0]}
           >
-            {sources.map((source) => (
+            {LEAD_SOURCES.map((source) => (
               <MenuItem key={source} value={source}>
                 {source}
               </MenuItem>
@@ -110,9 +92,9 @@ export default function LeadForm({ initialData, onSubmit, onCancel }: LeadFormPr
             required
             name="status"
             label="Status"
-            defaultValue={initialData?.status || 'New'}
+            defaultValue={initialData?.status || LEAD_STATUSES[0]}
           >
-            {statuses.map((status) => (
+            {LEAD_STATUSES.map((status) => (
               <MenuItem key={status} value={status}>
                 {status}
               </MenuItem>

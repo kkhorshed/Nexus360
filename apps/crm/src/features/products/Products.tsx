@@ -22,110 +22,46 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import InventoryIcon from '@mui/icons-material/Inventory';
+
 import RightDrawer from '../../components/common/RightDrawer';
-import ProductForm from './ProductForm';
-import ProductCard from './ProductCard';
 import PageWrapper from '../../components/common/PageWrapper';
-import { DataFilter, FilterState } from '../../components/common/DataFilter';
-import { Product } from './types';
-
-type ViewType = 'table' | 'card';
-
-const columns = [
-  { id: 'name', label: 'Product Name', numeric: false },
-  { id: 'category', label: 'Category', numeric: false },
-  { id: 'sku', label: 'SKU', numeric: false },
-  { id: 'price', label: 'Price', numeric: true },
-  { id: 'stock', label: 'Stock Level', numeric: true },
-];
-
-// Dummy data for demonstration
-const initialProducts: Product[] = [
-  {
-    id: 1,
-    name: 'Enterprise Software',
-    category: 'Software',
-    sku: 'SW-001',
-    price: 999.99,
-    stock: 75,
-    description: 'Enterprise-grade software solution'
-  },
-  {
-    id: 2,
-    name: 'Cloud Storage',
-    category: 'Services',
-    sku: 'SV-001',
-    price: 199.99,
-    stock: 15,
-    description: 'Secure cloud storage service'
-  },
-];
+import { DataFilter } from '../../components/common/DataFilter';
+import { ProductCard, ProductForm } from './components';
+import { useProducts, useProductForm } from './hooks';
+import { COLUMNS, ROWS_PER_PAGE_OPTIONS, CARD_VIEW_ROWS_PER_PAGE_OPTIONS } from './constants';
+import { getStockColor, getStockPercentage, formatPrice } from './utils/helpers';
 
 export default function Products() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const {
+    products,
+    page,
+    rowsPerPage,
+    view,
+    filters,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleFilterLoad,
+    handleViewChange,
+  } = useProducts();
+
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [view, setView] = useState<ViewType>('table');
-  const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [filters, setFilters] = useState<FilterState>({});
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const {
+    isSubmitting,
+    editingProduct,
+    handleSubmit,
+    handleClose,
+    handleEdit,
+  } = useProductForm(() => setDrawerOpen(false));
 
   const handleAddClick = () => {
-    setEditingProduct(null);
+    handleClose();
     setDrawerOpen(true);
-  };
-
-  const handleEditClick = (product: Product) => {
-    setEditingProduct(product);
-    setDrawerOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-    setEditingProduct(null);
-  };
-
-  const handleSubmit = async (data: Partial<Product>) => {
-    // TODO: Implement product creation/update logic
-    console.log('Form submitted:', data);
-    handleDrawerClose();
   };
 
   const handleFilterDrawerToggle = () => {
     setFilterDrawerOpen(!filterDrawerOpen);
-  };
-
-  const handleFilterLoad = (newFilters: FilterState) => {
-    setFilters(newFilters);
-    setPage(0);
-    setFilterDrawerOpen(false);
-  };
-
-  const getStockColor = (stock: number): 'success' | 'warning' | 'error' => {
-    if (stock > 50) return 'success';
-    if (stock > 20) return 'warning';
-    return 'error';
-  };
-
-  const getStockPercentage = (stock: number) => {
-    return Math.min((stock / 100) * 100, 100);
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(price);
   };
 
   const renderTableView = () => (
@@ -191,7 +127,7 @@ export default function Products() {
                     <Tooltip title="Edit product">
                       <IconButton
                         size="small"
-                        onClick={() => handleEditClick(product)}
+                        onClick={() => handleEdit(product)}
                       >
                         <EditIcon />
                       </IconButton>
@@ -203,7 +139,7 @@ export default function Products() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         component="div"
         count={products.length}
         rowsPerPage={rowsPerPage}
@@ -233,7 +169,7 @@ export default function Products() {
             >
               <ProductCard
                 product={product}
-                onEdit={handleEditClick}
+                onEdit={handleEdit}
               />
             </Paper>
           </Grid>
@@ -241,7 +177,7 @@ export default function Products() {
       <Grid item xs={12}>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <TablePagination
-            rowsPerPageOptions={[8, 16, 24]}
+            rowsPerPageOptions={CARD_VIEW_ROWS_PER_PAGE_OPTIONS}
             component="div"
             count={products.length}
             rowsPerPage={rowsPerPage}
@@ -274,7 +210,7 @@ export default function Products() {
             <Tooltip title="Switch to table view">
               <Button
                 variant="outlined"
-                onClick={() => setView('table')}
+                onClick={() => handleViewChange('table')}
                 color={view === 'table' ? "primary" : "inherit"}
               >
                 <ViewListIcon />
@@ -283,7 +219,7 @@ export default function Products() {
             <Tooltip title="Switch to card view">
               <Button
                 variant="outlined"
-                onClick={() => setView('card')}
+                onClick={() => handleViewChange('card')}
                 color={view === 'card' ? "primary" : "inherit"}
               >
                 <ViewModuleIcon />
@@ -310,7 +246,7 @@ export default function Products() {
         <DataFilter
           currentFilters={filters}
           onFilterLoad={handleFilterLoad}
-          columns={columns}
+          columns={COLUMNS}
           data={products}
           storageKey="products-filters"
         />
@@ -318,13 +254,13 @@ export default function Products() {
 
       <RightDrawer
         open={drawerOpen}
-        onClose={handleDrawerClose}
+        onClose={handleClose}
         title={editingProduct ? 'Edit Product' : 'Add Product'}
       >
         <ProductForm
-          initialData={editingProduct}
+          initialData={editingProduct || undefined}
           onSubmit={handleSubmit}
-          onCancel={handleDrawerClose}
+          onCancel={handleClose}
         />
       </RightDrawer>
     </PageWrapper>

@@ -22,63 +22,15 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewKanbanIcon from '@mui/icons-material/ViewColumn';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+
 import RightDrawer from '../../components/common/RightDrawer';
-import OpportunityForm from './OpportunityForm';
-import OpportunityCard from './OpportunityCard';
-import KanbanBoard from './KanbanBoard';
 import PageWrapper from '../../components/common/PageWrapper';
 import { DataFilter, FilterState } from '../../components/common/DataFilter';
-import { Opportunity } from './types';
-
-type ViewType = 'table' | 'card' | 'kanban';
-
-const columns = [
-  { id: 'name', label: 'Opportunity', numeric: false },
-  { id: 'company', label: 'Company', numeric: false },
-  { id: 'amount', label: 'Amount', numeric: true },
-  { id: 'closeDate', label: 'Close Date', numeric: false },
-  { id: 'stage', label: 'Stage', numeric: false },
-  { id: 'priority', label: 'Priority', numeric: false },
-];
-
-const initialOpportunities: Opportunity[] = [
-  {
-    id: 1,
-    name: 'Enterprise Software Deal',
-    company: 'Acme Inc',
-    amount: 50000,
-    closeDate: '2024-03-31',
-    stage: 'Proposal',
-    priority: 'High'
-  },
-  {
-    id: 2,
-    name: 'Cloud Services Package',
-    company: 'Tech Corp',
-    amount: 25000,
-    closeDate: '2024-04-15',
-    stage: 'Negotiation',
-    priority: 'Medium'
-  },
-  {
-    id: 3,
-    name: 'Security Solutions',
-    company: 'SecureNet',
-    amount: 75000,
-    closeDate: '2024-05-01',
-    stage: 'Qualification',
-    priority: 'High'
-  },
-  {
-    id: 4,
-    name: 'Data Analytics Platform',
-    company: 'DataCo',
-    amount: 35000,
-    closeDate: '2024-04-30',
-    stage: 'Needs Analysis',
-    priority: 'Medium'
-  }
-];
+import { OpportunityCard, OpportunityForm, KanbanBoard } from './components';
+import { Opportunity, ViewType } from './types';
+import { COLUMNS, ROWS_PER_PAGE_OPTIONS, CARD_VIEW_ROWS_PER_PAGE_OPTIONS } from './constants';
+import { formatAmount, formatDate, getStageColor } from './utils/helpers';
+import { initialOpportunities } from './data/mockData';
 
 export default function Opportunities() {
   const [page, setPage] = useState(0);
@@ -140,36 +92,6 @@ export default function Opportunities() {
         opp.id === updatedOpportunity.id ? { ...opp, ...updatedOpportunity } : opp
       )
     );
-  };
-
-  const getStageColor = (stage: Opportunity['stage']): 'info' | 'warning' | 'success' | 'error' | 'primary' | 'secondary' => {
-    switch (stage) {
-      case 'Qualification':
-        return 'info';
-      case 'Needs Analysis':
-        return 'primary';
-      case 'Proposal':
-        return 'secondary';
-      case 'Negotiation':
-        return 'warning';
-      case 'Closed Won':
-        return 'success';
-      case 'Closed Lost':
-        return 'error';
-      default:
-        return 'info';
-    }
-  };
-
-  const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString();
   };
 
   const renderTableView = () => (
@@ -248,7 +170,7 @@ export default function Opportunities() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         component="div"
         count={opportunities.length}
         rowsPerPage={rowsPerPage}
@@ -288,7 +210,7 @@ export default function Opportunities() {
       <Grid item xs={12}>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <TablePagination
-            rowsPerPageOptions={[8, 16, 24]}
+            rowsPerPageOptions={CARD_VIEW_ROWS_PER_PAGE_OPTIONS}
             component="div"
             count={opportunities.length}
             rowsPerPage={rowsPerPage}
@@ -384,7 +306,7 @@ export default function Opportunities() {
         <DataFilter
           currentFilters={filters}
           onFilterLoad={handleFilterLoad}
-          columns={columns}
+          columns={COLUMNS}
           data={opportunities}
           storageKey="opportunities-filters"
         />

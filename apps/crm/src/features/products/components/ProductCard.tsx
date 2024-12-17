@@ -13,38 +13,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import QrCodeIcon from '@mui/icons-material/QrCode';
-
-interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    category: string;
-    sku: string;
-    price: number;
-    stock: number;
-    description: string;
-  };
-  onEdit: (product: any) => void;
-}
+import { ProductCardProps } from '../types';
+import { getStockColor, getStockPercentage, formatPrice } from '../utils/helpers';
 
 export default function ProductCard({ product, onEdit }: ProductCardProps) {
-  const getStockColor = (stock: number) => {
-    if (stock > 50) return 'success';
-    if (stock > 20) return 'warning';
-    return 'error';
-  };
-
-  const getStockPercentage = (stock: number) => {
-    return Math.min((stock / 100) * 100, 100);
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(price);
-  };
-
   return (
     <Card 
       sx={{ 

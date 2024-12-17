@@ -13,49 +13,15 @@ import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import BusinessIcon from '@mui/icons-material/Business';
 import SourceIcon from '@mui/icons-material/Source';
+import { Lead } from '../types';
+import { getInitials, getStatusColor } from '../utils/helpers';
 
 interface LeadCardProps {
-  lead: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    company: string;
-    source: string;
-    status: 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Negotiation' | 'Won' | 'Lost';
-  };
-  onEdit: (lead: any) => void;
+  lead: Lead;
+  onEdit: (lead: Lead) => void;
 }
 
 export default function LeadCard({ lead, onEdit }: LeadCardProps) {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  const getStatusColor = (status: LeadCardProps['lead']['status']): 'info' | 'warning' | 'success' | 'error' => {
-    switch (status) {
-      case 'New':
-        return 'info';
-      case 'Contacted':
-      case 'Qualified':
-        return 'warning';
-      case 'Proposal':
-      case 'Negotiation':
-        return 'info';
-      case 'Won':
-        return 'success';
-      case 'Lost':
-        return 'error';
-      default:
-        return 'info';
-    }
-  };
-
   return (
     <Card 
       sx={{ 
