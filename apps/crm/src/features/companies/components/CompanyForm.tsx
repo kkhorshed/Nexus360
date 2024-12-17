@@ -1,46 +1,25 @@
-import { useState } from 'react';
 import { TextField, Grid, MenuItem } from '@mui/material';
-import BaseForm from '../../components/common/BaseForm';
+import BaseForm from '../../../components/common/BaseForm';
+import { CompanyFormProps } from '../types';
+import { INDUSTRIES, COMPANY_TYPES } from '../constants';
 
-interface CompanyFormProps {
-  initialData?: any;
-  onSubmit: (data: any) => void;
-  onCancel: () => void;
-}
-
-export default function CompanyForm({ initialData, onSubmit, onCancel }: CompanyFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+export default function CompanyForm({ 
+  initialData, 
+  onSubmit, 
+  onCancel 
+}: CompanyFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData.entries());
     await onSubmit(data);
-    setIsSubmitting(false);
   };
 
-  const industries = [
-    'Technology',
-    'Healthcare',
-    'Finance',
-    'Manufacturing',
-    'Retail',
-    'Education',
-    'Other'
-  ];
-
-  const companyTypes = [
-    'Corporation',
-    'LLC',
-    'Partnership',
-    'Sole Proprietorship',
-    'Non-Profit',
-    'Other'
-  ];
-
   return (
-    <BaseForm onSubmit={handleSubmit} onCancel={onCancel} isSubmitting={isSubmitting}>
+    <BaseForm 
+      onSubmit={handleSubmit} 
+      onCancel={onCancel}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -49,17 +28,19 @@ export default function CompanyForm({ initialData, onSubmit, onCancel }: Company
             name="name"
             label="Company Name"
             defaultValue={initialData?.name || ''}
+            inputProps={{ maxLength: 100 }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
+            required
             select
             name="industry"
             label="Industry"
             defaultValue={initialData?.industry || ''}
           >
-            {industries.map((industry) => (
+            {INDUSTRIES.map((industry) => (
               <MenuItem key={industry} value={industry}>
                 {industry}
               </MenuItem>
@@ -69,12 +50,13 @@ export default function CompanyForm({ initialData, onSubmit, onCancel }: Company
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
+            required
             select
             name="companyType"
             label="Company Type"
             defaultValue={initialData?.companyType || ''}
           >
-            {companyTypes.map((type) => (
+            {COMPANY_TYPES.map((type) => (
               <MenuItem key={type} value={type}>
                 {type}
               </MenuItem>
@@ -84,26 +66,35 @@ export default function CompanyForm({ initialData, onSubmit, onCancel }: Company
         <Grid item xs={12}>
           <TextField
             fullWidth
+            required
             name="website"
             label="Website"
             defaultValue={initialData?.website || ''}
+            placeholder="www.example.com"
+            inputProps={{ maxLength: 100 }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth
+            required
             name="email"
             type="email"
             label="Email"
             defaultValue={initialData?.email || ''}
+            placeholder="contact@example.com"
+            inputProps={{ maxLength: 100 }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth
+            required
             name="phone"
             label="Phone"
             defaultValue={initialData?.phone || ''}
+            placeholder="123-456-7890"
+            inputProps={{ maxLength: 20 }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -114,6 +105,7 @@ export default function CompanyForm({ initialData, onSubmit, onCancel }: Company
             multiline
             rows={2}
             defaultValue={initialData?.address || ''}
+            inputProps={{ maxLength: 200 }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -124,6 +116,8 @@ export default function CompanyForm({ initialData, onSubmit, onCancel }: Company
             multiline
             rows={3}
             defaultValue={initialData?.description || ''}
+            inputProps={{ maxLength: 500 }}
+            helperText="Max 500 characters"
           />
         </Grid>
       </Grid>

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Box,
   Button,
@@ -13,143 +12,150 @@ import {
   Avatar,
   IconButton,
   Grid,
+  Tooltip,
+  SelectChangeEvent,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import RightDrawer from '../../components/common/RightDrawer';
-import ContactForm from './ContactForm';
-import ContactCard from './ContactCard';
-import ViewToggle from '../../components/common/ViewToggle';
 import PageWrapper from '../../components/common/PageWrapper';
+import { DataFilter, Column } from '../../components/common/DataFilter';
+import { ContactCard, ContactForm } from './components';
+import { useContacts } from './hooks';
+import { getInitials } from './utils/helpers';
+import { Contact } from './types';
+import { ROWS_PER_PAGE_OPTIONS, CARD_VIEW_ROWS_PER_PAGE_OPTIONS, TABLE_COLUMNS } from './constants';
+import { mockCompanies } from '../companies/data/mockData';
 
 export default function Contacts() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [editingContact, setEditingContact] = useState<any>(null);
-  const [view, setView] = useState<'table' | 'card'>('table');
-
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleAddClick = () => {
-    setEditingContact(null);
-    setDrawerOpen(true);
-  };
-
-  const handleEditClick = (contact: any) => {
-    setEditingContact(contact);
-    setDrawerOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-    setEditingContact(null);
-  };
-
-  const handleSubmit = async (data: any) => {
-    // TODO: Implement contact creation/update logic
-    console.log('Form submitted:', data);
-    handleDrawerClose();
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
-  };
-
-  // Dummy data for demonstration
-  const contacts = [
-    { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', phone: '123-456-7890', company: 'Acme Inc' },
-    { id: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', phone: '098-765-4321', company: 'Tech Corp' },
-  ];
+  const {
+    page,
+    rowsPerPage,
+    drawerOpen,
+    editingContact,
+    view,
+    contacts,
+    filters,
+    filterDrawerOpen,
+    paginatedContacts,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleAddClick,
+    handleEditClick,
+    handleDrawerClose,
+    handleSubmit,
+    handleFilterDrawerToggle,
+    handleFilterLoad,
+    setView
+  } = useContacts();
 
   const renderTableView = () => (
-    <Paper>
+    <Paper elevation={2}>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Company</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              {TABLE_COLUMNS.map((column) => (
+                <TableCell key={column.id} align={column.align}>
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {contacts
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((contact) => (
-                <TableRow key={contact.id}>
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Avatar>
-                        {getInitials(`${contact.firstName} ${contact.lastName}`)}
-                      </Avatar>
-                      {`${contact.firstName} ${contact.lastName}`}
-                    </Box>
-                  </TableCell>
-                  <TableCell>{contact.email}</TableCell>
-                  <TableCell>{contact.phone}</TableCell>
-                  <TableCell>{contact.company}</TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      size="small"
-                      onClick={() => handleEditClick(contact)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {paginatedContacts.map((contact: Contact) => (
+              <TableRow 
+                key={contact.id}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'action.hover',
+                  },
+                }}
+              >
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Avatar>
+                      {getInitials(`${contact.firstName} ${contact.lastName}`)}
+                    </Avatar>
+                    {`${contact.firstName} ${contact.lastName}`}
+                  </Box>
+                </TableCell>
+                <TableCell>{contact.email}</TableCell>
+                <TableCell>{contact.phone}</TableCell>
+                <TableCell>{contact.company?.name || ''}</TableCell>
+                <TableCell>{contact.position}</TableCell>
+                <TableCell>{contact.status}</TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    size="small"
+                    onClick={() => handleEditClick(contact)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         component="div"
         count={contacts.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={(event) => {
+          handleChangeRowsPerPage({
+            target: { value: event.target.value }
+          } as SelectChangeEvent<number>);
+        }}
       />
     </Paper>
   );
 
   const renderCardView = () => (
-    <Grid container spacing={2}>
-      {contacts
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((contact) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={contact.id}>
+    <Grid container spacing={3}>
+      {paginatedContacts.map((contact: Contact) => (
+        <Grid item xs={12} sm={6} md={4} key={contact.id}>
+          <Paper 
+            elevation={2}
+            sx={{
+              height: '100%',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'translateY(-4px)',
+                boxShadow: (theme) => theme.shadows[8],
+              },
+            }}
+          >
             <ContactCard
               contact={contact}
               onEdit={handleEditClick}
             />
-          </Grid>
-        ))}
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <TablePagination
-          rowsPerPageOptions={[8, 16, 24]}
-          component="div"
-          count={contacts.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Box>
+          </Paper>
+        </Grid>
+      ))}
+      <Grid item xs={12}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <TablePagination
+            rowsPerPageOptions={CARD_VIEW_ROWS_PER_PAGE_OPTIONS}
+            component="div"
+            count={contacts.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={(event) => {
+              handleChangeRowsPerPage({
+                target: { value: event.target.value }
+              } as SelectChangeEvent<number>);
+            }}
+          />
+        </Box>
+      </Grid>
     </Grid>
   );
 
@@ -158,8 +164,25 @@ export default function Contacts() {
       title="Contacts"
       description="Manage your contacts"
       actions={
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <ViewToggle view={view} onViewChange={setView} />
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Tooltip title="Filter contacts">
+            <Button
+              variant="outlined"
+              startIcon={<FilterListIcon />}
+              onClick={handleFilterDrawerToggle}
+              color={Object.keys(filters).length > 0 ? "primary" : "inherit"}
+            >
+              Filters {Object.keys(filters).length > 0 && `(${Object.keys(filters).length})`}
+            </Button>
+          </Tooltip>
+          <Tooltip title={view === 'card' ? 'Switch to table view' : 'Switch to card view'}>
+            <Button
+              variant="outlined"
+              onClick={() => setView(view === 'card' ? 'table' : 'card')}
+            >
+              {view === 'card' ? <ViewListIcon /> : <ViewModuleIcon />}
+            </Button>
+          </Tooltip>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
@@ -173,6 +196,20 @@ export default function Contacts() {
       {view === 'table' ? renderTableView() : renderCardView()}
 
       <RightDrawer
+        open={filterDrawerOpen}
+        onClose={handleFilterDrawerToggle}
+        title="Filter Contacts"
+      >
+        <DataFilter
+          currentFilters={filters}
+          onFilterLoad={handleFilterLoad}
+          columns={TABLE_COLUMNS as Column[]}
+          data={contacts}
+          storageKey="contacts-filters"
+        />
+      </RightDrawer>
+
+      <RightDrawer
         open={drawerOpen}
         onClose={handleDrawerClose}
         title={editingContact ? 'Edit Contact' : 'Add Contact'}
@@ -181,6 +218,7 @@ export default function Contacts() {
           initialData={editingContact}
           onSubmit={handleSubmit}
           onCancel={handleDrawerClose}
+          companies={mockCompanies}
         />
       </RightDrawer>
     </PageWrapper>

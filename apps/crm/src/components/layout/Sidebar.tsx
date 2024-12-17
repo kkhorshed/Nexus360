@@ -20,9 +20,8 @@ import {
   BusinessCenter as OpportunitiesIcon,
   Assessment as ReportsIcon,
   Settings as SettingsIcon,
-  Group as TeamIcon,
-  Security as SecurityIcon,
-  ManageAccounts as UserManagementIcon,
+  Task as TaskIcon,
+  History as AuditIcon,
 } from '@mui/icons-material';
 
 interface SidebarProps {
@@ -40,18 +39,15 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
+  { text: 'Tasks', icon: <TaskIcon />, path: '/tasks' },
   { text: 'Companies', icon: <CompaniesIcon />, path: '/companies' },
   { text: 'Contacts', icon: <ContactsIcon />, path: '/contacts' },
   { text: 'Products', icon: <ProductsIcon />, path: '/products' },
   { text: 'Leads', icon: <LeadsIcon />, path: '/leads' },
   { text: 'Opportunities', icon: <OpportunitiesIcon />, path: '/opportunities' },
   { text: 'Reports', icon: <ReportsIcon />, path: '/reports' },
-];
-
-const settingsItems: MenuItem[] = [
-  { text: 'User Management', icon: <UserManagementIcon />, path: '/settings/users' },
-  { text: 'Team Management', icon: <TeamIcon />, path: '/settings/teams' },
-  { text: 'Security', icon: <SecurityIcon />, path: '/settings/security' },
+  { text: 'Audit Trail', icon: <AuditIcon />, path: '/audit' },
+  { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
 ];
 
 export default function Sidebar({
@@ -164,25 +160,6 @@ export default function Sidebar({
       </Box>
       <List sx={{ pt: 2, px: 1.5 }}>
         {menuItems.map((item) => renderMenuItem(item))}
-        
-        <Box sx={{ mt: 3, mb: 1.5, px: 2 }}>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1,
-            color: 'text.secondary',
-            transition: 'color 0.2s ease-in-out',
-            '&:hover': {
-              color: 'text.primary',
-            }
-          }}>
-            <SettingsIcon sx={{ fontSize: '1.25rem' }} />
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              Settings
-            </Typography>
-          </Box>
-        </Box>
-        {settingsItems.map((item) => renderMenuItem(item))}
       </List>
     </>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Box,
   Button,
@@ -14,32 +14,65 @@ import {
   Chip,
   Avatar,
   Grid,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import RightDrawer from '../../components/common/RightDrawer';
 import LeadForm from './LeadForm';
 import LeadCard from './LeadCard';
-import ViewToggle from '../../components/common/ViewToggle';
 import PageWrapper from '../../components/common/PageWrapper';
+import { DataFilter, FilterState, FilterCondition, applyFilters } from '../../components/common/DataFilter';
+import { Lead } from './types';
 
-interface Lead {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  company: string;
-  source: string;
-  status: 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Negotiation' | 'Won' | 'Lost';
-}
+type ViewType = 'table' | 'card';
+
+const columns = [
+  { id: 'firstName', label: 'First Name', numeric: false },
+  { id: 'lastName', label: 'Last Name', numeric: false },
+  { id: 'email', label: 'Email', numeric: false },
+  { id: 'phone', label: 'Phone', numeric: false },
+  { id: 'company', label: 'Company', numeric: false },
+  { id: 'source', label: 'Source', numeric: false },
+  { id: 'status', label: 'Status', numeric: false },
+];
+
+// Sample data
+const initialLeads: Lead[] = [
+  {
+    id: 1,
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    phone: '123-456-7890',
+    company: 'Acme Inc',
+    source: 'Website',
+    status: 'New'
+  },
+  // ... rest of the sample data
+];
 
 export default function Leads() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [formDrawerOpen, setFormDrawerOpen] = useState(false);
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
-  const [view, setView] = useState<'table' | 'card'>('table');
+  const [view, setView] = useState<ViewType>('table');
+  const [leads] = useState<Lead[]>(initialLeads);
+  const [filters, setFilters] = useState<FilterState>({});
+  const [activeConditions, setActiveConditions] = useState<FilterCondition[]>([]);
+
+  const filteredLeads = useMemo(() => {
+    return applyFilters(leads, activeConditions, (lead, field) => {
+      const value = lead[field as keyof Lead];
+      return value !== undefined ? String(value) : '';
+    });
+  }, [leads, activeConditions]);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -52,23 +85,29 @@ export default function Leads() {
 
   const handleAddClick = () => {
     setEditingLead(null);
-    setDrawerOpen(true);
+    setFormDrawerOpen(true);
   };
 
   const handleEditClick = (lead: Lead) => {
     setEditingLead(lead);
-    setDrawerOpen(true);
+    setFormDrawerOpen(true);
   };
 
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
+  const handleFormClose = () => {
+    setFormDrawerOpen(false);
     setEditingLead(null);
   };
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: Partial<Lead>) => {
     // TODO: Implement lead creation/update logic
     console.log('Form submitted:', data);
-    handleDrawerClose();
+    handleFormClose();
+  };
+
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+    setPage(0);
+    setFilterDrawerOpen(false);
   };
 
   const getStatusColor = (status: Lead['status']): 'info' | 'warning' | 'success' | 'error' => {
@@ -98,32 +137,39 @@ export default function Leads() {
       .toUpperCase();
   };
 
-  // Dummy data for demonstration
-  const leads: Lead[] = [
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@example.com',
-      phone: '123-456-7890',
-      company: 'Acme Inc',
-      source: 'Website',
-      status: 'New'
-    },
-    {
-      id: 2,
-      firstName: 'Jane',
-      lastName: 'Smith',
-      email: 'jane@example.com',
-      phone: '098-765-4321',
-      company: 'Tech Corp',
-      source: 'Referral',
-      status: 'Qualified'
-    },
-  ];
+  const getSourceIcon = (source: string) => {
+    switch (source.toLowerCase()) {
+      case 'website':
+        return '🌐';
+      case 'referral':
+        return '👥';
+      case 'trade show':
+        return '🎪';
+      case 'linkedin':
+        return '💼';
+      case 'email campaign':
+        return '📧';
+      case 'cold call':
+        return '📞';
+      case 'partner':
+        return '🤝';
+      case 'webinar':
+        return '🎥';
+      default:
+        return '📌';
+    }
+  };
 
   const renderTableView = () => (
-    <Paper>
+    <Paper 
+      elevation={2}
+      sx={{
+        transition: 'box-shadow 0.2s ease-in-out',
+        '&:hover': {
+          boxShadow: (theme) => theme.shadows[4],
+        },
+      }}
+    >
       <TableContainer>
         <Table>
           <TableHead>
@@ -137,27 +183,41 @@ export default function Leads() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {leads
+            {filteredLeads
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((lead) => (
-                <TableRow key={lead.id}>
+              .map((lead: Lead) => (
+                <TableRow 
+                  key={lead.id}
+                  sx={{
+                    transition: 'background-color 0.2s ease-in-out',
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                  }}
+                >
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Avatar>
+                      <Avatar sx={{ bgcolor: 'primary.main' }}>
                         {getInitials(`${lead.firstName} ${lead.lastName}`)}
                       </Avatar>
-                      {`${lead.firstName} ${lead.lastName}`}
+                      <Typography>
+                        {`${lead.firstName} ${lead.lastName}`}
+                      </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
                     <Box>
-                      {lead.email}<br />
-                      {lead.phone}
+                      <Typography variant="body2">{lead.email}</Typography>
+                      <Typography variant="body2" color="text.secondary">{lead.phone}</Typography>
                     </Box>
                   </TableCell>
                   <TableCell>{lead.company}</TableCell>
                   <TableCell>
-                    <Chip label={lead.source} size="small" />
+                    <Chip 
+                      icon={<Typography sx={{ fontSize: '1.2rem', mr: -1 }}>{getSourceIcon(lead.source)}</Typography>}
+                      label={lead.source} 
+                      size="small" 
+                    />
                   </TableCell>
                   <TableCell>
                     <Chip
@@ -167,12 +227,14 @@ export default function Leads() {
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton
-                      size="small"
-                      onClick={() => handleEditClick(lead)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    <Tooltip title="Edit lead">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleEditClick(lead)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -182,7 +244,7 @@ export default function Leads() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={leads.length}
+        count={filteredLeads.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -192,38 +254,69 @@ export default function Leads() {
   );
 
   const renderCardView = () => (
-    <Grid container spacing={2}>
-      {leads
+    <Grid container spacing={3}>
+      {filteredLeads
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((lead) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={lead.id}>
-            <LeadCard
-              lead={lead}
-              onEdit={handleEditClick}
-            />
+        .map((lead: Lead) => (
+          <Grid item xs={12} sm={6} md={4} key={lead.id}>
+            <Paper 
+              elevation={2}
+              sx={{
+                height: '100%',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: (theme) => theme.shadows[8],
+                },
+              }}
+            >
+              <LeadCard
+                lead={lead}
+                onEdit={handleEditClick}
+              />
+            </Paper>
           </Grid>
         ))}
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <TablePagination
-          rowsPerPageOptions={[8, 16, 24]}
-          component="div"
-          count={leads.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Box>
+      <Grid item xs={12}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <TablePagination
+            rowsPerPageOptions={[8, 16, 24]}
+            component="div"
+            count={filteredLeads.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
+      </Grid>
     </Grid>
   );
 
   return (
     <PageWrapper
       title="Leads"
-      description="Manage your leads"
+      description="Track and manage your sales leads through their lifecycle"
       actions={
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <ViewToggle view={view} onViewChange={setView} />
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Tooltip title="Filter leads">
+            <Button
+              variant="outlined"
+              startIcon={<FilterListIcon />}
+              onClick={() => setFilterDrawerOpen(true)}
+              color={Object.keys(filters).length > 0 ? "primary" : "inherit"}
+            >
+              Filters {Object.keys(filters).length > 0 && `(${Object.keys(filters).length})`}
+            </Button>
+          </Tooltip>
+          <Tooltip title={view === 'table' ? 'Switch to card view' : 'Switch to table view'}>
+            <Button
+              variant="outlined"
+              onClick={() => setView(view === 'table' ? 'card' : 'table')}
+            >
+              {view === 'table' ? <ViewModuleIcon /> : <ViewListIcon />}
+            </Button>
+          </Tooltip>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
@@ -237,14 +330,28 @@ export default function Leads() {
       {view === 'table' ? renderTableView() : renderCardView()}
 
       <RightDrawer
-        open={drawerOpen}
-        onClose={handleDrawerClose}
+        open={filterDrawerOpen}
+        onClose={() => setFilterDrawerOpen(false)}
+        title="Filter Leads"
+      >
+        <DataFilter
+          currentFilters={filters}
+          onFilterLoad={handleFilterChange}
+          columns={columns}
+          data={leads}
+          storageKey="leadTableFilters"
+        />
+      </RightDrawer>
+
+      <RightDrawer
+        open={formDrawerOpen}
+        onClose={handleFormClose}
         title={editingLead ? 'Edit Lead' : 'Add Lead'}
       >
         <LeadForm
           initialData={editingLead}
           onSubmit={handleSubmit}
-          onCancel={handleDrawerClose}
+          onCancel={handleFormClose}
         />
       </RightDrawer>
     </PageWrapper>

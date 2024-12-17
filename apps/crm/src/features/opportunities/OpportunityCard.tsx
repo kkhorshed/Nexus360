@@ -23,6 +23,8 @@ interface OpportunityCardProps {
 }
 
 export default function OpportunityCard({ opportunity, onEdit, index, columnId }: OpportunityCardProps) {
+  const isKanbanView = columnId !== undefined;
+
   const getStageColor = (stage: Opportunity['stage']): 'info' | 'warning' | 'success' | 'error' | 'primary' | 'secondary' => {
     switch (stage) {
       case 'Qualification':
@@ -81,21 +83,60 @@ export default function OpportunityCard({ opportunity, onEdit, index, columnId }
       role="article"
       aria-label={`Opportunity: ${opportunity.name}`}
     >
-      <CardContent sx={{ flexGrow: 1, pt: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Avatar sx={{ width: 56, height: 56, mr: 2, bgcolor: 'primary.main' }}>
-            <MonetizationOnIcon />
-          </Avatar>
-          <Box>
-            <Typography variant="h6" component="div">
-              {opportunity.name}
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
-              <Chip 
-                size="small" 
-                label={opportunity.stage}
-                color={getStageColor(opportunity.stage)}
-              />
+      <CardContent sx={{ flexGrow: 1, p: isKanbanView ? 1.5 : 2 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'flex-start', 
+          gap: isKanbanView ? 1 : 2,
+          mb: isKanbanView ? 1 : 2 
+        }}>
+          {!isKanbanView && (
+            <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.main' }}>
+              <MonetizationOnIcon />
+            </Avatar>
+          )}
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+              <Typography 
+                variant={isKanbanView ? "subtitle1" : "h6"} 
+                component="div" 
+                sx={{ 
+                  fontWeight: isKanbanView ? 600 : 400,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  pr: 4
+                }}
+              >
+                {opportunity.name}
+              </Typography>
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(opportunity);
+                }}
+                sx={{ 
+                  position: 'absolute',
+                  top: isKanbanView ? 8 : 12,
+                  right: isKanbanView ? 8 : 12,
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+                aria-label="Edit opportunity"
+              >
+                <EditIcon fontSize={isKanbanView ? "small" : "medium"} />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 1, mt: 0.5, flexWrap: 'wrap' }}>
+              {!isKanbanView && (
+                <Chip 
+                  size="small" 
+                  label={opportunity.stage}
+                  color={getStageColor(opportunity.stage)}
+                />
+              )}
               <Chip 
                 size="small" 
                 label={opportunity.priority}
@@ -106,51 +147,44 @@ export default function OpportunityCard({ opportunity, onEdit, index, columnId }
           </Box>
         </Box>
 
-        <Stack spacing={2}>
+        <Stack spacing={isKanbanView ? 1 : 2}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <BusinessIcon color="action" fontSize="small" />
-            <Typography variant="body2" color="text.secondary">
+            <Typography 
+              variant="body2" 
+              color="text.secondary"
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}
+            >
               {opportunity.company}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <MonetizationOnIcon color="action" fontSize="small" />
-            <Typography variant="h6" color="primary">
+            <Typography variant="h6" color="primary" sx={{ fontSize: isKanbanView ? '1rem' : '1.25rem' }}>
               {formatAmount(opportunity.amount)}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <CalendarTodayIcon color="action" fontSize="small" />
-            <Typography variant="body2" color="text.secondary">
-              Close Date: {formatDate(opportunity.closeDate)}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <FlagIcon color="action" fontSize="small" />
-            <Typography variant="body2" color="text.secondary">
-              Priority: {opportunity.priority}
-            </Typography>
-          </Box>
+          {!isKanbanView && (
+            <>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CalendarTodayIcon color="action" fontSize="small" />
+                <Typography variant="body2" color="text.secondary">
+                  Close Date: {formatDate(opportunity.closeDate)}
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <FlagIcon color="action" fontSize="small" />
+                <Typography variant="body2" color="text.secondary">
+                  Priority: {opportunity.priority}
+                </Typography>
+              </Box>
+            </>
+          )}
         </Stack>
-
-        <IconButton
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(opportunity);
-          }}
-          sx={{ 
-            position: 'absolute', 
-            top: 8, 
-            right: 8,
-            '&:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            },
-          }}
-          aria-label="Edit opportunity"
-        >
-          <EditIcon />
-        </IconButton>
       </CardContent>
     </Card>
   );

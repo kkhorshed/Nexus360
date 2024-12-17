@@ -1,196 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* Reset and base styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #f5f5f5;
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f1f1f1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: #888;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-/* Table styles */
-.MuiTableRow-root:hover {
-  background-color: #f8fafc;
-}
-
-/* Animation for page transitions */
-.page-transition-enter {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.page-transition-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
-}
-
-.page-transition-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.page-transition-exit-active {
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 300ms, transform 300ms;
-}
-
-/* Custom utility classes */
-.text-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-/* Card hover effect */
-.MuiCard-root {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.MuiCard-root:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
-/* Button hover effects */
-.MuiButton-contained {
-  transition: transform 0.2s ease-in-out;
-}
-
-.MuiButton-contained:hover {
-  transform: translateY(-1px);
-}
-
-/* Icon button hover effect */
-.MuiIconButton-root {
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-.MuiIconButton-root:hover {
-  transform: scale(1.1);
-}
-
-/* Chip styles */
-.MuiChip-root {
-  font-weight: 500;
-}
-
-/* Table header styles */
-.MuiTableHead-root .MuiTableCell-root {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 0.75rem;
-}
-
-/* Avatar styles */
-.MuiAvatar-root {
-  font-weight: 600;
-}
-
-/* Responsive breakpoints */
-@media (max-width: 600px) {
-  .hide-on-mobile {
-    display: none !important;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 960px) {
-  .hide-on-tablet {
-    display: none !important;
-  }
-}
-
-@media (min-width: 961px) {
-  .hide-on-desktop {
-    display: none !important;
-  }
-}
-
-/* Loading animation */
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.loading-pulse {
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* Tooltip custom styles */
-.MuiTooltip-tooltip {
-  font-size: 0.75rem;
-  padding: 8px 12px;
-  border-radius: 4px;
-}
-
-/* Menu item hover effect */
-.MuiMenuItem-root {
-  transition: background-color 0.2s ease-in-out;
-}
-
-/* Dialog transitions */
-.MuiDialog-paper {
-  transition: transform 0.2s ease-in-out !important;
-}
-
-/* Drawer transition */
-.MuiDrawer-paper {
-  transition: transform 0.3s ease-in-out !important;
-}
-
-/* Progress bar styles */
-.MuiLinearProgress-root {
-  border-radius: 4px;
-  height: 6px !important;
-}
-
-/* Badge styles */
-.MuiBadge-badge {
-  font-weight: 600;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: 10px;
+  background: #555;
 }

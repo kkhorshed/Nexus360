@@ -13,13 +13,13 @@ import {
   IconButton,
   Chip,
   Grid,
-  ToggleButton,
-  ToggleButtonGroup,
+  Tooltip,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import TableViewIcon from '@mui/icons-material/TableView';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewKanbanIcon from '@mui/icons-material/ViewColumn';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import RightDrawer from '../../components/common/RightDrawer';
@@ -27,18 +27,19 @@ import OpportunityForm from './OpportunityForm';
 import OpportunityCard from './OpportunityCard';
 import KanbanBoard from './KanbanBoard';
 import PageWrapper from '../../components/common/PageWrapper';
-
-interface Opportunity {
-  id: number;
-  name: string;
-  company: string;
-  amount: number;
-  closeDate: string;
-  stage: 'Qualification' | 'Needs Analysis' | 'Proposal' | 'Negotiation' | 'Closed Won' | 'Closed Lost';
-  priority: 'High' | 'Medium' | 'Low';
-}
+import { DataFilter, FilterState } from '../../components/common/DataFilter';
+import { Opportunity } from './types';
 
 type ViewType = 'table' | 'card' | 'kanban';
+
+const columns = [
+  { id: 'name', label: 'Opportunity', numeric: false },
+  { id: 'company', label: 'Company', numeric: false },
+  { id: 'amount', label: 'Amount', numeric: true },
+  { id: 'closeDate', label: 'Close Date', numeric: false },
+  { id: 'stage', label: 'Stage', numeric: false },
+  { id: 'priority', label: 'Priority', numeric: false },
+];
 
 const initialOpportunities: Opportunity[] = [
   {
@@ -83,9 +84,11 @@ export default function Opportunities() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [editingOpportunity, setEditingOpportunity] = useState<Opportunity | null>(null);
   const [view, setView] = useState<ViewType>('kanban');
   const [opportunities, setOpportunities] = useState<Opportunity[]>(initialOpportunities);
+  const [filters, setFilters] = useState<FilterState>({});
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -111,20 +114,27 @@ export default function Opportunities() {
     setEditingOpportunity(null);
   };
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: Partial<Opportunity>) => {
     // TODO: Implement opportunity creation/update logic
     console.log('Form submitted:', data);
     handleDrawerClose();
   };
 
-  const handleViewChange = (_event: React.MouseEvent<HTMLElement>, newView: ViewType | null) => {
-    if (newView !== null) {
-      setView(newView);
-    }
+  const handleFilterDrawerToggle = () => {
+    setFilterDrawerOpen(!filterDrawerOpen);
+  };
+
+  const handleFilterLoad = (newFilters: FilterState) => {
+    setFilters(newFilters);
+    setPage(0);
+    setFilterDrawerOpen(false);
+  };
+
+  const handleViewChange = (newView: ViewType) => {
+    setView(newView);
   };
 
   const handleOpportunityUpdate = (updatedOpportunity: Opportunity) => {
-    console.log('Updating opportunity:', updatedOpportunity);
     setOpportunities(prevOpportunities => 
       prevOpportunities.map(opp => 
         opp.id === updatedOpportunity.id ? { ...opp, ...updatedOpportunity } : opp
@@ -163,7 +173,15 @@ export default function Opportunities() {
   };
 
   const renderTableView = () => (
-    <Paper>
+    <Paper 
+      elevation={2}
+      sx={{
+        transition: 'box-shadow 0.2s ease-in-out',
+        '&:hover': {
+          boxShadow: (theme) => theme.shadows[4],
+        },
+      }}
+    >
       <TableContainer>
         <Table>
           <TableHead>
@@ -181,7 +199,15 @@ export default function Opportunities() {
             {opportunities
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((opportunity) => (
-                <TableRow key={opportunity.id}>
+                <TableRow 
+                  key={opportunity.id}
+                  sx={{
+                    transition: 'background-color 0.2s ease-in-out',
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                  }}
+                >
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <MonetizationOnIcon color="action" />
@@ -207,12 +233,14 @@ export default function Opportunities() {
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton
-                      size="small"
-                      onClick={() => handleEditClick(opportunity)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    <Tooltip title="Edit opportunity">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleEditClick(opportunity)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -232,29 +260,44 @@ export default function Opportunities() {
   );
 
   const renderCardView = () => (
-    <Grid container spacing={2}>
+    <Grid container spacing={3}>
       {opportunities
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((opportunity) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={opportunity.id}>
-            <OpportunityCard
-              opportunity={opportunity}
-              onEdit={handleEditClick}
-              index={0} // Index is required for drag and drop but not used in card view
-            />
+          <Grid item xs={12} sm={6} md={4} key={opportunity.id}>
+            <Paper 
+              elevation={2}
+              sx={{
+                height: '100%',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: (theme) => theme.shadows[8],
+                },
+              }}
+            >
+              <OpportunityCard
+                opportunity={opportunity}
+                onEdit={handleEditClick}
+                index={0}
+                columnId="card-view"
+              />
+            </Paper>
           </Grid>
         ))}
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <TablePagination
-          rowsPerPageOptions={[8, 16, 24]}
-          component="div"
-          count={opportunities.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Box>
+      <Grid item xs={12}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <TablePagination
+            rowsPerPageOptions={[8, 16, 24]}
+            component="div"
+            count={opportunities.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
+      </Grid>
     </Grid>
   );
 
@@ -281,23 +324,46 @@ export default function Opportunities() {
       title="Opportunities"
       description="Manage your sales opportunities"
       actions={
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <ToggleButtonGroup
-            value={view}
-            exclusive
-            onChange={handleViewChange}
-            size="small"
-          >
-            <ToggleButton value="table">
-              <TableViewIcon />
-            </ToggleButton>
-            <ToggleButton value="card">
-              <ViewModuleIcon />
-            </ToggleButton>
-            <ToggleButton value="kanban">
-              <ViewKanbanIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Tooltip title="Filter opportunities">
+            <Button
+              variant="outlined"
+              startIcon={<FilterListIcon />}
+              onClick={handleFilterDrawerToggle}
+              color={Object.keys(filters).length > 0 ? "primary" : "inherit"}
+            >
+              Filters {Object.keys(filters).length > 0 && `(${Object.keys(filters).length})`}
+            </Button>
+          </Tooltip>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Tooltip title="Switch to table view">
+              <Button
+                variant="outlined"
+                onClick={() => handleViewChange('table')}
+                color={view === 'table' ? "primary" : "inherit"}
+              >
+                <ViewListIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Switch to card view">
+              <Button
+                variant="outlined"
+                onClick={() => handleViewChange('card')}
+                color={view === 'card' ? "primary" : "inherit"}
+              >
+                <ViewModuleIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Switch to kanban view">
+              <Button
+                variant="outlined"
+                onClick={() => handleViewChange('kanban')}
+                color={view === 'kanban' ? "primary" : "inherit"}
+              >
+                <ViewKanbanIcon />
+              </Button>
+            </Tooltip>
+          </Box>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
@@ -309,6 +375,20 @@ export default function Opportunities() {
       }
     >
       {renderView()}
+
+      <RightDrawer
+        open={filterDrawerOpen}
+        onClose={handleFilterDrawerToggle}
+        title="Filter Opportunities"
+      >
+        <DataFilter
+          currentFilters={filters}
+          onFilterLoad={handleFilterLoad}
+          columns={columns}
+          data={opportunities}
+          storageKey="opportunities-filters"
+        />
+      </RightDrawer>
 
       <RightDrawer
         open={drawerOpen}
