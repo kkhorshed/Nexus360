@@ -1,15 +1,9 @@
-import React from 'react';
-import { useLocation, Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Drawer,
   List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Box,
-  useTheme,
-  Typography,
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
@@ -22,7 +16,14 @@ import {
   Settings as SettingsIcon,
   Task as TaskIcon,
   History as AuditIcon,
+  ManageAccounts as UserManagementIcon,
+  Groups as TeamManagementIcon,
+  Security as SecurityIcon,
 } from '@mui/icons-material';
+import { SidebarMenuItem } from './components/SidebarMenuItem';
+import { SidebarNestedMenuItem } from './components/SidebarNestedMenuItem';
+import { SidebarLogo } from './components/SidebarLogo';
+import { drawerStyles } from './styles/sidebar.styles';
 
 interface SidebarProps {
   drawerWidth: number;
@@ -35,6 +36,11 @@ interface MenuItem {
   text: string;
   icon: React.ReactNode;
   path?: string;
+  children?: Array<{
+    text: string;
+    icon: React.ReactNode;
+    path: string;
+  }>;
 }
 
 const menuItems: MenuItem[] = [
@@ -46,120 +52,69 @@ const menuItems: MenuItem[] = [
   { text: 'Leads', icon: <LeadsIcon />, path: '/leads' },
   { text: 'Opportunities', icon: <OpportunitiesIcon />, path: '/opportunities' },
   { text: 'Reports', icon: <ReportsIcon />, path: '/reports' },
-  { text: 'Audit Trail', icon: <AuditIcon />, path: '/audit' },
-  { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+  {
+    text: 'Settings',
+    icon: <SettingsIcon />,
+    children: [
+      { text: 'User Management', icon: <UserManagementIcon />, path: '/settings/user-management' },
+      { text: 'Team Management', icon: <TeamManagementIcon />, path: '/settings/team-management' },
+      { text: 'Security', icon: <SecurityIcon />, path: '/settings/security' },
+      { text: 'Audit Trail', icon: <AuditIcon />, path: '/audit' }
+    ],
+  },
 ];
 
-export default function Sidebar({
+export const Sidebar: React.FC<SidebarProps> = ({
   drawerWidth,
   mobileOpen,
   onDrawerToggle,
   isMobile,
-}: SidebarProps) {
-  const theme = useTheme();
+}) => {
   const location = useLocation();
+  const [openSettings, setOpenSettings] = useState(
+    location.pathname.startsWith('/settings') || location.pathname === '/audit'
+  );
+
+  const handleSettingsClick = () => {
+    setOpenSettings(!openSettings);
+  };
 
   const renderMenuItem = (item: MenuItem) => {
-    const isSelected = item.path ? location.pathname === item.path : false;
+    if (item.children) {
+      const isParentSelected = item.children.some(
+        child => location.pathname === child.path
+      );
+
+      return (
+        <SidebarNestedMenuItem
+          key={item.text}
+          text={item.text}
+          icon={item.icon}
+          children={item.children}
+          isOpen={openSettings}
+          onToggle={handleSettingsClick}
+          isParentSelected={isParentSelected}
+          currentPath={location.pathname}
+        />
+      );
+    }
 
     return (
-      <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
-        <ListItemButton
-          component={RouterLink}
-          to={item.path || ''}
-          selected={isSelected}
-          sx={{
-            borderRadius: '8px',
-            py: 1.25,
-            px: 2,
-            transition: 'all 0.2s ease-in-out',
-            position: 'relative',
-            overflow: 'hidden',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              left: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: 4,
-              height: '60%',
-              bgcolor: 'primary.main',
-              borderRadius: '0 4px 4px 0',
-              opacity: isSelected ? 1 : 0,
-              transition: 'opacity 0.2s ease-in-out',
-            },
-            '&.Mui-selected': {
-              backgroundColor: 'primary.main',
-              '&:hover': {
-                backgroundColor: 'primary.dark',
-              },
-              '& .MuiListItemIcon-root': {
-                color: 'common.white',
-                transform: 'scale(1.1)',
-              },
-              '& .MuiListItemText-primary': {
-                color: 'common.white',
-                fontWeight: 600,
-              },
-            },
-            '&:hover': {
-              backgroundColor: isSelected ? 'primary.dark' : theme.palette.action.hover,
-              transform: 'translateX(4px)',
-              '& .MuiListItemIcon-root': {
-                transform: 'scale(1.1)',
-              },
-            },
-          }}
-        >
-          <ListItemIcon
-            sx={{
-              minWidth: 36,
-              color: isSelected ? 'common.white' : 'text.primary',
-              transition: 'all 0.2s ease-in-out',
-            }}
-          >
-            {item.icon}
-          </ListItemIcon>
-          <ListItemText 
-            primary={item.text}
-            sx={{
-              '& .MuiTypography-root': {
-                fontSize: '0.875rem',
-                fontWeight: isSelected ? 600 : 500,
-                transition: 'all 0.2s ease-in-out',
-              }
-            }}
-          />
-        </ListItemButton>
-      </ListItem>
+      <SidebarMenuItem
+        key={item.text}
+        text={item.text}
+        icon={item.icon}
+        path={item.path!}
+        isSelected={location.pathname === item.path}
+      />
     );
   };
 
   const drawer = (
     <>
-      <Box 
-        sx={{ 
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          p: 2,
-          height: 64,
-          borderBottom: 1,
-          borderColor: 'divider',
-          backgroundColor: 'background.paper',
-        }}
-      >
-        <Box 
-          component="img"
-          src="/cequens-logo.svg"
-          alt="Cequens Logo"
-          sx={{ 
-            height: 27,
-          }}
-        />
-      </Box>
-      <List sx={{ pt: 2, px: 1.5 }}>
-        {menuItems.map((item) => renderMenuItem(item))}
+      <SidebarLogo />
+      <List sx={{ pt: 1, px: 1 }}> {/* Reduced padding from pt: 2, px: 1.5 */}
+        {menuItems.map(renderMenuItem)}
       </List>
     </>
   );
@@ -178,12 +133,10 @@ export default function Sidebar({
             keepMounted: true,
           }}
           sx={{
-            display: { xs: 'block', md: 'none' },
+            ...drawerStyles.temporary,
             '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
+              ...drawerStyles.temporary['& .MuiDrawer-paper'],
               width: drawerWidth,
-              borderRadius: 0,
-              backgroundColor: 'background.default',
             },
           }}
         >
@@ -193,13 +146,10 @@ export default function Sidebar({
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', md: 'block' },
+            ...drawerStyles.permanent,
             '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
+              ...drawerStyles.permanent['& .MuiDrawer-paper'],
               width: drawerWidth,
-              borderRadius: 0,
-              backgroundColor: 'background.default',
-              boxShadow: 1,
             },
           }}
           open
@@ -209,4 +159,6 @@ export default function Sidebar({
       )}
     </Box>
   );
-}
+};
+
+export default Sidebar;
