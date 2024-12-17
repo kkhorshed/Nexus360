@@ -14,10 +14,12 @@
     "**/*.css"
   ],
   "dependencies": {
-    "@ant-design/icons": "^5.0.0",
-    "@nexus360/utils": "workspace:*",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^5.16.11",
+    "@mui/material": "^5.16.11",
     "@nexus360/api-client": "workspace:*",
-    "antd": "^5.0.0",
+    "@nexus360/utils": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.0.0"

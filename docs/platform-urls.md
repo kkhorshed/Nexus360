@@ -17,17 +17,8 @@
 - **CRM**: http://localhost:3010
   - Customer relationship management application
 
-- **AI Chat**: http://localhost:3020
-  - Intelligent conversational interface
-
 - **Sales Compensation**: http://localhost:3030
   - Commission and incentive tracking
-
-- **Forecasting**: http://localhost:3040
-  - Sales and revenue forecasting
-
-- **Marketing**: http://localhost:3050
-  - Campaign and lead management
 
 - **Admin**: http://localhost:3060
   - Platform administration and user management

@@ -1,19 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ConfigProvider } from 'antd';
+import { CssBaseline } from '@mui/material';
 import App from './App';
-import './styles/index.css';
+import './styles/globals.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#1890ff',
-        },
-      }}
-    >
-      <App />
-    </ConfigProvider>
+    <CssBaseline />
+    <App />
   </React.StrictMode>
 );

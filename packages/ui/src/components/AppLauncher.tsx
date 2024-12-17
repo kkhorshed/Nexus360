@@ -1,15 +1,17 @@
 import React from 'react';
-import { Card, Row, Col, Typography } from 'antd';
 import {
-  MessageOutlined,
-  TeamOutlined,
-  LineChartOutlined,
-  FundProjectionScreenOutlined,
-  DollarOutlined,
-  CrownOutlined
-} from '@ant-design/icons';
-
-const { Title } = Typography;
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Box,
+  useTheme
+} from '@mui/material';
+import {
+  Group as TeamIcon,
+  AttachMoney as DollarIcon,
+  AdminPanelSettings as AdminIcon
+} from '@mui/icons-material';
 
 export interface AppLauncherProps {
   className?: string;
@@ -26,42 +28,26 @@ const apps: App[] = [
   { 
     name: 'Admin',
     url: 'http://localhost:3002/',
-    icon: <CrownOutlined style={{ fontSize: '24px' }} />,
+    icon: <AdminIcon sx={{ fontSize: '24px' }} />,
     description: 'Platform administration and user management'
   },
   { 
     name: 'CRM',
     url: 'http://localhost:3003/',
-    icon: <TeamOutlined style={{ fontSize: '24px' }} />,
+    icon: <TeamIcon sx={{ fontSize: '24px' }} />,
     description: 'Customer relationship management'
-  },
-  { 
-    name: 'Forecasting',
-    url: 'http://localhost:3004/',
-    icon: <LineChartOutlined style={{ fontSize: '24px' }} />,
-    description: 'Sales and revenue forecasting'
-  },
-  { 
-    name: 'Marketing',
-    url: 'http://localhost:3005/',
-    icon: <FundProjectionScreenOutlined style={{ fontSize: '24px' }} />,
-    description: 'Campaign and lead management'
   },
   { 
     name: 'Sales Compensation',
     url: 'http://localhost:3006/',
-    icon: <DollarOutlined style={{ fontSize: '24px' }} />,
+    icon: <DollarIcon sx={{ fontSize: '24px' }} />,
     description: 'Commission and incentive tracking'
-  },
-  { 
-    name: 'AI Chat',
-    url: 'http://localhost:3007/',
-    icon: <MessageOutlined style={{ fontSize: '24px' }} />,
-    description: 'Intelligent conversational interface'
   }
 ];
 
 const AppLauncher: React.FC<AppLauncherProps> = ({ className }) => {
+  const theme = useTheme();
+
   const handleAppClick = (url: string) => {
     // Get current URL parameters
     const urlParams = new URLSearchParams(window.location.search);
@@ -78,42 +64,71 @@ const AppLauncher: React.FC<AppLauncherProps> = ({ className }) => {
   };
 
   return (
-    <div className={className} style={{ padding: '20px' }}>
-      <Row gutter={[24, 24]}>
+    <Box className={className} sx={{ p: 3 }}>
+      <Grid container spacing={3}>
         {apps.map((app) => (
-          <Col xs={24} sm={12} md={8} lg={6} key={app.name}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={app.name}>
             <Card
-              hoverable
-              onClick={() => handleAppClick(app.url)}
-              style={{ 
+              sx={{
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
                 textAlign: 'center',
-                padding: '24px'
+                cursor: 'pointer',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: theme.shadows[4]
+                }
               }}
+              onClick={() => handleAppClick(app.url)}
             >
-              <div style={{ 
-                marginBottom: '16px',
-                width: '48px',
-                height: '48px',
-                display: 'flex',
+              <CardContent sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
                 alignItems: 'center',
-                justifyContent: 'center',
-                background: '#f5f5f5',
-                borderRadius: '50%'
+                width: '100%',
+                p: 3
               }}>
-                {app.icon}
-              </div>
-              <Title level={4} style={{ margin: '0 0 8px 0' }}>{app.name}</Title>
-              <Typography.Text type="secondary">{app.description}</Typography.Text>
+                <Box
+                  sx={{
+                    mb: 2,
+                    width: 48,
+                    height: 48,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: theme.palette.grey[100],
+                    borderRadius: '50%',
+                    color: theme.palette.primary.main
+                  }}
+                >
+                  {app.icon}
+                </Box>
+                <Typography variant="h6" gutterBottom>
+                  {app.name}
+                </Typography>
+                <Typography 
+                  variant="body2" 
+                  color="text.secondary"
+                  sx={{ 
+                    flexGrow: 1,
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}
+                >
+                  {app.description}
+                </Typography>
+              </CardContent>
             </Card>
-          </Col>
+          </Grid>
         ))}
-      </Row>
-    </div>
+      </Grid>
+    </Box>
   );
 };
 

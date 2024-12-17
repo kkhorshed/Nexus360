@@ -1,46 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const styles = {
-  label: {
-    position: 'absolute' as const,
-    background: '#1890ff',
-    color: '#fff',
-    padding: '6px 12px',
-    borderRadius: '4px',
-    fontSize: '12px',
-    fontWeight: '500' as const,
-    zIndex: 999,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    fontFamily: 'monospace',
-    cursor: 'pointer',
-    userSelect: 'none' as const,
-  },
-  highlight: {
-    position: 'absolute' as const,
-    border: '2px dashed #1890ff',
-    borderRadius: '4px',
-    pointerEvents: 'none' as const,
-    zIndex: 998,
-    backgroundColor: 'rgba(24, 144, 255, 0.05)',
-  },
-  highlightActive: {
-    backgroundColor: 'rgba(255, 193, 7, 0.2)', // Different background color for active highlight
-  },
-  cueCard: {
-    position: 'fixed' as const,
-    background: '#ffffff',
-    color: '#1f2937',
-    padding: '12px 16px',
-    borderRadius: '6px',
-    fontSize: '12px',
-    maxWidth: '300px',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    border: '1px solid #e5e7eb',
-    zIndex: 1000,
-    pointerEvents: 'none' as const,
-  }
-};
+import { Box, useTheme, alpha } from '@mui/material';
 
 interface LayoutElementsProps {
   elements: {
@@ -56,7 +15,13 @@ interface LayoutElementsProps {
   };
 }
 
-const elementInfo = {
+interface ElementInfo {
+  title: string;
+  description: string;
+  dimensions: string;
+}
+
+const elementInfo: Record<string, ElementInfo> = {
   'App.container': {
     title: 'App Container',
     description: 'The root layout container that wraps the entire application.',
@@ -105,9 +70,10 @@ const elementInfo = {
 };
 
 const LayoutElements: React.FC<LayoutElementsProps> = ({ elements }) => {
+  const theme = useTheme();
   const [highlights, setHighlights] = useState<Array<{ id: string, rect: DOMRect }>>([]);
   const [hoveredElement, setHoveredElement] = useState<string | null>(null);
-  const [activeElement, setActiveElement] = useState<string | null>(null); // Track the active element
+  const [activeElement, setActiveElement] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -143,7 +109,7 @@ const LayoutElements: React.FC<LayoutElementsProps> = ({ elements }) => {
   };
 
   const handleLabelClick = (id: string) => {
-    setActiveElement(id); // Set the clicked element as active
+    setActiveElement(id);
   };
 
   return (
@@ -151,55 +117,82 @@ const LayoutElements: React.FC<LayoutElementsProps> = ({ elements }) => {
       {highlights.map(({ id, rect }, index) => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-        const info = elementInfo[id as keyof typeof elementInfo];
+        const info = elementInfo[id];
 
-        // Ensure labels are within the viewport and do not overlap
-        const labelTop = Math.max(rect.top + scrollTop - 25, 0); // Ensure label is not above the viewport
-        const adjustedTop = labelTop + index * 30; // Add spacing for each label
+        const labelTop = Math.max(rect.top + scrollTop - 25, 0);
+        const adjustedTop = labelTop + index * 30;
 
         return (
           <React.Fragment key={id}>
-            <div
-              style={{
-                ...styles.highlight,
-                ...(activeElement === id ? styles.highlightActive : {}), // Apply active style if clicked
+            <Box
+              sx={{
+                position: 'absolute',
+                border: `2px dashed ${theme.palette.primary.main}`,
+                borderRadius: 1,
+                pointerEvents: 'none',
+                zIndex: 998,
+                backgroundColor: activeElement === id
+                  ? alpha(theme.palette.warning.main, 0.2)
+                  : alpha(theme.palette.primary.main, 0.05),
                 top: `${rect.top + scrollTop}px`,
                 left: `${rect.left + scrollLeft}px`,
                 width: `${rect.width}px`,
                 height: `${rect.height}px`,
               }}
             />
-            <div
-              style={{
-                ...styles.label,
+            <Box
+              sx={{
+                position: 'absolute',
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
+                padding: '6px 12px',
+                borderRadius: 1,
+                fontSize: '12px',
+                fontWeight: 500,
+                zIndex: 999,
+                boxShadow: theme.shadows[1],
+                border: `1px solid ${alpha(theme.palette.common.white, 0.1)}`,
+                fontFamily: 'monospace',
+                cursor: 'pointer',
+                userSelect: 'none',
                 top: `${adjustedTop}px`,
                 left: `${rect.left + scrollLeft}px`,
               }}
               onMouseEnter={() => setHoveredElement(id)}
               onMouseLeave={() => setHoveredElement(null)}
               onMouseMove={handleMouseMove}
-              onClick={() => handleLabelClick(id)} // Handle label click
+              onClick={() => handleLabelClick(id)}
             >
               {id}
-            </div>
+            </Box>
             {hoveredElement === id && info && (
-              <div
-                style={{
-                  ...styles.cueCard,
+              <Box
+                sx={{
+                  position: 'fixed',
+                  backgroundColor: theme.palette.background.paper,
+                  color: theme.palette.text.primary,
+                  padding: '12px 16px',
+                  borderRadius: 1,
+                  fontSize: '12px',
+                  maxWidth: '300px',
+                  boxShadow: theme.shadows[2],
+                  border: `1px solid ${theme.palette.divider}`,
+                  zIndex: 1000,
+                  pointerEvents: 'none',
                   top: `${mousePosition.y + 20}px`,
                   left: `${mousePosition.x + 20}px`,
                 }}
               >
-                <div style={{ fontWeight: 600, marginBottom: '8px' }}>
+                <Box sx={{ fontWeight: 600, mb: 1 }}>
                   {info.title}
-                </div>
-                <div style={{ marginBottom: '8px' }}>
+                </Box>
+                <Box sx={{ mb: 1 }}>
                   {info.description}
-                </div>
-                <div>
+                </Box>
+                <Box>
                   {info.dimensions}
-                </div>
-              </div>
+                </Box>
+              </Box>
             )}
           </React.Fragment>
         );
