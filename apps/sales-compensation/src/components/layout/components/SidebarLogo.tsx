@@ -1,15 +1,17 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { logoContainerStyles, logoStyles } from '../styles/sidebar.styles';
 
 const SidebarLogo: React.FC = () => (
   <Box sx={logoContainerStyles}>
-    <Box
-      component="img"
-      src="/cequens-logo.svg"
-      alt="Cequens Logo"
-      sx={logoStyles}
-    />
+    <Link href="/" sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box
+        component="img"
+        src="/cequens-logo.svg"
+        alt="Cequens Logo"
+        sx={logoStyles}
+      />
+    </Link>
   </Box>
 );
 
