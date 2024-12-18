@@ -12,7 +12,7 @@ const services = {
     { name: 'frontend', path: 'frontend', port: 3000 },
     { name: 'admin', path: 'apps/admin', port: 3002 },
     { name: 'xrm', path: 'apps/xrm', port: 3003 },
-    { name: 'sales-comp', path: 'apps/sales-comp', port: 3004 }
+    { name: 'sales-compensation', path: 'apps/sales-compensation', port: 3004 }
   ]
 };
 
