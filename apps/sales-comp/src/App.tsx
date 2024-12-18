@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AppLayout, PageWrapper, DataCard, DataTable } from '@nexus360/ui';
-import type { ColumnsType } from 'antd/es/table';
+import { AppLayout, PageWrapper, DataCard } from '@nexus360/ui';
+import { DataGrid, GridColDef, GridValueFormatterParams } from '@mui/x-data-grid';
 
 interface User {
     name?: string;
@@ -60,40 +60,44 @@ const App: React.FC = () => {
         window.location.href = `${AUTH_SERVICE_URL}/api/auth/login`;
     };
 
-    const columns: ColumnsType<SalesRecord> = [
+    const columns: GridColDef[] = [
         {
-            title: 'Employee',
-            dataIndex: 'employee',
-            key: 'employee',
-            sorter: (a, b) => a.employee.localeCompare(b.employee)
+            field: 'employee',
+            headerName: 'Employee',
+            flex: 1,
+            sortable: true
         },
         {
-            title: 'Sales',
-            dataIndex: 'sales',
-            key: 'sales',
-            render: (value) => `$${value.toLocaleString()}`,
-            sorter: (a, b) => a.sales - b.sales
+            field: 'sales',
+            headerName: 'Sales',
+            flex: 1,
+            sortable: true,
+            valueFormatter: (params: GridValueFormatterParams<number>) => 
+                `$${params.value.toLocaleString()}`
         },
         {
-            title: 'Quota',
-            dataIndex: 'quota',
-            key: 'quota',
-            render: (value) => `$${value.toLocaleString()}`,
-            sorter: (a, b) => a.quota - b.quota
+            field: 'quota',
+            headerName: 'Quota',
+            flex: 1,
+            sortable: true,
+            valueFormatter: (params: GridValueFormatterParams<number>) => 
+                `$${params.value.toLocaleString()}`
         },
         {
-            title: 'Achievement',
-            dataIndex: 'achievement',
-            key: 'achievement',
-            render: (value) => `${value}%`,
-            sorter: (a, b) => a.achievement - b.achievement
+            field: 'achievement',
+            headerName: 'Achievement',
+            flex: 1,
+            sortable: true,
+            valueFormatter: (params: GridValueFormatterParams<number>) => 
+                `${params.value}%`
         },
         {
-            title: 'Commission',
-            dataIndex: 'commission',
-            key: 'commission',
-            render: (value) => `$${value.toLocaleString()}`,
-            sorter: (a, b) => a.commission - b.commission
+            field: 'commission',
+            headerName: 'Commission',
+            flex: 1,
+            sortable: true,
+            valueFormatter: (params: GridValueFormatterParams<number>) => 
+                `$${params.value.toLocaleString()}`
         }
     ];
 
@@ -163,12 +167,14 @@ const App: React.FC = () => {
                         />
                     </div>
 
-                    <div className="p-4">
-                        <DataTable<SalesRecord>
-                            data={salesData}
+                    <div className="p-4" style={{ height: 400 }}>
+                        <DataGrid
+                            rows={salesData}
                             columns={columns}
-                            rowKey="employee"
+                            getRowId={(row: SalesRecord) => row.employee}
                             className="bg-white shadow-md rounded-lg"
+                            disableRowSelectionOnClick
+                            autoHeight
                         />
                     </div>
                 </PageWrapper>
