@@ -7,7 +7,3 @@ export { default as LayoutElements } from './components/LayoutElements';
 export { default as PrivateRoute } from './components/PrivateRoute';
 export { default as AppLauncher } from './components/AppLauncher';
 export { default as UserProfile } from './components/UserProfile';
-
-// Design system components
-export { default as UIGuide } from './components/UIGuide';
-export { default as LayoutGuide } from './components/LayoutGuide';
