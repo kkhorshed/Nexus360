@@ -5,13 +5,11 @@ import Layout from './components/layout/Layout';
 import Users from './features/users/Users';
 import Roles from './features/roles/Roles';
 import AuditLogs from './features/audit/AuditLogs';
-import AzureConfig from './features/azure-config';
-
-// Placeholder components for settings routes
-const AdminSettings = () => <div>Admin Settings</div>;
-const AccessControl = () => <div>Access Control</div>;
-const ActivityLog = () => <div>Activity Log</div>;
-const Dashboard = () => <div>Dashboard</div>;
+import AzureConfig from './features/azure-config/AzureConfig';
+import Dashboard from './features/dashboard/Dashboard';
+import AdminSettings from './features/settings/AdminSettings';
+import AccessControl from './features/settings/AccessControl';
+import ActivityLog from './features/settings/ActivityLog';
 
 export default function App() {
   return (
