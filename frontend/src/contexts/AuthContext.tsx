@@ -65,12 +65,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = () => {
-    // Store current URL for redirect back after auth
-    const currentUrl = window.location.href;
-    const encodedRedirect = encodeURIComponent(currentUrl);
-    
-    // Redirect to auth service login with return URL
-    window.location.href = `http://localhost:3001/api/auth/login?returnTo=${encodedRedirect}`;
+    // Redirect directly to auth service login endpoint
+    window.location.href = 'http://localhost:3000/api/auth/login';
   };
 
   const logout = () => {
@@ -85,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const encodedRedirect = encodeURIComponent(currentUrl);
 
     // Redirect to auth service logout
-    window.location.href = `http://localhost:3001/api/auth/logout?returnTo=${encodedRedirect}`;
+    window.location.href = `http://localhost:3000/api/auth/logout?returnTo=${encodedRedirect}`;
   };
 
   return (

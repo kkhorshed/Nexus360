@@ -7,10 +7,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const dbConfig = {
-  user: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD || 'postgres',
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: parseInt(process.env.POSTGRES_PORT || '5432'),
+  user: 'postgres',
+  password: '987789', // Using the password from .env
+  host: 'localhost',
+  port: 5432,
   database: 'postgres' // Connect to default database first
 };
 

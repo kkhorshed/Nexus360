@@ -10,6 +10,7 @@ import Reports from './features/reports/Reports';
 import Settings from './features/settings/Settings';
 import Tasks from './features/tasks/Tasks';
 import AuditTrail from './features/audit/AuditTrail';
+import AccountPlanningPage from './features/account-planning/routes/AccountPlanningPage';
 
 export default function App() {
   return (
@@ -23,6 +24,10 @@ export default function App() {
           <Route path="leads" element={<Leads />} />
           <Route path="opportunities" element={<Opportunities />} />
           <Route path="tasks" element={<Tasks />} />
+          <Route path="account-planning">
+            <Route index element={<AccountPlanningPage />} />
+            <Route path=":accountId" element={<AccountPlanningPage />} />
+          </Route>
           <Route path="reports" element={<Reports />} />
           <Route path="audit" element={<AuditTrail />} />
           <Route path="settings/*" element={<Settings />} />

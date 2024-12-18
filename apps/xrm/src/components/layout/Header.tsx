@@ -47,7 +47,7 @@ export default function Header({ drawerWidth, onDrawerToggle, isMobile }: Header
               sx={{ 
                 mr: 2, 
                 display: { md: 'none' },
-                borderRadius: 1.5 // 6px - suitable for small action button
+                borderRadius: 1.5
               }}
             >
               <MenuIcon />
@@ -93,14 +93,14 @@ export default function Header({ drawerWidth, onDrawerToggle, isMobile }: Header
           <IconButton 
             color="inherit" 
             aria-label="show notifications"
-            sx={{ borderRadius: 1.5 }} // 6px - suitable for small action button
+            sx={{ borderRadius: 1.5 }}
           >
             <Badge 
               badgeContent={4} 
               color="error"
               sx={{
                 '& .MuiBadge-badge': {
-                  borderRadius: 1 // 4px - smaller radius for the notification badge
+                  borderRadius: 1
                 }
               }}
             >
@@ -112,14 +112,14 @@ export default function Header({ drawerWidth, onDrawerToggle, isMobile }: Header
             aria-label="user profile"
             aria-haspopup="true"
             color="inherit"
-            sx={{ borderRadius: 1.5 }} // 6px - suitable for small action button
+            sx={{ borderRadius: 1.5 }}
           >
             <Avatar 
               sx={{ 
                 width: 32, 
                 height: 32, 
                 bgcolor: theme.palette.primary.main,
-                borderRadius: 2 // 8px - matches the theme's base borderRadius
+                borderRadius: 2
               }}
             >
               U

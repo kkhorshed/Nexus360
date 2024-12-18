@@ -19,7 +19,8 @@ export default function Layout() {
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <Header 
         drawerWidth={DRAWER_WIDTH} 
-        onDrawerToggle={handleDrawerToggle} 
+        onDrawerToggle={handleDrawerToggle}
+        isMobile={isMobile}
       />
       <Sidebar
         drawerWidth={DRAWER_WIDTH}

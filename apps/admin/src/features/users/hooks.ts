@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { User, UserFilters, UserViewState, AppPermission } from './types';
 
-const AUTH_SERVICE_URL = 'http://localhost:3001';
+const AUTH_SERVICE_URL = 'http://localhost:3000';
 
 interface ADUser {
   id: string;

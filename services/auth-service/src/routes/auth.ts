@@ -13,7 +13,8 @@ router.get('/login', async (req, res, next) => {
   try {
     const adService = new ADService();
     const authUrl = await adService.getAuthUrl();
-    res.json({ authUrl });
+    console.log('Generated auth URL:', authUrl);
+    res.redirect(authUrl);
   } catch (error: unknown) {
     if (isMissingConfigError(error)) {
       res.status(400).json({ error: 'Azure AD not configured' });
@@ -32,7 +33,13 @@ router.get('/callback', async (req, res, next) => {
 
     const adService = new ADService();
     const token = await adService.handleCallback(code);
-    res.json({ token });
+    const user = await adService.getCurrentUser(token);
+
+    // Redirect back to frontend with token and user data
+    const frontendUrl = 'http://localhost:3001';
+    const encodedToken = encodeURIComponent(token);
+    const encodedUser = encodeURIComponent(JSON.stringify(user));
+    res.redirect(`${frontendUrl}?token=${encodedToken}&user=${encodedUser}`);
   } catch (error: unknown) {
     if (isMissingConfigError(error)) {
       res.status(400).json({ error: 'Azure AD not configured' });

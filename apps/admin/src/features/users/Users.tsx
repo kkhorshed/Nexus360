@@ -16,7 +16,6 @@ import {
   ListItemText
 } from '@mui/material';
 import {
-  Add as AddIcon,
   Search as SearchIcon,
   ViewList as TableIcon,
   ViewModule as GridIcon,
@@ -24,7 +23,8 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   Block as BlockIcon,
-  Key as KeyIcon
+  Key as KeyIcon,
+  Refresh as RefreshIcon
 } from '@mui/icons-material';
 import { DataTable } from '@nexus360/ui';
 import PageWrapper from '../../components/common/PageWrapper';
@@ -148,7 +148,8 @@ const Users: React.FC = () => {
     handlePageChange,
     handlePageSizeChange,
     handleViewChange,
-    searchUsers
+    searchUsers,
+    fetchUsers
   } = useUsers();
 
   const { roles } = useUserRoles();
@@ -289,10 +290,11 @@ const Users: React.FC = () => {
           </Button>
           <Button
             variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {/* Handle add user */}}
+            startIcon={<RefreshIcon />}
+            onClick={fetchUsers}
+            disabled={loading}
           >
-            Add User
+            Fetch Users
           </Button>
         </>
       }

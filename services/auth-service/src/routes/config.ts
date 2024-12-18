@@ -1,13 +1,11 @@
 import { Router } from 'express';
 import { ADService } from '../services/adService';
-import { config } from '../config';
-import fs from 'fs/promises';
-import path from 'path';
+import { ConfigService } from '../services/configService';
 import { logger } from '../utils/logger';
 import { Request, Response, NextFunction } from 'express';
 
 const router = Router();
-const CONFIG_FILE = path.join(__dirname, '../config/azure.json');
+const configService = ConfigService.getInstance();
 
 // Helper function to check if error is related to missing Azure config
 const isMissingConfigError = (error: unknown): boolean => {
@@ -15,38 +13,15 @@ const isMissingConfigError = (error: unknown): boolean => {
     error.message.includes('Missing required Azure AD configuration');
 };
 
-// Ensure config directory exists
-const ensureConfigDir = async () => {
-  const configDir = path.dirname(CONFIG_FILE);
-  await fs.mkdir(configDir, { recursive: true });
-};
-
 // Get Azure configuration
 router.get('/azure', async (req: Request, res: Response, next: NextFunction) => {
   try {
     logger.info('Fetching Azure configuration');
-    await ensureConfigDir();
     
-    try {
-      const configData = await fs.readFile(CONFIG_FILE, 'utf8');
-      logger.info('Found existing Azure configuration');
-      const azureConfig = JSON.parse(configData);
-      // Don't send the client secret back to the client
-      const { clientSecret, ...safeConfig } = azureConfig;
-      res.json(safeConfig);
-    } catch (error) {
-      // If file doesn't exist, return empty config
-      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-        logger.info('No existing Azure configuration found, returning empty config');
-        res.json({
-          tenantId: '',
-          clientId: ''
-        });
-      } else {
-        logger.error('Error reading Azure configuration:', error);
-        throw error;
-      }
-    }
+    const config = await configService.getAzureConfig();
+    // Don't send the client secret back to the client
+    const { clientSecret, ...safeConfig } = config;
+    res.json(safeConfig);
   } catch (error) {
     logger.error('Error in Azure config endpoint:', error);
     next(error);
@@ -63,17 +38,13 @@ router.post('/azure', async (req: Request, res: Response, next: NextFunction) =>
       logger.error('Missing required configuration fields');
       return res.status(400).json({ error: 'Missing required configuration fields' });
     }
-
-    await ensureConfigDir();
     
-    // Save configuration
-    const configData = {
+    // Save configuration to database
+    await configService.setAzureConfig({
       tenantId,
       clientId,
       clientSecret
-    };
-    
-    await fs.writeFile(CONFIG_FILE, JSON.stringify(configData, null, 2));
+    });
 
     // Update environment variables
     process.env.AZURE_AD_TENANT_ID = tenantId;
@@ -83,8 +54,10 @@ router.post('/azure', async (req: Request, res: Response, next: NextFunction) =>
     logger.info('Azure configuration saved successfully');
 
     // Return safe config (without client secret)
-    const { clientSecret: _, ...safeConfig } = configData;
-    res.json(safeConfig);
+    res.json({
+      tenantId,
+      clientId
+    });
   } catch (error) {
     logger.error('Error saving Azure configuration:', error);
     next(error);
@@ -96,11 +69,11 @@ router.post('/azure/test', async (req: Request, res: Response, next: NextFunctio
   try {
     logger.info('Testing Azure AD connection');
     
-    // Check environment variables instead of file
-    if (!process.env.AZURE_AD_TENANT_ID || 
-        !process.env.AZURE_AD_CLIENT_ID || 
-        !process.env.AZURE_AD_CLIENT_SECRET) {
-      logger.error('No Azure configuration found in environment');
+    // Get config from database
+    const config = await configService.getAzureConfig();
+    
+    if (!config.tenantId || !config.clientId || !config.clientSecret) {
+      logger.error('No Azure configuration found in database');
       return res.status(400).json({ 
         error: 'Azure AD configuration not found. Please save configuration first.' 
       });

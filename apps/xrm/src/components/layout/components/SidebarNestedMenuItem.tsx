@@ -1,27 +1,23 @@
 import React from 'react';
 import {
   ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   Collapse,
   List,
-  useTheme,
+  Box,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { getMenuItemStyles } from '../styles/sidebar.styles';
 import { SidebarMenuItem } from './SidebarMenuItem';
-
-interface NestedMenuItem {
-  text: string;
-  icon: React.ReactNode;
-  path: string;
-}
 
 interface SidebarNestedMenuItemProps {
   text: string;
   icon: React.ReactNode;
-  children: NestedMenuItem[];
+  children: Array<{
+    text: string;
+    icon: React.ReactNode;
+    path: string;
+  }>;
   isOpen: boolean;
   onToggle: () => void;
   isParentSelected: boolean;
@@ -37,43 +33,51 @@ export const SidebarNestedMenuItem: React.FC<SidebarNestedMenuItemProps> = ({
   isParentSelected,
   currentPath,
 }) => {
-  const theme = useTheme();
-  const styles = getMenuItemStyles(theme, isParentSelected);
-
   return (
     <>
-      <ListItem disablePadding sx={styles.menuItem}>
-        <ListItemButton
-          onClick={onToggle}
-          selected={isParentSelected}
+      <ListItem
+        button
+        onClick={onToggle}
+        sx={{
+          borderRadius: 1,
+          mb: 0.5,
+          backgroundColor: isParentSelected ? 'action.selected' : 'transparent',
+          '&:hover': {
+            backgroundColor: 'action.hover',
+          },
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 40,
+            color: isParentSelected ? 'primary.main' : 'text.secondary',
+          }}
         >
-          <ListItemIcon
-            sx={{
-              ...styles.icon,
-              color: isParentSelected ? 'common.white' : 'text.primary',
-            }}
-          >
-            {icon}
-          </ListItemIcon>
-          <ListItemText
-            primary={text}
-            sx={styles.text}
-          />
-          {isOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
+          {icon}
+        </ListItemIcon>
+        <ListItemText
+          primary={text}
+          primaryTypographyProps={{
+            fontSize: '0.875rem',
+            fontWeight: isParentSelected ? 600 : 400,
+          }}
+        />
+        {isOpen ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={isOpen} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding sx={{ pl: 2 }}>
-          {children.map((child) => (
-            <SidebarMenuItem
-              key={child.text}
-              text={child.text}
-              icon={child.icon}
-              path={child.path}
-              isSelected={currentPath === child.path}
-            />
-          ))}
-        </List>
+        <Box sx={{ pl: 2 }}>
+          <List component="div" disablePadding>
+            {children.map((child) => (
+              <SidebarMenuItem
+                key={child.path}
+                text={child.text}
+                icon={child.icon}
+                path={child.path}
+                isSelected={currentPath === child.path}
+              />
+            ))}
+          </List>
+        </Box>
       </Collapse>
     </>
   );

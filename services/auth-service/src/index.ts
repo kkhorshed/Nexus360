@@ -11,8 +11,10 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: config.cors.allowedOrigins,
-  credentials: true
+  origin: '*', // Allow all origins temporarily for debugging
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
 // Parse JSON bodies

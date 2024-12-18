@@ -37,5 +37,5 @@ function clearPort(port) {
 }
 
 // Clear frontend and auth service ports
-clearPort(3000); // Frontend port
-clearPort(3001); // Auth service port
+clearPort(3001); // Frontend port
+clearPort(3000); // Auth service port

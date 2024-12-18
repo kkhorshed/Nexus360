@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const config = {
-  port: 3000, // Auth service fixed port
+  port: 3000, // Auth service port
   nodeEnv: process.env.NODE_ENV || 'development',
   azure: {
     clientId: process.env.AZURE_AD_CLIENT_ID,
@@ -16,9 +16,9 @@ export const config = {
       'http://localhost:3000', // Auth service
       'http://localhost:3001', // Frontend
       'http://localhost:3002', // Admin app
-      'http://localhost:3003',
-      'http://localhost:3004',
-      'http://localhost:3005'
+      'http://localhost:3003', // XRM
+      'http://localhost:3004', // Sales compensation
+      'http://localhost:3005' // Feture use 
     ]
   },
   logging: {

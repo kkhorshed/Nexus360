@@ -6,10 +6,10 @@ const execAsync = util.promisify(exec);
 // Configuration for selected services
 const services = {
   platform: [
-    { name: 'auth', path: 'services/auth-service', port: 3001 }
+    { name: 'auth', path: 'services/auth-service', port: 3000 }
   ],
   apps: [
-    { name: 'frontend', path: 'frontend', port: 3000 },
+    { name: 'frontend', path: 'frontend', port: 3001 },
     { name: 'admin', path: 'apps/admin', port: 3002 },
     { name: 'xrm', path: 'apps/xrm', port: 3003 },
     { name: 'sales-compensation', path: 'apps/sales-compensation', port: 3004 }

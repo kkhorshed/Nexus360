@@ -19,6 +19,7 @@ import {
   ManageAccounts as UserManagementIcon,
   Groups as TeamManagementIcon,
   Security as SecurityIcon,
+  AccountTree as AccountPlanningIcon,
 } from '@mui/icons-material';
 import { SidebarMenuItem } from './components/SidebarMenuItem';
 import { SidebarNestedMenuItem } from './components/SidebarNestedMenuItem';
@@ -51,6 +52,7 @@ const menuItems: MenuItem[] = [
   { text: 'Products', icon: <ProductsIcon />, path: '/products' },
   { text: 'Leads', icon: <LeadsIcon />, path: '/leads' },
   { text: 'Opportunities', icon: <OpportunitiesIcon />, path: '/opportunities' },
+  { text: 'Account Planning', icon: <AccountPlanningIcon />, path: '/account-planning' },
   { text: 'Reports', icon: <ReportsIcon />, path: '/reports' },
   {
     text: 'Settings',
@@ -64,12 +66,12 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({
+export default function Sidebar({
   drawerWidth,
   mobileOpen,
   onDrawerToggle,
   isMobile,
-}) => {
+}: SidebarProps) {
   const location = useLocation();
   const [openSettings, setOpenSettings] = useState(
     location.pathname.startsWith('/settings') || location.pathname === '/audit'
@@ -105,7 +107,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         text={item.text}
         icon={item.icon}
         path={item.path!}
-        isSelected={location.pathname === item.path}
+        isSelected={location.pathname === item.path || 
+          (item.path === '/account-planning' && location.pathname.startsWith('/account-planning/'))}
       />
     );
   };
@@ -113,7 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const drawer = (
     <>
       <SidebarLogo />
-      <List sx={{ pt: 1, px: 1 }}> {/* Reduced padding from pt: 2, px: 1.5 */}
+      <List sx={{ pt: 1, px: 1 }}>
         {menuItems.map(renderMenuItem)}
       </List>
     </>
@@ -159,6 +162,4 @@ export const Sidebar: React.FC<SidebarProps> = ({
       )}
     </Box>
   );
-};
-
-export default Sidebar;
+}
