@@ -4,9 +4,15 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "types": ["node", "react", "react-dom"],
-    "module": "ESNext"
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/**/*.css", "src/types/*.d.ts"],
   "exclude": ["node_modules", "dist"],
   "references": [
     { "path": "../utils" },
