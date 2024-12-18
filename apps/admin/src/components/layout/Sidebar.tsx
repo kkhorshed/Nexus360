@@ -14,7 +14,7 @@ import {
   AdminPanelSettings as AdminIcon,
   VpnKey as AccessIcon,
   History as ActivityIcon,
-  Cloud as AzureIcon,
+  ManageAccounts as UserManagementIcon,
 } from '@mui/icons-material';
 import { SidebarMenuItem } from './components/SidebarMenuItem';
 import { SidebarNestedMenuItem } from './components/SidebarNestedMenuItem';
@@ -48,12 +48,12 @@ const menuItems: MenuItem[] = [
     text: 'Settings',
     icon: <SettingsIcon />,
     children: [
-      { text: 'Admin Settings', icon: <AdminIcon />, path: '/settings/admin' },
-      { text: 'Access Control', icon: <AccessIcon />, path: '/settings/access' },
-      { text: 'Activity Log', icon: <ActivityIcon />, path: '/settings/activity' },
-      { text: 'Azure Configuration', icon: <AzureIcon />, path: '/settings/azure' }
-    ],
-  },
+      { text: 'User Management', icon: <UserManagementIcon />, path: '/settings/usermanagement' },
+      { text: 'Admin Settings', icon: <AdminIcon />, path: '/settings/adminsetting' },
+      { text: 'Access Control', icon: <AccessIcon />, path: '/settings/accesscontrol' },
+      { text: 'Activity Log', icon: <ActivityIcon />, path: '/settings/activitylog' }
+    ]
+  }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({

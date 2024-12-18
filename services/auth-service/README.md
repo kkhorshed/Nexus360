@@ -1,137 +1,187 @@
 # Auth Service
 
-## Overview
-The Auth Service is a robust authentication and user management system built on Azure Active Directory (Azure AD). It provides secure authentication, user management, and group membership functionality through Microsoft Graph API integration.
+Authentication and authorization service for the Nexus360 platform.
 
 ## Features
-- Azure AD Authentication
-- User Management
-- Group Management
-- Token Management
-- Secure Error Handling
 
-## Architecture
-
-### Core Components
-1. **User Routes** ([Documentation](docs/routes/users.md))
-   - User management endpoints
-   - Search functionality
-   - Group membership queries
-
-2. **AD Service** ([Documentation](docs/services/adService.md))
-   - Azure AD integration
-   - Microsoft Graph API operations
-   - Authentication handling
-
-3. **Token Cache** ([Documentation](docs/services/tokenCache.md))
-   - In-memory token management
-   - Expiration handling
-   - Refresh token support
-
-4. **Custom Errors** ([Documentation](docs/errors/customErrors.md))
-   - Structured error handling
-   - HTTP status code mapping
-   - Consistent error responses
+- Azure AD integration for user authentication
+- Local user database synchronization
+- Application permission management
+- Role-based access control
+- User activity tracking
 
 ## Setup
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- Azure AD Tenant
-- Microsoft Graph API access
 
-### Environment Variables
+- Node.js 16 or higher
+- PostgreSQL 12 or higher
+- Azure AD tenant (for production use)
+
+### Database Setup
+
+1. Create a PostgreSQL database for the auth service:
+
+```sql
+CREATE DATABASE nexus360_auth;
+```
+
+2. Configure database connection in `.env`:
+
 ```env
-AZURE_AD_CLIENT_ID=your_client_id
-AZURE_AD_CLIENT_SECRET=your_client_secret
-AZURE_AD_TENANT_ID=your_tenant_id
-AZURE_AD_REDIRECT_URI=your_redirect_uri
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=nexus360_auth
+DB_USER=your_user
+DB_PASSWORD=your_password
 ```
 
-### Installation
+3. Initialize the database:
+
 ```bash
-npm install
+npm run db:init
 ```
 
-### Running the Service
-```bash
-npm run dev    # Development mode
-npm start      # Production mode
+This will create all necessary tables for:
+- User management
+- Application registration
+- Role-based access control
+- Permission management
+
+### Azure AD Configuration
+
+1. Configure Azure AD credentials in `.env`:
+
+```env
+AZURE_CLIENT_ID=your_client_id
+AZURE_CLIENT_SECRET=your_client_secret
+AZURE_TENANT_ID=your_tenant_id
+```
+
+2. Ensure your Azure AD application has the following permissions:
+- User.Read.All
+- Group.Read.All
+- Directory.Read.All
+
+## User Management
+
+The service automatically syncs users from Azure AD to the local database when:
+- Users log in
+- Admin searches for users
+- Admin views user details
+- Admin manually triggers sync
+
+### User States
+
+Users can be in the following states:
+- Active: User has access to permitted applications
+- Inactive: User access is suspended
+- Pending: User exists in Azure AD but hasn't accessed the system
+
+### Application Access
+
+Users need explicit access grants to use platform applications:
+
+1. Admin grants application access
+2. Admin assigns roles within the application
+3. Roles determine available permissions
+4. User can access application features based on permissions
+
+### Permission Hierarchy
+
+```
+Application
+└── Roles
+    └── Permissions
+```
+
+Example:
+```
+XRM Application
+├── Admin Role
+│   ├── Create Records
+│   ├── Edit Records
+│   ├── Delete Records
+│   └── Manage Settings
+├── User Role
+│   ├── Create Records
+│   └── Edit Records
+└── Viewer Role
+    └── View Records
 ```
 
 ## API Endpoints
 
 ### User Management
-- `GET /users` - Get all users
-- `GET /users/search` - Search users
-- `GET /users/:id` - Get user by ID
-- `GET /users/:id/groups` - Get user's groups
 
-### Authentication
-- OAuth 2.0 flow with Azure AD
-- Token management and refresh
-- Group-based authorization
+```
+GET /api/users
+GET /api/users/search?query=
+GET /api/users/:id
+GET /api/users/:id/groups
+GET /api/users/:id/permissions
+POST /api/users/:id/sync
+POST /api/users/:id/deactivate
+POST /api/users/:id/reactivate
+```
 
-## Security Features
-- Azure AD integration
-- Token-based authentication
-- Secure error handling
-- Input validation
-- Rate limiting support
+### Application Access
 
-## Error Handling
-The service implements a comprehensive error handling system:
-- Custom error types for different scenarios
-- Consistent error responses
-- Proper HTTP status codes
-- Detailed error logging
+```
+GET /api/applications
+GET /api/applications/:id/roles
+GET /api/applications/:id/permissions
+POST /api/users/:userId/applications/:appId/access
+DELETE /api/users/:userId/applications/:appId/access
+```
+
+### Role Management
+
+```
+GET /api/roles
+POST /api/users/:userId/roles/:roleId
+DELETE /api/users/:userId/roles/:roleId
+```
 
 ## Development
 
-### Project Structure
-```
-auth-service/
-├── src/
-│   ├── routes/          # API routes
-│   ├── services/        # Core services
-│   ├── errors/          # Custom error types
-│   ├── types/           # TypeScript types
-│   └── utils/           # Utility functions
-├── docs/               # Documentation
-│   ├── routes/         # Route documentation
-│   ├── services/       # Service documentation
-│   └── errors/         # Error handling docs
-└── tests/              # Test files
-```
-
-### Best Practices
-1. Follow TypeScript best practices
-2. Implement proper error handling
-3. Write comprehensive tests
-4. Document new features
-5. Follow security guidelines
-
-## Testing
+1. Install dependencies:
 ```bash
-npm test              # Run all tests
-npm run test:watch    # Watch mode
-npm run test:coverage # Coverage report
+npm install
+```
+
+2. Start development server:
+```bash
+npm run dev
+```
+
+3. Run tests:
+```bash
+npm test
+```
+
+## Production Deployment
+
+1. Build the service:
+```bash
+npm run build
+```
+
+2. Start the service:
+```bash
+npm start
 ```
 
 ## Monitoring
-- Error logging
-- Performance metrics
-- Azure AD integration status
-- Token management statistics
 
-## Contributing
-1. Follow the existing code structure
-2. Add appropriate documentation
-3. Include tests for new features
-4. Update relevant documentation
+The service logs important events:
+- User synchronization
+- Permission changes
+- Access grants/revocations
+- Authentication attempts
+- System errors
 
-## License
-[Your License Here]
-
-## Support
-[Your Support Information]
+Monitor logs through:
+- Console output
+- Log files (if configured)
+- Application Insights (if configured)

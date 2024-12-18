@@ -1,4 +1,4 @@
-import { Client } from '@microsoft/microsoft-graph-client';
+import { Client, GraphRequest } from '@microsoft/microsoft-graph-client';
 import { 
   ConfidentialClientApplication, 
   AuthorizationCodeRequest,
@@ -9,13 +9,18 @@ import {
 import { User, GraphUser } from '../types/user';
 import { logger } from '../utils/logger';
 import { TokenCache } from './tokenCache';
-import { config } from '../config';
+import config from '../config';
 import { 
   AuthenticationError, 
   UserNotFoundError, 
   GraphAPIError, 
   ConfigurationError 
 } from '../errors/customErrors';
+
+interface GraphResponse {
+  value: GraphUser[];
+  '@odata.nextLink'?: string;
+}
 
 export class ADService {
   private graphClient: Client | null = null;
@@ -64,7 +69,7 @@ export class ADService {
       logger.info(`Using redirect URI: ${this.redirectUri}`);
       
       const authCodeUrlParameters: AuthorizationUrlRequest = {
-        scopes: ['user.read', 'directory.read.all', 'groupmember.read.all', 'offline_access'],
+        scopes: ['User.Read', 'User.Read.All', 'Directory.Read.All', 'GroupMember.Read.All', 'offline_access'],
         redirectUri: this.redirectUri,
         prompt: 'select_account',
         responseMode: 'query'
@@ -83,7 +88,7 @@ export class ADService {
       
       const tokenRequest: AuthorizationCodeRequest = {
         code,
-        scopes: ['user.read', 'directory.read.all', 'groupmember.read.all', 'offline_access'],
+        scopes: ['User.Read', 'User.Read.All', 'Directory.Read.All', 'GroupMember.Read.All', 'offline_access'],
         redirectUri: this.redirectUri
       };
 
@@ -125,7 +130,7 @@ export class ADService {
 
       const response = await this.msalClient.acquireTokenSilent({
         account,
-        scopes: ['user.read', 'directory.read.all', 'groupmember.read.all']
+        scopes: ['User.Read', 'User.Read.All', 'Directory.Read.All', 'GroupMember.Read.All']
       });
 
       if (!response?.accessToken) {
@@ -181,18 +186,63 @@ export class ADService {
     }
   }
 
+  private async getUserProfilePictureUrl(userId: string): Promise<string | null> {
+    try {
+      if (!this.graphClient) {
+        await this.initializeGraphClient();
+      }
+
+      // Try to get the photo metadata first to check if a photo exists
+      await this.graphClient!.api(`/users/${userId}/photo`).get();
+      
+      // If we get here, the photo exists, so return the URL
+      return `https://graph.microsoft.com/v1.0/users/${userId}/photo/$value`;
+    } catch (error) {
+      logger.info(`No profile picture found for user ${userId}`);
+      return null;
+    }
+  }
+
   async getAllUsers(): Promise<User[]> {
     try {
       if (!this.graphClient) {
         await this.initializeGraphClient();
       }
 
-      const response = await this.graphClient!.api('/users')
-        .select('id,displayName,mail,jobTitle,department,officeLocation,userPrincipalName')
-        .top(999)
-        .get();
+      logger.info('Starting to fetch all users from Azure AD...');
+      const allUsers: User[] = [];
+      let nextLink: string | null = '/users';
 
-      return response.value.map((user: GraphUser) => this.mapGraphUserToUser(user));
+      // Fetch users with pagination
+      while (nextLink) {
+        logger.info(`Fetching users page: ${nextLink}`);
+        const response: GraphResponse = await this.graphClient!.api(nextLink)
+          .select('id,displayName,mail,jobTitle,department,officeLocation,userPrincipalName')
+          .filter('accountEnabled eq true')
+          .orderby('displayName')
+          .get();
+
+        // Map and add users from current page
+        const usersWithPhotos = await Promise.all(
+          response.value.map(async (user: GraphUser) => {
+            const profilePictureUrl = await this.getUserProfilePictureUrl(user.id);
+            return this.mapGraphUserToUser(user, profilePictureUrl);
+          })
+        );
+        allUsers.push(...usersWithPhotos);
+
+        // Check if there are more pages
+        nextLink = response['@odata.nextLink'] || null;
+        if (nextLink) {
+          // Extract the relative path from the full URL
+          nextLink = new URL(nextLink).pathname + new URL(nextLink).search;
+        }
+
+        logger.info(`Fetched ${allUsers.length} users so far...`);
+      }
+
+      logger.info(`Completed fetching all users. Total count: ${allUsers.length}`);
+      return allUsers;
     } catch (error) {
       logger.error('Error fetching all users:', error);
       throw new GraphAPIError('Failed to fetch users');
@@ -209,7 +259,8 @@ export class ADService {
         .select('id,displayName,mail,jobTitle,department,officeLocation,userPrincipalName')
         .get() as GraphUser;
 
-      return this.mapGraphUserToUser(user);
+      const profilePictureUrl = await this.getUserProfilePictureUrl(userId);
+      return this.mapGraphUserToUser(user, profilePictureUrl);
     } catch (error) {
       logger.error('Error fetching user by ID:', error);
       throw new UserNotFoundError(userId);
@@ -228,7 +279,8 @@ export class ADService {
         .select('id,displayName,mail,jobTitle,department,officeLocation,userPrincipalName')
         .get() as GraphUser;
 
-      return this.mapGraphUserToUser(user);
+      const profilePictureUrl = await this.getUserProfilePictureUrl(user.id);
+      return this.mapGraphUserToUser(user, profilePictureUrl);
     } catch (error) {
       logger.error('Error fetching current user:', error);
       throw new GraphAPIError('Failed to fetch current user');
@@ -241,13 +293,18 @@ export class ADService {
         await this.initializeGraphClient();
       }
 
-      const response = await this.graphClient!.api('/users')
+      const response: GraphResponse = await this.graphClient!.api('/users')
         .filter(`startswith(displayName,'${query}') or startswith(mail,'${query}')`)
         .select('id,displayName,mail,jobTitle,department,officeLocation,userPrincipalName')
-        .top(50)
+        .orderby('displayName')
         .get();
 
-      return response.value.map((user: GraphUser) => this.mapGraphUserToUser(user));
+      return await Promise.all(
+        response.value.map(async (user: GraphUser) => {
+          const profilePictureUrl = await this.getUserProfilePictureUrl(user.id);
+          return this.mapGraphUserToUser(user, profilePictureUrl);
+        })
+      );
     } catch (error) {
       logger.error('Error searching users:', error);
       throw new GraphAPIError('Failed to search users');
@@ -271,7 +328,7 @@ export class ADService {
     }
   }
 
-  private mapGraphUserToUser(graphUser: GraphUser): User {
+  private mapGraphUserToUser(graphUser: GraphUser, profilePictureUrl: string | null): User {
     return {
       id: graphUser.id,
       displayName: graphUser.displayName,
@@ -279,7 +336,8 @@ export class ADService {
       jobTitle: graphUser.jobTitle,
       department: graphUser.department,
       officeLocation: graphUser.officeLocation,
-      userPrincipalName: graphUser.userPrincipalName
+      userPrincipalName: graphUser.userPrincipalName,
+      profilePictureUrl
     };
   }
 }

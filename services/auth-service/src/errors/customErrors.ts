@@ -16,15 +16,34 @@ export class AuthenticationError extends BaseError {
   }
 }
 
+export class AuthorizationError extends BaseError {
+  constructor(message = 'Access denied') {
+    super(message, 403, 'AUTHORIZATION_ERROR');
+  }
+}
+
 export class ValidationError extends BaseError {
   constructor(message = 'Validation failed') {
     super(message, 400, 'VALIDATION_ERROR');
   }
 }
 
-export class UserNotFoundError extends BaseError {
+export class NotFoundError extends BaseError {
+  constructor(message = 'Resource not found') {
+    super(message, 404, 'NOT_FOUND');
+  }
+}
+
+export class UserNotFoundError extends NotFoundError {
   constructor(userId: string) {
-    super(`User not found: ${userId}`, 404, 'USER_NOT_FOUND');
+    super(`User not found: ${userId}`);
+    this.errorCode = 'USER_NOT_FOUND';
+  }
+}
+
+export class DatabaseError extends BaseError {
+  constructor(message = 'Database operation failed') {
+    super(message, 500, 'DATABASE_ERROR');
   }
 }
 

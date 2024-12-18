@@ -64,8 +64,14 @@ async function runMigrations() {
     // Sort migration files to ensure they run in order
     migrationFiles.sort();
 
-    // Run each migration in a transaction
+    // Run each migration in a transaction, excluding test user migration
     for (const file of migrationFiles) {
+      // Skip the test user migration
+      if (file === '003_insert_test_user.sql') {
+        console.log('Skipping test user migration');
+        continue;
+      }
+
       if (file.endsWith('.sql')) {
         console.log(`Running migration: ${file}`);
         const migrationPath = path.join(migrationsDir, file);

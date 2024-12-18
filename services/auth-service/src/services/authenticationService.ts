@@ -7,7 +7,7 @@ import {
 } from '@azure/msal-node';
 import { logger } from '../utils/logger';
 import { TokenCache } from './tokenCache';
-import { config } from '../config';
+import config from '../config';
 import { 
   AuthenticationError,
   ConfigurationError 

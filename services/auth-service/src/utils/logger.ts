@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { config } from '../config';
+import config from '../config';
 
 const logFormat = winston.format.combine(
   winston.format.timestamp(),
@@ -14,7 +14,7 @@ export const logStream = {
 };
 
 export const logger = winston.createLogger({
-  level: config.logging.level,
+  level: config.logLevel,
   format: logFormat,
   transports: [
     new winston.transports.Console({
@@ -27,7 +27,7 @@ export const logger = winston.createLogger({
 });
 
 // If we're not in production, log to the console with colors
-if (config.nodeEnv !== 'production') {
+if (config.env !== 'production') {
   logger.add(new winston.transports.Console({
     format: winston.format.combine(
       winston.format.colorize(),

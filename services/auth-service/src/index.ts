@@ -1,6 +1,10 @@
+import { config as dotenvConfig } from 'dotenv';
+// Load environment variables first
+dotenvConfig();
+
 import express from 'express';
 import cors from 'cors';
-import { config } from './config';
+import config from './config';
 import { logger } from './utils/logger';
 import { authRouter } from './routes/auth';
 import { usersRouter } from './routes/users';
@@ -48,14 +52,11 @@ app.listen(port, () => {
   // Log non-sensitive configuration
   const safeConfig = {
     port: config.port,
-    nodeEnv: config.nodeEnv,
+    env: config.env,
     cors: {
       allowedOrigins: config.cors.allowedOrigins
     },
-    logging: {
-      level: config.logging.level,
-      format: config.logging.format
-    }
+    logLevel: config.logLevel
   };
   
   logger.info(`Starting auth service with configuration: ${JSON.stringify(safeConfig)}`);

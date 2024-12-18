@@ -1,67 +1,44 @@
-import { useState, useCallback } from 'react';
-import { User, UserFilters, UserViewState, AppPermission } from './types';
+import { useState, useCallback, useEffect } from 'react';
+import { User, UserFilters, UserViewState, AppPermission, SyncResult } from './types';
 import { useAuth } from '../auth/hooks';
 
 const AUTH_SERVICE_URL = 'http://localhost:3000';
 
-interface ADUser {
+interface DBUser {
   id: string;
   displayName: string;
-  email: string;
-  jobTitle?: string;
-  department?: string;
-  officeLocation?: string;
   userPrincipalName: string;
+  jobTitle: string | null;
+  department: string | null;
+  officeLocation: string | null;
+  email: string;
+  isActive: boolean;
+  lastSyncAt: string;
+  roles?: string[];
+  appPermissions?: AppPermission[];
+  profilePictureUrl?: string | null;
 }
 
-const mapADUserToUser = async (adUser: ADUser, headers: HeadersInit): Promise<User> => {
-  try {
-    // Fetch user groups to map to roles
-    const groupsResponse = await fetch(
-      `${AUTH_SERVICE_URL}/api/users/${adUser.id}/groups`,
-      {
-        mode: 'cors',
-        headers
-      }
-    );
-
-    if (!groupsResponse.ok) {
-      throw new Error('Failed to fetch user groups');
-    }
-
-    const groups = await groupsResponse.json();
-
-    return {
-      id: adUser.id,
-      displayName: adUser.displayName,
-      userPrincipalName: adUser.userPrincipalName,
-      jobTitle: adUser.jobTitle,
-      department: adUser.department,
-      mail: adUser.email,
-      roles: groups,
-      status: 'active',
-      appPermissions: []
-    };
-  } catch (err) {
-    console.error('Error mapping AD user:', err);
-    // Return user with minimal data if groups fetch fails
-    return {
-      id: adUser.id,
-      displayName: adUser.displayName,
-      userPrincipalName: adUser.userPrincipalName,
-      jobTitle: adUser.jobTitle,
-      department: adUser.department,
-      mail: adUser.email,
-      roles: [],
-      status: 'active',
-      appPermissions: []
-    };
-  }
+const mapDBUserToUser = (dbUser: DBUser): User => {
+  return {
+    id: dbUser.id,
+    displayName: dbUser.displayName,
+    userPrincipalName: dbUser.userPrincipalName || dbUser.email,
+    jobTitle: dbUser.jobTitle || undefined,
+    department: dbUser.department || undefined,
+    officeLocation: dbUser.officeLocation || undefined,
+    mail: dbUser.email,
+    roles: dbUser.roles || [],
+    status: dbUser.isActive ? 'active' : 'inactive',
+    lastSyncAt: dbUser.lastSyncAt,
+    appPermissions: dbUser.appPermissions || [],
+    profilePictureUrl: dbUser.profilePictureUrl || null
+  };
 };
 
 export const useUsers = () => {
   const { getAuthHeaders, login } = useAuth();
-  const [users, setUsers] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [viewState, setViewState] = useState<UserViewState>({
@@ -73,14 +50,46 @@ export const useUsers = () => {
     },
     pagination: {
       page: 0,
-      pageSize: 10
+      pageSize: 25
     }
   });
 
-  const fetchUsers = useCallback(async () => {
+  // Automatic periodic sync (every 5 minutes)
+  useEffect(() => {
+    const syncUsers = async () => {
+      try {
+        await handleSync();
+      } catch (error) {
+        console.error('Auto-sync failed:', error);
+      }
+    };
+
+    syncUsers();
+    const intervalId = setInterval(syncUsers, 5 * 60 * 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleSync = async () => {
     setLoading(true);
     setError(null);
     try {
+      const syncResponse = await fetch(`${AUTH_SERVICE_URL}/api/users/sync`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: getAuthHeaders()
+      });
+
+      if (!syncResponse.ok) {
+        if (syncResponse.status === 401) {
+          login();
+          return;
+        }
+        const errorData = await syncResponse.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to sync users');
+      }
+
+      const syncResult: SyncResult = await syncResponse.json();
+
       const response = await fetch(`${AUTH_SERVICE_URL}/api/users`, {
         mode: 'cors',
         headers: getAuthHeaders()
@@ -95,26 +104,17 @@ export const useUsers = () => {
         throw new Error(errorData.message || 'Failed to fetch users');
       }
 
-      const adUsers: ADUser[] = await response.json();
-      
-      // Handle case where Azure AD is not configured
-      if (!Array.isArray(adUsers)) {
-        setUsers([]);
-        return;
-      }
-
-      const mappedUsers = await Promise.all(adUsers.map(user => mapADUserToUser(user, getAuthHeaders())));
-      setUsers(mappedUsers);
+      const dbUsers: DBUser[] = await response.json();
+      const mappedUsers = dbUsers.map(mapDBUserToUser);
+      setAllUsers(mappedUsers);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred while fetching users';
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while syncing users';
       setError(errorMessage);
-      console.error('Error fetching users:', err);
-      // Set empty array on error to prevent UI from breaking
-      setUsers([]);
+      console.error('Error syncing users:', err);
     } finally {
       setLoading(false);
     }
-  }, [getAuthHeaders, login]);
+  };
 
   const searchUsers = useCallback(async (query: string = '') => {
     setLoading(true);
@@ -137,22 +137,14 @@ export const useUsers = () => {
         throw new Error(errorData.message || 'Failed to search users');
       }
 
-      const adUsers: ADUser[] = await response.json();
-      
-      // Handle case where Azure AD is not configured
-      if (!Array.isArray(adUsers)) {
-        setUsers([]);
-        return;
-      }
-
-      const mappedUsers = await Promise.all(adUsers.map(user => mapADUserToUser(user, getAuthHeaders())));
-      setUsers(mappedUsers);
+      const dbUsers: DBUser[] = await response.json();
+      const mappedUsers = dbUsers.map(mapDBUserToUser);
+      setAllUsers(mappedUsers);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred while searching users';
       setError(errorMessage);
       console.error('Error searching users:', err);
-      // Set empty array on error to prevent UI from breaking
-      setUsers([]);
+      setAllUsers([]);
     } finally {
       setLoading(false);
     }
@@ -183,8 +175,7 @@ export const useUsers = () => {
         throw new Error(errorData.message || 'Failed to update user permissions');
       }
 
-      // Update local state
-      setUsers(prev => prev.map(user => 
+      setAllUsers(prev => prev.map(user => 
         user.id === userId
           ? { ...user, roles, appPermissions }
           : user
@@ -234,7 +225,7 @@ export const useUsers = () => {
   }, [updateViewState]);
 
   // Apply filters and sorting to users
-  const filteredUsers = users.filter(user => {
+  const filteredUsers = allUsers.filter(user => {
     if (!viewState.filters) return true;
     
     const { search, department, role, status } = viewState.filters;
@@ -254,16 +245,24 @@ export const useUsers = () => {
   // Apply sorting
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     const { field, direction } = viewState.sort;
-    const aValue = a[field];
-    const bValue = b[field];
+    const aValue = a[field] ?? '';  // Use nullish coalescing to handle null/undefined
+    const bValue = b[field] ?? '';  // Convert null/undefined to empty string
     
-    if (aValue === bValue) return 0;
-    if (aValue === undefined) return 1;
-    if (bValue === undefined) return -1;
+    // Handle special cases for non-string comparisons
+    if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
+      return direction === 'asc' ? (aValue === bValue ? 0 : aValue ? 1 : -1) : (aValue === bValue ? 0 : aValue ? -1 : 1);
+    }
+
+    // Convert to strings for comparison
+    const aString = String(aValue).toLowerCase();
+    const bString = String(bValue).toLowerCase();
     
-    const comparison = aValue < bValue ? -1 : 1;
+    const comparison = aString.localeCompare(bString);
     return direction === 'asc' ? comparison : -comparison;
   });
+
+  // Get total count before pagination
+  const totalCount = sortedUsers.length;
 
   // Apply pagination
   const { page, pageSize } = viewState.pagination;
@@ -271,11 +270,12 @@ export const useUsers = () => {
 
   return {
     users: paginatedUsers,
-    totalUsers: filteredUsers.length,
+    allUsers, // Expose the full dataset for stats
+    totalUsers: totalCount,
     loading,
     error,
     viewState,
-    fetchUsers,
+    syncUsers: handleSync,
     searchUsers,
     updateUserPermissions,
     handleFilterChange,

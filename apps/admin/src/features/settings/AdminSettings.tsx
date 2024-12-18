@@ -1,114 +1,99 @@
 import React from 'react';
-import { 
-  Box, 
-  Paper, 
-  Typography, 
-  Switch, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  ListItemSecondaryAction,
-  Divider
+import { Link as RouterLink } from 'react-router-dom';
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardActionArea,
 } from '@mui/material';
-import PageWrapper, { PageSection } from '../../components/common/PageWrapper';
+import {
+  Security as SecurityIcon,
+  People as PeopleIcon,
+  History as HistoryIcon,
+  Settings as SettingsIcon,
+} from '@mui/icons-material';
+import PageWrapper from '../../components/common/PageWrapper';
 
-interface SettingItemProps {
-  title: string;
-  description: string;
-  enabled: boolean;
-  onChange: (checked: boolean) => void;
-}
+const settingsGroups = [
+  {
+    title: 'Access Management',
+    items: [
+      {
+        name: 'User Management',
+        description: 'Manage users and their permissions',
+        icon: <PeopleIcon />,
+        path: '/settings/users',
+      },
+      {
+        name: 'Access Control',
+        description: 'Configure system access rules',
+        icon: <SecurityIcon />,
+        path: '/settings/access-control',
+      },
+    ],
+  },
+  {
+    title: 'System',
+    items: [
+      {
+        name: 'Activity Log',
+        description: 'View system activity and audit logs',
+        icon: <HistoryIcon />,
+        path: '/settings/activity',
+      },
+      {
+        name: 'System Settings',
+        description: 'Configure global system settings',
+        icon: <SettingsIcon />,
+        path: '/settings/system',
+      },
+    ],
+  },
+];
 
-const SettingItem = ({ title, description, enabled, onChange }: SettingItemProps) => (
-  <ListItem>
-    <ListItemText
-      primary={title}
-      secondary={description}
-      primaryTypographyProps={{
-        fontWeight: 500
-      }}
-    />
-    <ListItemSecondaryAction>
-      <Switch
-        edge="end"
-        checked={enabled}
-        onChange={(e) => onChange(e.target.checked)}
-      />
-    </ListItemSecondaryAction>
-  </ListItem>
-);
-
-export default function AdminSettings() {
-  const [settings, setSettings] = React.useState({
-    twoFactor: true,
-    emailNotifications: true,
-    auditLogging: true,
-    autoLockout: false,
-    maintenanceMode: false
-  });
-
-  const handleSettingChange = (setting: keyof typeof settings) => (checked: boolean) => {
-    setSettings(prev => ({
-      ...prev,
-      [setting]: checked
-    }));
-  };
-
+const AdminSettings = () => {
   return (
     <PageWrapper
-      title="Admin Settings"
-      description="Configure system-wide administration settings"
-      breadcrumbs={[
-        { text: 'Settings', href: '/settings' },
-        { text: 'Admin Settings' }
-      ]}
+      title="Settings"
+      description="Manage system settings and configurations"
     >
-      <PageSection title="Security Settings">
-        <List>
-          <SettingItem
-            title="Two-Factor Authentication"
-            description="Require 2FA for all admin accounts"
-            enabled={settings.twoFactor}
-            onChange={handleSettingChange('twoFactor')}
-          />
-          <Divider component="li" />
-          <SettingItem
-            title="Auto Account Lockout"
-            description="Automatically lock accounts after failed login attempts"
-            enabled={settings.autoLockout}
-            onChange={handleSettingChange('autoLockout')}
-          />
-        </List>
-      </PageSection>
-
-      <PageSection title="Notifications">
-        <List>
-          <SettingItem
-            title="Email Notifications"
-            description="Send email notifications for important system events"
-            enabled={settings.emailNotifications}
-            onChange={handleSettingChange('emailNotifications')}
-          />
-        </List>
-      </PageSection>
-
-      <PageSection title="System">
-        <List>
-          <SettingItem
-            title="Audit Logging"
-            description="Enable detailed audit logging for all admin actions"
-            enabled={settings.auditLogging}
-            onChange={handleSettingChange('auditLogging')}
-          />
-          <Divider component="li" />
-          <SettingItem
-            title="Maintenance Mode"
-            description="Put the system in maintenance mode (restricts user access)"
-            enabled={settings.maintenanceMode}
-            onChange={handleSettingChange('maintenanceMode')}
-          />
-        </List>
-      </PageSection>
+      {settingsGroups.map((group) => (
+        <div key={group.title} style={{ marginBottom: '2rem' }}>
+          <Typography
+            variant="h6"
+            sx={{ mb: 2, color: 'text.secondary', fontWeight: 500 }}
+          >
+            {group.title}
+          </Typography>
+          <Grid container spacing={2}>
+            {group.items.map((item) => (
+              <Grid item xs={12} sm={6} md={4} key={item.name}>
+                <Card>
+                  <CardActionArea component={RouterLink} to={item.path}>
+                    <CardContent>
+                      <ListItem disablePadding>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText
+                          primary={item.name}
+                          secondary={item.description}
+                        />
+                      </ListItem>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+      ))}
     </PageWrapper>
   );
-}
+};
+
+export default AdminSettings;

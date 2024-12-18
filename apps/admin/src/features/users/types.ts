@@ -8,13 +8,21 @@ export interface User {
   id: string;
   displayName: string;
   userPrincipalName: string;
+  givenName?: string;
+  surname?: string;
   jobTitle?: string;
   department?: string;
+  officeLocation?: string;
+  email?: string;
   mail?: string;
   roles: string[];
   status: 'active' | 'inactive';
   lastLogin?: string;
+  lastSyncAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
   appPermissions: AppPermission[];
+  profilePictureUrl?: string | null;
 }
 
 export interface UserFormData {
@@ -52,4 +60,10 @@ export interface UserViewState {
     page: number;
     pageSize: number;
   };
+}
+
+export interface SyncResult {
+  total: number;
+  updated: number;
+  failed: number;
 }
