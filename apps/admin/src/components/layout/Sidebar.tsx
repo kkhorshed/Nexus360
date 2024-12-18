@@ -1,149 +1,155 @@
-import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Drawer,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Divider,
   Box,
-  useTheme
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
   People as UsersIcon,
   Security as RolesIcon,
   Assessment as AuditIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  AdminPanelSettings as AdminIcon,
+  VpnKey as AccessIcon,
+  History as ActivityIcon,
+  Cloud as AzureIcon,
 } from '@mui/icons-material';
+import { SidebarMenuItem } from './components/SidebarMenuItem';
+import { SidebarNestedMenuItem } from './components/SidebarNestedMenuItem';
+import { SidebarLogo } from './components/SidebarLogo';
+import { drawerStyles } from './styles/sidebar.styles';
 
 interface SidebarProps {
-  open: boolean;
-  onClose: () => void;
+  drawerWidth: number;
+  mobileOpen: boolean;
+  onDrawerToggle: () => void;
+  isMobile: boolean;
 }
 
-const menuItems = [
-  {
-    text: 'Dashboard',
-    icon: <DashboardIcon />,
-    path: '/'
-  },
-  {
-    text: 'Users',
-    icon: <UsersIcon />,
-    path: '/users'
-  },
-  {
-    text: 'Roles & Permissions',
-    icon: <RolesIcon />,
-    path: '/roles'
-  },
-  {
-    text: 'Audit Logs',
-    icon: <AuditIcon />,
-    path: '/audit'
-  },
+interface MenuItem {
+  text: string;
+  icon: React.ReactNode;
+  path?: string;
+  children?: Array<{
+    text: string;
+    icon: React.ReactNode;
+    path: string;
+  }>;
+}
+
+const menuItems: MenuItem[] = [
+  { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
+  { text: 'Users', icon: <UsersIcon />, path: '/users' },
+  { text: 'Roles', icon: <RolesIcon />, path: '/roles' },
+  { text: 'Audit Logs', icon: <AuditIcon />, path: '/audit' },
   {
     text: 'Settings',
     icon: <SettingsIcon />,
-    path: '/settings'
-  }
+    children: [
+      { text: 'Admin Settings', icon: <AdminIcon />, path: '/settings/admin' },
+      { text: 'Access Control', icon: <AccessIcon />, path: '/settings/access' },
+      { text: 'Activity Log', icon: <ActivityIcon />, path: '/settings/activity' },
+      { text: 'Azure Configuration', icon: <AzureIcon />, path: '/settings/azure' }
+    ],
+  },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
-  const theme = useTheme();
+export const Sidebar: React.FC<SidebarProps> = ({
+  drawerWidth,
+  mobileOpen,
+  onDrawerToggle,
+  isMobile,
+}) => {
   const location = useLocation();
+  const [openSettings, setOpenSettings] = useState(
+    location.pathname.startsWith('/settings')
+  );
 
-  const isActive = (path: string) => {
-    return location.pathname === path || 
-           (path !== '/' && location.pathname.startsWith(path));
+  const handleSettingsClick = () => {
+    setOpenSettings(!openSettings);
   };
 
-  const drawerContent = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ 
-        width: 240,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 2,
-        minHeight: 64
-      }}>
-        {/* Logo or branding can go here */}
-      </Box>
-      
-      <Divider />
+  const renderMenuItem = (item: MenuItem) => {
+    if (item.children) {
+      const isParentSelected = item.children.some(
+        child => location.pathname === child.path
+      );
 
-      <List sx={{ flexGrow: 1, pt: 2 }}>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              component={Link}
-              to={item.path}
-              selected={isActive(item.path)}
-              sx={{
-                '&.Mui-selected': {
-                  backgroundColor: theme.palette.primary.main + '1A', // 10% opacity
-                  '&:hover': {
-                    backgroundColor: theme.palette.primary.main + '33', // 20% opacity
-                  },
-                },
-                borderRadius: '0 24px 24px 0',
-                mr: 2,
-                mb: 0.5,
-              }}
-            >
-              <ListItemIcon sx={{
-                color: isActive(item.path) ? theme.palette.primary.main : 'inherit',
-                minWidth: 40
-              }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText 
-                primary={item.text}
-                primaryTypographyProps={{
-                  fontSize: '0.875rem',
-                  fontWeight: isActive(item.path) ? 600 : 400,
-                  color: isActive(item.path) ? theme.palette.primary.main : 'inherit'
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+      return (
+        <SidebarNestedMenuItem
+          key={item.text}
+          text={item.text}
+          icon={item.icon}
+          children={item.children}
+          isOpen={openSettings}
+          onToggle={handleSettingsClick}
+          isParentSelected={isParentSelected}
+          currentPath={location.pathname}
+        />
+      );
+    }
+
+    return (
+      <SidebarMenuItem
+        key={item.text}
+        text={item.text}
+        icon={item.icon}
+        path={item.path!}
+        isSelected={location.pathname === item.path}
+      />
+    );
+  };
+
+  const drawer = (
+    <>
+      <SidebarLogo />
+      <List sx={{ pt: 1, px: 1 }}>
+        {menuItems.map(renderMenuItem)}
       </List>
-
-      <Divider />
-
-      <Box sx={{ p: 2, textAlign: 'center' }}>
-        {/* Footer content can go here */}
-      </Box>
-    </Box>
+    </>
   );
 
   return (
-    <Drawer
-      variant="permanent"
-      open={open}
-      onClose={onClose}
-      sx={{
-        width: open ? 240 : 0,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: 240,
-          boxSizing: 'border-box',
-          borderRight: `1px solid ${theme.palette.divider}`,
-          transition: theme.transitions.create('transform', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          transform: open ? 'translateX(0)' : 'translateX(-100%)',
-        },
-      }}
+    <Box
+      component="nav"
+      sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
     >
-      {drawerContent}
-    </Drawer>
+      {isMobile ? (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={onDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            ...drawerStyles.temporary,
+            '& .MuiDrawer-paper': {
+              ...drawerStyles.temporary['& .MuiDrawer-paper'],
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      ) : (
+        <Drawer
+          variant="permanent"
+          sx={{
+            ...drawerStyles.permanent,
+            '& .MuiDrawer-paper': {
+              ...drawerStyles.permanent['& .MuiDrawer-paper'],
+              width: drawerWidth,
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      )}
+    </Box>
   );
 };
 

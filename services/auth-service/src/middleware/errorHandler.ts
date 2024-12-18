@@ -1,68 +1,71 @@
 import { Request, Response, NextFunction } from 'express';
-import { BaseError } from '../errors/customErrors';
 import { logger } from '../utils/logger';
-import { config } from '../config';
-import { ValidationError as JoiValidationError, Schema } from 'joi';
+
+interface ErrorResponse {
+  error: {
+    statusCode: number;
+    name: string;
+    errorCode: string;
+    message?: string;
+  };
+}
+
+export class CustomError extends Error {
+  statusCode: number;
+  errorCode: string;
+
+  constructor(message: string, statusCode: number = 500, errorCode: string = 'INTERNAL_ERROR') {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.errorCode = errorCode;
+  }
+}
+
+export class ConfigurationError extends CustomError {
+  constructor(message: string) {
+    super(message, 500, 'CONFIG_ERROR');
+  }
+}
+
+export class AuthenticationError extends CustomError {
+  constructor(message: string) {
+    super(message, 401, 'AUTH_ERROR');
+  }
+}
+
+export class ValidationError extends CustomError {
+  constructor(message: string) {
+    super(message, 400, 'VALIDATION_ERROR');
+  }
+}
 
 export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ) => {
-  // Log error with request context
   logger.error('Error occurred', {
-    error: err,
-    requestId: req.headers['x-request-id'],
+    error: {
+      name: err.name,
+      message: err.message,
+      stack: err.stack
+    },
     path: req.path,
     method: req.method,
     query: req.query,
-    body: req.body,
-    stack: err.stack
+    body: req.body
   });
 
-  // Handle known errors
-  if (err instanceof BaseError) {
-    return res.status(err.statusCode).json({
-      error: err.message,
-      code: err.errorCode,
-      details: config.nodeEnv === 'development' ? err.stack : undefined
-    });
-  }
-
-  // Handle unknown errors
-  return res.status(500).json({
-    error: 'Internal server error',
-    code: 'INTERNAL_ERROR',
-    details: config.nodeEnv === 'development' ? err.stack : undefined
-  });
-};
-
-// Middleware to add request ID
-export const addRequestId = (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-): void => {
-  req.headers['x-request-id'] = req.headers['x-request-id'] || 
-    `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  next();
-};
-
-// Middleware to validate request schema
-export const validateRequest = (schema: Schema) => async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    await schema.validateAsync(req.body);
-    next();
-  } catch (err) {
-    if (err instanceof JoiValidationError) {
-      next(new BaseError(err.message, 400, 'VALIDATION_ERROR'));
-    } else {
-      next(new BaseError('Validation failed', 400, 'VALIDATION_ERROR'));
+  const errorResponse: ErrorResponse = {
+    error: {
+      statusCode: err instanceof CustomError ? err.statusCode : 500,
+      name: err.name,
+      errorCode: err instanceof CustomError ? err.errorCode : 'INTERNAL_ERROR',
+      message: err.message
     }
-  }
+  };
+
+  res.status(errorResponse.error.statusCode).json(errorResponse);
 };

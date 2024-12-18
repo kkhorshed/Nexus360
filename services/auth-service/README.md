@@ -1,184 +1,115 @@
 # Auth Service
 
-Authentication service for Nexus360 platform using Azure AD.
+## Azure AD Configuration Storage
 
-## Features
+The Azure AD configuration is securely stored in PostgreSQL using the following schema:
 
-- Azure AD Single Sign-On (SSO)
-- Token-based authentication
-- User profile management
-- Cross-origin resource sharing (CORS)
-- Persistent authentication
-- Secure token storage
+```sql
+CREATE TABLE app_config (
+    key VARCHAR(50) PRIMARY KEY,
+    value TEXT NOT NULL,
+    encrypted BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-## Configuration
+### Security Features
 
-### Environment Variables
+1. Encryption:
+   - Sensitive values (like client secrets) are encrypted before storage
+   - Uses AES-256-GCM encryption with salt and IV
+   - Encryption key is configured via ENCRYPTION_KEY environment variable
 
-Create a `.env` file in the service root:
+2. Database Security:
+   - Values are stored in a dedicated config table
+   - Encrypted values are marked with encrypted=true
+   - Timestamps track creation and updates
+   - Uses database transactions for atomic updates
 
+## Environment Variables
+
+Required environment variables:
 ```env
-# Azure AD Configuration
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+
+# Encryption Configuration
+ENCRYPTION_KEY=your-encryption-key-min-32-chars-long
+
+# Default Azure AD Configuration (optional)
 AZURE_AD_TENANT_ID=your-tenant-id
 AZURE_AD_CLIENT_ID=your-client-id
 AZURE_AD_CLIENT_SECRET=your-client-secret
-AZURE_AD_REDIRECT_URI=http://localhost:3006/api/auth/callback
-
-# API Configuration
-PORT=3006
-NODE_ENV=development
-
-# CORS Configuration
-CORS_ALLOWED_ORIGINS=http://localhost:3010,http://localhost:3020
-
-# Logging
-LOG_LEVEL=info
-LOG_FORMAT=json
 ```
 
-## API Endpoints
+## Setup Instructions
 
-### Authentication
+1. Database Setup:
+   ```bash
+   # Run the migration script
+   psql -U your_user -d your_database -f src/db/migrations/001_create_config_table.sql
+   ```
 
-#### `GET /api/auth/login`
-Initiates Azure AD login flow.
+2. Environment Setup:
+   - Copy `.env.example` to `.env`
+   - Update database connection string
+   - Set encryption key
+   - (Optional) Set default Azure AD credentials
 
-#### `GET /api/auth/callback`
-Handles Azure AD callback with authorization code.
+3. Start the Service:
+   ```bash
+   npm run dev
+   ```
 
-### User Management
+## Configuration Management
 
-#### `GET /api/users`
-Get all users (requires authentication).
+The configuration can be managed through:
 
-#### `GET /api/users/:userId`
-Get user by ID (requires authentication).
+1. Admin Interface:
+   - Navigate to Settings > Azure Configuration
+   - Input Azure AD credentials
+   - Test connection
+   - Save configuration (automatically encrypted)
 
-#### `GET /api/users/search`
-Search users by query (requires authentication).
+2. API Endpoints:
+   - GET /api/config/azure - Get current configuration
+   - POST /api/config/azure - Update configuration
+   - POST /api/config/azure/test - Test current configuration
 
-#### `GET /api/users/:userId/groups`
-Get user's groups (requires authentication).
+## Security Considerations
 
-## Authentication Flow
+1. Database Security:
+   - Use strong PostgreSQL user passwords
+   - Configure proper database access controls
+   - Enable SSL for database connections
+   - Regular database backups
 
-1. User attempts to access protected resource
-2. Redirected to `/api/auth/login`
-3. Azure AD authentication process
-4. Callback received at `/api/auth/callback`
-5. User profile retrieved and token generated
-6. Redirected back to application with token and profile
+2. Encryption:
+   - Use a strong ENCRYPTION_KEY (min 32 characters)
+   - Store ENCRYPTION_KEY securely (e.g., Azure Key Vault in production)
+   - Rotate encryption keys periodically
 
-## Development
+3. Access Control:
+   - API endpoints require authentication
+   - Configuration access is logged
+   - Failed attempts are monitored
 
-### Prerequisites
+## Backup and Recovery
 
-- Node.js 16+
-- npm or pnpm
-- Azure AD Application credentials
+1. Database Backup:
+   ```bash
+   pg_dump -U your_user -d your_database -t app_config > config_backup.sql
+   ```
 
-### Installation
+2. Database Restore:
+   ```bash
+   psql -U your_user -d your_database -f config_backup.sql
+   ```
 
-```bash
-npm install
-# or
-pnpm install
-```
+## Development Notes
 
-### Running
-
-```bash
-npm run dev
-# or
-pnpm dev
-```
-
-### Testing
-
-```bash
-npm test
-# or
-pnpm test
-```
-
-## Security
-
-### Token Management
-
-- Access tokens stored securely
-- Token refresh mechanism
-- Token validation middleware
-- Secure cookie handling
-
-### CORS Configuration
-
-- Whitelist of allowed origins
-- Credential support
-- Pre-flight request handling
-
-### Error Handling
-
-- Custom error types
-- Consistent error responses
-- Detailed logging
-- Rate limiting
-
-## Architecture
-
-### Components
-
-- **ADController**: Handles auth endpoints
-- **ADService**: Azure AD integration
-- **TokenCache**: Token management
-- **ErrorHandler**: Error processing
-
-### Dependencies
-
-- @azure/msal-node
-- @microsoft/microsoft-graph-client
-- express
-- winston
-
-## Deployment
-
-### Production Setup
-
-1. Configure environment variables
-2. Set NODE_ENV to 'production'
-3. Configure proper CORS origins
-4. Enable secure cookies
-5. Set up logging
-
-### Health Checks
-
-- `/api/health` endpoint
-- Azure AD connectivity check
-- Token validation check
-
-## Troubleshooting
-
-### Common Issues
-
-1. CORS errors
-   - Verify allowed origins
-   - Check credentials mode
-
-2. Token errors
-   - Check Azure AD configuration
-   - Verify token expiration
-   - Clear browser cache
-
-3. Callback errors
-   - Verify redirect URI
-   - Check Azure AD permissions
-
-## Contributing
-
-1. Create feature branch
-2. Add tests
-3. Update documentation
-4. Submit pull request
-
-## License
-
-MIT License
+- The service uses a singleton pattern for database connections
+- Configuration changes are validated before saving
+- Failed configurations are automatically rolled back
+- All operations are logged for auditing

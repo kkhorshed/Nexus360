@@ -7,7 +7,6 @@ import {
   AccountInfo
 } from '@azure/msal-node';
 import { User, GraphUser } from '../types/user';
-import { config } from '../config';
 import { logger } from '../utils/logger';
 import { TokenCache } from './tokenCache';
 import { 
@@ -27,15 +26,19 @@ export class ADService {
     this.redirectUri = process.env.AZURE_AD_REDIRECT_URI || 'http://localhost:3001/api/auth/callback';
     this.tokenCache = new TokenCache();
     
-    if (!config.azure.clientId || !config.azure.clientSecret || !config.azure.tenantId) {
+    const clientId = process.env.AZURE_AD_CLIENT_ID;
+    const clientSecret = process.env.AZURE_AD_CLIENT_SECRET;
+    const tenantId = process.env.AZURE_AD_TENANT_ID;
+
+    if (!clientId || !clientSecret || !tenantId) {
       throw new ConfigurationError('Missing required Azure AD configuration');
     }
 
     const msalConfig: Configuration = {
       auth: {
-        clientId: config.azure.clientId,
-        clientSecret: config.azure.clientSecret,
-        authority: `https://login.microsoftonline.com/${config.azure.tenantId}`,
+        clientId,
+        clientSecret,
+        authority: `https://login.microsoftonline.com/${tenantId}`,
         knownAuthorities: [`login.microsoftonline.com`]
       },
       system: {
@@ -115,7 +118,7 @@ export class ADService {
       const account: AccountInfo = {
         homeAccountId: userId,
         environment: 'login.microsoftonline.com',
-        tenantId: config.azure.tenantId,
+        tenantId: process.env.AZURE_AD_TENANT_ID || '',
         username: userId,
         localAccountId: userId
       };

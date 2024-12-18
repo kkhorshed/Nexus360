@@ -1,26 +1,35 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
 import Layout from './components/layout/Layout';
 import Users from './features/users/Users';
-import theme from './theme';
+import Roles from './features/roles/Roles';
+import AuditLogs from './features/audit/AuditLogs';
+import AzureConfig from './features/azure-config';
 
-const App: React.FC = () => {
+// Placeholder components for settings routes
+const AdminSettings = () => <div>Admin Settings</div>;
+const AccessControl = () => <div>Access Control</div>;
+const ActivityLog = () => <div>Activity Log</div>;
+const Dashboard = () => <div>Dashboard</div>;
+
+export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Navigate to="/users" replace />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/roles" element={<div>Roles & Permissions</div>} />
-            <Route path="/audit" element={<div>Audit Logs</div>} />
-            <Route path="/settings" element={<div>Settings</div>} />
-          </Routes>
-        </Layout>
-      </Router>
-    </ThemeProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="roles" element={<Roles />} />
+          <Route path="audit" element={<AuditLogs />} />
+          <Route path="settings">
+            <Route path="admin" element={<AdminSettings />} />
+            <Route path="access" element={<AccessControl />} />
+            <Route path="activity" element={<ActivityLog />} />
+            <Route path="azure" element={<AzureConfig />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </Router>
   );
-};
-
-export default App;
+}

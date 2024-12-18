@@ -1,80 +1,132 @@
-import React from 'react';
 import {
   AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
   Box,
-  useTheme
+  IconButton,
+  Toolbar,
+  Typography,
+  useTheme,
+  InputBase,
+  Badge,
+  Avatar,
+  alpha,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  AdminPanelSettings as AdminIcon
-} from '@mui/icons-material';
-import { UserProfile } from '@nexus360/ui';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 interface HeaderProps {
-  isSidebarOpen: boolean;
-  onSidebarToggle: () => void;
+  drawerWidth: number;
+  onDrawerToggle: () => void;
+  isMobile: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-  isSidebarOpen, 
-  onSidebarToggle 
-}) => {
+export default function Header({ drawerWidth, onDrawerToggle, isMobile }: HeaderProps) {
   const theme = useTheme();
 
   return (
     <AppBar
       position="fixed"
+      elevation={0}
       sx={{
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        ...(isSidebarOpen && {
-          marginLeft: 240,
-          width: `calc(100% - 240px)`,
-          transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-        }),
+        width: { md: `calc(100% - ${drawerWidth}px)` },
+        ml: { md: `${drawerWidth}px` },
+        backgroundColor: '#ffffff',
+        color: 'text.primary',
+        borderBottom: '1px solid',
+        borderColor: 'divider',
       }}
     >
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="toggle sidebar"
-          onClick={onSidebarToggle}
-          edge="start"
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
-
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <AdminIcon sx={{ mr: 1 }} />
-          <Typography variant="h6" noWrap>
-            Admin Portal
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={onDrawerToggle}
+              sx={{ 
+                mr: 2, 
+                display: { md: 'none' },
+                borderRadius: 1.5
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 600 }}>
+            Nexus360 Admin
           </Typography>
         </Box>
 
-        <Box sx={{ flexGrow: 1 }} />
+        {/* Search Box */}
+        <Box
+          sx={{
+            position: 'relative',
+            backgroundColor: (theme) => alpha(theme.palette.common.black, 0.04),
+            '&:hover': {
+              backgroundColor: (theme) => alpha(theme.palette.common.black, 0.08),
+            },
+            marginRight: 2,
+            marginLeft: 2,
+            width: 'auto',
+            flex: 1,
+            maxWidth: '600px',
+          }}
+        >
+          <Box sx={{ padding: '0 12px', height: '100%', position: 'absolute', display: 'flex', alignItems: 'center' }}>
+            <SearchIcon sx={{ color: 'text.secondary' }} />
+          </Box>
+          <InputBase
+            placeholder="Search..."
+            sx={{
+              color: 'inherit',
+              width: '100%',
+              '& .MuiInputBase-input': {
+                padding: '8px 8px 8px 48px',
+              },
+            }}
+          />
+        </Box>
 
-        <UserProfile 
-          user={{
-            name: 'Admin User',
-            email: 'admin@example.com'
-          }}
-          onLogout={() => {
-            // Implement logout
-          }}
-        />
+        {/* Right Section - Notifications & Profile */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <IconButton 
+            color="inherit" 
+            aria-label="show notifications"
+            sx={{ borderRadius: 1.5 }}
+          >
+            <Badge 
+              badgeContent={4} 
+              color="error"
+              sx={{
+                '& .MuiBadge-badge': {
+                  borderRadius: 1
+                }
+              }}
+            >
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <IconButton
+            edge="end"
+            aria-label="user profile"
+            aria-haspopup="true"
+            color="inherit"
+            sx={{ borderRadius: 1.5 }}
+          >
+            <Avatar 
+              sx={{ 
+                width: 32, 
+                height: 32, 
+                bgcolor: theme.palette.primary.main,
+                borderRadius: 2
+              }}
+            >
+              A
+            </Avatar>
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );
-};
-
-export default Header;
+}

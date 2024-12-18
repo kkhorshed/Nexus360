@@ -10,8 +10,6 @@ import {
   Grid,
   Chip,
   Avatar,
-  TableCell,
-  TableRow,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -32,7 +30,8 @@ import { DataTable } from '@nexus360/ui';
 import PageWrapper from '../../components/common/PageWrapper';
 import DataFilter, { FilterOption } from '../../components/common/DataFilter';
 import { useUsers, useUserRoles } from './hooks';
-import { User, Column } from './types';
+import { User, Column, AppPermission } from './types';
+import ManageUserPermissionsDialog from './ManageUserPermissionsDialog';
 
 const filterOptions: FilterOption[] = [
   {
@@ -104,6 +103,25 @@ const columns: Column<User>[] = [
     )
   },
   {
+    key: 'appPermissions',
+    title: 'Apps',
+    width: 170,
+    render: (permissions: AppPermission[]) => (
+      <Box>
+        {permissions
+          .filter((p: AppPermission) => p.hasAccess)
+          .map((p: AppPermission) => (
+            <Chip
+              key={p.appId}
+              label={p.appName}
+              size="small"
+              sx={{ mr: 0.5, mb: 0.5 }}
+            />
+          ))}
+      </Box>
+    )
+  },
+  {
     key: 'status',
     title: 'Status',
     width: 100,
@@ -124,6 +142,7 @@ const Users: React.FC = () => {
     totalUsers,
     loading,
     viewState,
+    updateUserPermissions,
     handleFilterChange,
     handleSortChange,
     handlePageChange,
@@ -135,8 +154,9 @@ const Users: React.FC = () => {
   const { roles } = useUserRoles();
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [permissionsDialogOpen, setPermissionsDialogOpen] = useState(false);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -144,14 +164,32 @@ const Users: React.FC = () => {
     searchUsers(value);
   };
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, userId: string) => {
-    setSelectedUser(userId);
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, user: User) => {
+    setSelectedUser(user);
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setSelectedUser(null);
     setAnchorEl(null);
+  };
+
+  const handleManagePermissions = () => {
+    setPermissionsDialogOpen(true);
+    handleMenuClose();
+  };
+
+  const handlePermissionsDialogClose = () => {
+    setPermissionsDialogOpen(false);
+    setSelectedUser(null);
+  };
+
+  const handlePermissionsSave = async (
+    userId: string,
+    roles: string[],
+    appPermissions: AppPermission[]
+  ) => {
+    await updateUserPermissions(userId, roles, appPermissions);
   };
 
   const renderGridView = () => (
@@ -172,7 +210,7 @@ const Users: React.FC = () => {
                 </Box>
                 <IconButton
                   size="small"
-                  onClick={(e) => handleMenuOpen(e, user.id)}
+                  onClick={(e) => handleMenuOpen(e, user)}
                 >
                   <MoreIcon />
                 </IconButton>
@@ -201,6 +239,21 @@ const Users: React.FC = () => {
                     sx={{ mr: 0.5, mb: 0.5 }}
                   />
                 ))}
+              </Box>
+              <Box sx={{ mb: 1 }}>
+                <Box sx={{ color: 'text.secondary', fontSize: '0.75rem', mb: 0.5 }}>
+                  Apps
+                </Box>
+                {user.appPermissions
+                  .filter((p: AppPermission) => p.hasAccess)
+                  .map((p: AppPermission) => (
+                    <Chip
+                      key={p.appId}
+                      label={p.appName}
+                      size="small"
+                      sx={{ mr: 0.5, mb: 0.5 }}
+                    />
+                  ))}
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Chip
@@ -265,6 +318,7 @@ const Users: React.FC = () => {
           columns={columns}
           data={users}
           loading={loading}
+          onRowClick={(user) => handleMenuOpen(null as any, user)}
           pagination={{
             current: viewState.pagination.page + 1,
             pageSize: viewState.pagination.pageSize,
@@ -290,11 +344,11 @@ const Users: React.FC = () => {
           </ListItemIcon>
           <ListItemText>Edit</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem onClick={handleManagePermissions}>
           <ListItemIcon>
             <KeyIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Manage Roles</ListItemText>
+          <ListItemText>Manage Permissions</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
@@ -309,6 +363,13 @@ const Users: React.FC = () => {
           <ListItemText>Delete</ListItemText>
         </MenuItem>
       </Menu>
+
+      <ManageUserPermissionsDialog
+        open={permissionsDialogOpen}
+        user={selectedUser}
+        onClose={handlePermissionsDialogClose}
+        onSave={handlePermissionsSave}
+      />
     </PageWrapper>
   );
 };

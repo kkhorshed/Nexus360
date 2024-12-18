@@ -5,13 +5,12 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@nexus360/utils': path.resolve(__dirname, '../../packages/utils/src'),
-      '@nexus360/ui': path.resolve(__dirname, '../../packages/ui/src')
-    }
-  },
   server: {
     port: 3002
-  }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 });

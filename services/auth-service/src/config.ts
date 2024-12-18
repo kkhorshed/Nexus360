@@ -1,5 +1,10 @@
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
+
 export const config = {
-  port: process.env.PORT || 3001,
+  port: 3000, // Auth service fixed port
   nodeEnv: process.env.NODE_ENV || 'development',
   azure: {
     clientId: process.env.AZURE_AD_CLIENT_ID,
@@ -8,13 +13,12 @@ export const config = {
   },
   cors: {
     allowedOrigins: [
-      'http://localhost:3000',
-      'http://localhost:3002',
+      'http://localhost:3000', // Auth service
+      'http://localhost:3001', // Frontend
+      'http://localhost:3002', // Admin app
       'http://localhost:3003',
       'http://localhost:3004',
-      'http://localhost:3005',
-      'http://localhost:3006',
-      'http://localhost:3007'
+      'http://localhost:3005'
     ]
   },
   logging: {

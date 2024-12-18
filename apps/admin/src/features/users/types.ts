@@ -1,3 +1,9 @@
+export interface AppPermission {
+  appId: string;
+  appName: string;
+  hasAccess: boolean;
+}
+
 export interface User {
   id: string;
   displayName: string;
@@ -8,6 +14,7 @@ export interface User {
   roles: string[];
   status: 'active' | 'inactive';
   lastLogin?: string;
+  appPermissions: AppPermission[];
 }
 
 export interface UserFormData {
@@ -16,6 +23,7 @@ export interface UserFormData {
   jobTitle?: string;
   department?: string;
   roles: string[];
+  appPermissions: AppPermission[];
 }
 
 export interface UserFilters {

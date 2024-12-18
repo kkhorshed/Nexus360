@@ -1,7 +1,43 @@
 import { useState, useCallback, useEffect } from 'react';
-import { User, UserFilters, UserViewState } from './types';
+import { User, UserFilters, UserViewState, AppPermission } from './types';
 
 const AUTH_SERVICE_URL = 'http://localhost:3001';
+
+interface ADUser {
+  id: string;
+  displayName: string;
+  email: string;
+  jobTitle?: string;
+  department?: string;
+  officeLocation?: string;
+  userPrincipalName: string;
+}
+
+const mapADUserToUser = async (adUser: ADUser): Promise<User> => {
+  // Fetch user groups to map to roles
+  const groupsResponse = await fetch(
+    `${AUTH_SERVICE_URL}/api/users/${adUser.id}/groups`,
+    {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    }
+  );
+  const groups = await groupsResponse.json();
+
+  return {
+    id: adUser.id,
+    displayName: adUser.displayName,
+    userPrincipalName: adUser.userPrincipalName,
+    jobTitle: adUser.jobTitle,
+    department: adUser.department,
+    mail: adUser.email,
+    roles: groups,
+    status: 'active', // You might want to determine this based on AD status
+    appPermissions: [] // This should be populated from your app-specific permissions
+  };
+};
 
 export const useUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -35,14 +71,12 @@ export const useUsers = () => {
         throw new Error('Failed to fetch users');
       }
 
-      const data = await response.json();
-      setUsers(data.map((user: any) => ({
-        ...user,
-        roles: user.roles || [],
-        status: 'active' // You might want to determine this based on actual user data
-      })));
+      const adUsers: ADUser[] = await response.json();
+      const mappedUsers = await Promise.all(adUsers.map(mapADUserToUser));
+      setUsers(mappedUsers);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Error fetching users:', err);
     } finally {
       setLoading(false);
     }
@@ -66,16 +100,47 @@ export const useUsers = () => {
         throw new Error('Failed to search users');
       }
 
-      const data = await response.json();
-      setUsers(data.map((user: any) => ({
-        ...user,
-        roles: user.roles || [],
-        status: 'active'
-      })));
+      const adUsers: ADUser[] = await response.json();
+      const mappedUsers = await Promise.all(adUsers.map(mapADUserToUser));
+      setUsers(mappedUsers);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Error searching users:', err);
     } finally {
       setLoading(false);
+    }
+  }, []);
+
+  const updateUserPermissions = useCallback(async (
+    userId: string,
+    roles: string[],
+    appPermissions: AppPermission[]
+  ) => {
+    try {
+      const response = await fetch(`${AUTH_SERVICE_URL}/api/users/${userId}/permissions`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ roles, appPermissions })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update user permissions');
+      }
+
+      // Update local state
+      setUsers(prev => prev.map(user => 
+        user.id === userId
+          ? { ...user, roles, appPermissions }
+          : user
+      ));
+
+      return true;
+    } catch (err) {
+      console.error('Error updating user permissions:', err);
+      throw err;
     }
   }, []);
 
@@ -162,6 +227,7 @@ export const useUsers = () => {
     viewState,
     fetchUsers,
     searchUsers,
+    updateUserPermissions,
     handleFilterChange,
     handleSortChange,
     handlePageChange,
@@ -194,6 +260,7 @@ export const useUserRoles = () => {
       setRoles(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Error fetching roles:', err);
     } finally {
       setLoading(false);
     }

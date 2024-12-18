@@ -4,6 +4,7 @@ import { config } from './config';
 import { logger } from './utils/logger';
 import { authRouter } from './routes/auth';
 import { usersRouter } from './routes/users';
+import { configRouter } from './routes/config';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
@@ -17,9 +18,24 @@ app.use(cors({
 // Parse JSON bodies
 app.use(express.json());
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    service: 'Auth Service',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: [
+      '/api/auth',
+      '/api/users',
+      '/api/config'
+    ]
+  });
+});
+
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/config', configRouter);
 
 // Error handling
 app.use(errorHandler);
