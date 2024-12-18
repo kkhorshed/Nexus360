@@ -6,7 +6,6 @@ Comprehensive guide for deploying Nexus360 platform.
 
 ### Services
 - Auth Service (Port 3006)
-- Integration Service (Port 3002)
 - Notification Service (Port 3003)
 - Admin Dashboard
 - XRM App (Port 3010)
@@ -135,14 +134,6 @@ module.exports = {
       }
     },
     {
-      name: 'integration-service',
-      script: 'services/integration-service/dist/index.js',
-      env: {
-        NODE_ENV: 'production',
-        PORT: 3002
-      }
-    },
-    {
       name: 'notification-service',
       script: 'services/notification-service/dist/index.js',
       env: {
@@ -183,7 +174,6 @@ certbot --nginx -d admin.your-domain.com
 
 ### Health Checks
 - Auth Service: https://auth.your-domain.com/api/health
-- Integration Service: https://integration.your-domain.com/health
 - Notification Service: https://notification.your-domain.com/health
 - Monitor response times and error rates
 

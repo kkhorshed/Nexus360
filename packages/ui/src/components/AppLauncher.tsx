@@ -5,7 +5,8 @@ import {
   Grid,
   Typography,
   Box,
-  useTheme
+  useTheme,
+  alpha
 } from '@mui/material';
 import {
   Group as TeamIcon,
@@ -22,26 +23,30 @@ interface App {
   url: string;
   icon: React.ReactNode;
   description: string;
+  color?: string;
 }
 
 const apps: App[] = [
   { 
     name: 'Admin',
     url: 'http://localhost:3002/',
-    icon: <AdminIcon sx={{ fontSize: '24px' }} />,
-    description: 'Platform administration and user management'
+    icon: <AdminIcon sx={{ fontSize: '32px' }} />,
+    description: 'Platform administration and user management',
+    color: '#2196f3'
   },
   { 
     name: 'CRM',
     url: 'http://localhost:3003/',
-    icon: <TeamIcon sx={{ fontSize: '24px' }} />,
-    description: 'Customer relationship management'
+    icon: <TeamIcon sx={{ fontSize: '32px' }} />,
+    description: 'Customer relationship management',
+    color: '#4caf50'
   },
   { 
     name: 'Sales Compensation',
     url: 'http://localhost:3004/',
-    icon: <DollarIcon sx={{ fontSize: '24px' }} />,
-    description: 'Commission and incentive tracking'
+    icon: <DollarIcon sx={{ fontSize: '32px' }} />,
+    description: 'Commission and incentive tracking',
+    color: '#f44336'
   }
 ];
 
@@ -64,61 +69,94 @@ const AppLauncher: React.FC<AppLauncherProps> = ({ className }) => {
   };
 
   return (
-    <Box className={className} sx={{ p: 3 }}>
-      <Grid container spacing={3}>
+    <Box 
+      className={className} 
+      sx={{ 
+        p: 4,
+        background: theme.palette.mode === 'dark' 
+          ? alpha(theme.palette.background.default, 0.9)
+          : alpha(theme.palette.background.paper, 0.9)
+      }}
+    >
+      <Grid 
+        container 
+        spacing={3}
+        sx={{
+          maxWidth: 1200,
+          margin: '0 auto',
+          justifyContent: 'center'
+        }}
+      >
         {apps.map((app) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={app.name}>
+          <Grid 
+            item 
+            xs={12} 
+            sm={6} 
+            md={4} 
+            key={app.name}
+          >
             <Card
               sx={{
                 height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
+                background: alpha(app.color || theme.palette.primary.main, 0.03),
+                border: `1px solid ${alpha(app.color || theme.palette.primary.main, 0.1)}`,
+                borderRadius: 3,
                 cursor: 'pointer',
-                transition: 'transform 0.2s, box-shadow 0.2s',
+                transition: 'all 0.3s ease',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: theme.shadows[4]
+                  transform: 'translateY(-8px)',
+                  boxShadow: `0 8px 24px ${alpha(app.color || theme.palette.primary.main, 0.15)}`,
+                  background: alpha(app.color || theme.palette.primary.main, 0.08),
+                  '& .app-icon': {
+                    transform: 'scale(1.1)',
+                    background: app.color || theme.palette.primary.main,
+                    color: '#fff'
+                  }
                 }
               }}
               onClick={() => handleAppClick(app.url)}
             >
-              <CardContent sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                width: '100%',
-                p: 3
-              }}>
+              <CardContent 
+                sx={{ 
+                  p: 4,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  height: '100%'
+                }}
+              >
                 <Box
+                  className="app-icon"
                   sx={{
-                    mb: 2,
-                    width: 48,
-                    height: 48,
+                    mb: 3,
+                    width: 56,
+                    height: 56,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    bgcolor: theme.palette.grey[100],
-                    borderRadius: '50%',
-                    color: theme.palette.primary.main
+                    borderRadius: 2,
+                    background: alpha(app.color || theme.palette.primary.main, 0.1),
+                    color: app.color || theme.palette.primary.main,
+                    transition: 'all 0.3s ease'
                   }}
                 >
                   {app.icon}
                 </Box>
-                <Typography variant="h6" gutterBottom>
+                <Typography 
+                  variant="h6" 
+                  sx={{
+                    mb: 1,
+                    fontWeight: 600,
+                    color: theme.palette.text.primary
+                  }}
+                >
                   {app.name}
                 </Typography>
                 <Typography 
                   variant="body2" 
-                  color="text.secondary"
                   sx={{ 
-                    flexGrow: 1,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                    color: theme.palette.text.secondary,
+                    lineHeight: 1.6
                   }}
                 >
                   {app.description}

@@ -1,4 +1,4 @@
-const { spawn, exec } = require('child_process');
+const { exec } = require('child_process');
 const path = require('path');
 const util = require('util');
 const execAsync = util.promisify(exec);
@@ -50,28 +50,41 @@ async function killAllPorts() {
 }
 
 // Function to start a service
-function startService(service) {
+async function startService(service) {
   const cwd = path.join(__dirname, service.path);
   const env = { ...process.env, PORT: service.port };
 
   console.log(`Starting ${service.name} on port ${service.port}...`);
-  const proc = spawn('npm', ['run', 'dev'], { cwd, env, shell: true });
+  
+  try {
+    const child = exec('npm run dev', { 
+      cwd,
+      env,
+      windowsHide: true
+    });
 
-  proc.stdout.on('data', (data) => {
-    console.log(`[${service.name}] ${data.toString().trim()}`);
-  });
+    child.stdout.on('data', (data) => {
+      console.log(`[${service.name}] ${data.toString().trim()}`);
+    });
 
-  proc.stderr.on('data', (data) => {
-    console.error(`[${service.name}] ${data.toString().trim()}`);
-  });
+    child.stderr.on('data', (data) => {
+      console.error(`[${service.name}] ${data.toString().trim()}`);
+    });
 
-  proc.on('close', (code) => {
-    if (code !== 0) {
-      console.error(`[${service.name}] Process exited with code ${code}`);
-    }
-  });
+    child.on('error', (error) => {
+      console.error(`[${service.name}] Error: ${error.message}`);
+    });
 
-  return proc;
+    child.on('close', (code) => {
+      if (code !== 0) {
+        console.error(`[${service.name}] Process exited with code ${code}`);
+      }
+    });
+
+    return child;
+  } catch (error) {
+    console.error(`Error starting ${service.name}:`, error);
+  }
 }
 
 // Main function to start everything
@@ -82,15 +95,15 @@ async function main() {
 
     // Start platform services
     console.log('\nStarting platform services...');
-    services.platform.forEach(service => {
-      startService(service);
-    });
+    for (const service of services.platform) {
+      await startService(service);
+    }
 
     // Start applications
     console.log('\nStarting applications...');
-    services.apps.forEach(service => {
-      startService(service);
-    });
+    for (const service of services.apps) {
+      await startService(service);
+    }
 
     console.log('\nAll services started. Press Ctrl+C to stop.');
     console.log('\nAccess the applications at:');

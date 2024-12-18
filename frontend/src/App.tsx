@@ -1,18 +1,35 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { AppBar, Box, Container, Paper, Toolbar, Typography, useTheme } from '@mui/material';
+import { AppBar, Box, Button, Container, Paper, Toolbar, Typography, useTheme } from '@mui/material';
 import { AppLauncher } from '@nexus360/ui';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { MessageProvider } from './contexts/MessageContext';
 
-function App() {
+function MainLayout() {
   const theme = useTheme();
+  const { isAuthenticated, user, login, logout } = useAuth();
 
-  const MainLayout = () => (
+  return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar position="fixed" elevation={4}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h5" component="h1">
             Nexus360
           </Typography>
+          {isAuthenticated ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography variant="subtitle1">
+                Welcome, {user?.displayName}
+              </Typography>
+              <Button color="inherit" onClick={logout}>
+                Logout
+              </Button>
+            </Box>
+          ) : (
+            <Button color="inherit" onClick={login}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Container 
@@ -41,17 +58,39 @@ function App() {
           >
             Welcome to Nexus360 Platform
           </Typography>
-          <AppLauncher />
+          {isAuthenticated ? (
+            <AppLauncher />
+          ) : (
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" gutterBottom>
+                Please log in to access the platform
+              </Typography>
+              <Button 
+                variant="contained" 
+                size="large" 
+                onClick={login}
+                sx={{ mt: 2 }}
+              >
+                Login with Azure AD
+              </Button>
+            </Box>
+          )}
         </Paper>
       </Container>
     </Box>
   );
+}
 
+function App() {
   return (
-    <Routes>
-      <Route path="/" element={<MainLayout />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <AuthProvider>
+      <MessageProvider>
+        <Routes>
+          <Route path="/" element={<MainLayout />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </MessageProvider>
+    </AuthProvider>
   );
 }
 

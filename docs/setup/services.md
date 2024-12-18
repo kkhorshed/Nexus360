@@ -9,9 +9,10 @@ The start services script is configured to launch multiple services and applicat
 - Auth Service: Port 3001 (services/auth-service)
 
 ### Applications
-- Admin App: Port 3000 (apps/admin)
-- XRM App: Port 3002 (apps/xrm)
-- Sales Compensation App: Port 3003 (apps/sales-comp)
+- Frontend: Port 3000 (frontend)
+- Admin App: Port 3002 (apps/admin)
+- XRM App: Port 3003 (apps/xrm)
+- Sales Compensation App: Port 3004 (apps/sales-comp)
 
 ## Usage
 To start all services, run:

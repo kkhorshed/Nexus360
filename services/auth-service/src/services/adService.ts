@@ -35,7 +35,17 @@ export class ADService {
       auth: {
         clientId: config.azure.clientId,
         clientSecret: config.azure.clientSecret,
-        authority: `https://login.microsoftonline.com/${config.azure.tenantId}`
+        authority: `https://login.microsoftonline.com/${config.azure.tenantId}`,
+        knownAuthorities: [`login.microsoftonline.com`]
+      },
+      system: {
+        loggerOptions: {
+          loggerCallback(loglevel: any, message: string) {
+            logger.info(message);
+          },
+          piiLoggingEnabled: false,
+          logLevel: 3 // Info
+        }
       }
     };
 
@@ -53,7 +63,8 @@ export class ADService {
       const authCodeUrlParameters: AuthorizationUrlRequest = {
         scopes: ['user.read', 'directory.read.all', 'groupmember.read.all', 'offline_access'],
         redirectUri: this.redirectUri,
-        prompt: 'select_account'
+        prompt: 'select_account',
+        responseMode: 'query'
       };
 
       return await this.msalClient.getAuthCodeUrl(authCodeUrlParameters);

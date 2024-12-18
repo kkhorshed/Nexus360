@@ -33,16 +33,23 @@ const defaultConfig: Config = {
   }
 };
 
+// Helper function to clean environment variables
+const cleanEnvVar = (value: string | undefined): string => {
+  if (!value) return '';
+  // Remove any quotes, spaces, or newlines
+  return value.replace(/["'\s\n]/g, '');
+};
+
 export const config: Config = {
   port: Number(process.env.PORT) || defaultConfig.port,
   nodeEnv: process.env.NODE_ENV || defaultConfig.nodeEnv,
   cors: {
-    allowedOrigins: process.env.CORS_ALLOWED_ORIGINS?.split(',') || defaultConfig.cors.allowedOrigins
+    allowedOrigins: process.env.CORS_ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || defaultConfig.cors.allowedOrigins
   },
   azure: {
-    clientId: process.env.AZURE_AD_CLIENT_ID || defaultConfig.azure.clientId,
-    clientSecret: process.env.AZURE_AD_CLIENT_SECRET || defaultConfig.azure.clientSecret,
-    tenantId: process.env.AZURE_AD_TENANT_ID || defaultConfig.azure.tenantId
+    clientId: cleanEnvVar(process.env.AZURE_AD_CLIENT_ID) || defaultConfig.azure.clientId,
+    clientSecret: cleanEnvVar(process.env.AZURE_AD_CLIENT_SECRET) || defaultConfig.azure.clientSecret,
+    tenantId: cleanEnvVar(process.env.AZURE_AD_TENANT_ID) || defaultConfig.azure.tenantId
   },
   logging: {
     level: process.env.LOG_LEVEL || defaultConfig.logging.level,

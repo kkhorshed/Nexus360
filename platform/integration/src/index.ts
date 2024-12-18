@@ -1,17 +1,9 @@
-import { IntegrationProvider, useIntegration } from './context/IntegrationContext';
+// Platform integration types and utilities
+export type IntegrationType = 'internal' | 'external';
 
-export {
-    IntegrationProvider,
-    useIntegration
-};
-
-export interface IntegrationStatus {
-    isConnected: boolean;
-    lastSync?: Date;
-    error?: string;
-}
-
-export interface IntegrationService {
-    name: string;
-    status: IntegrationStatus;
+// Base configuration interface for integrations
+export interface IntegrationConfig {
+    type: IntegrationType;
+    enabled: boolean;
+    timeout?: number;
 }
