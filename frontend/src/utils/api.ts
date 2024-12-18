@@ -102,11 +102,6 @@ export const api = {
 
 // Common API endpoints
 export const endpoints = {
-  auth: {
-    login: '/auth/login',
-    logout: '/auth/logout',
-    me: '/auth/me',
-  },
   deals: {
     base: '/deals',
     byId: (id: string) => `/deals/${id}`,

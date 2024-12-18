@@ -11,6 +11,18 @@ export interface BaseResponse<T> {
   message?: string;
 }
 
+// API related types
+export interface ApiResponse<T> extends BaseResponse<T> {
+  timestamp?: string;
+  path?: string;
+}
+
+export interface ApiError {
+  message: string;
+  status: number;
+  errors?: Record<string, string[]>;
+}
+
 // User related types
 export interface User extends BaseEntity {
   email: string;
@@ -41,18 +53,6 @@ export interface Product extends BaseEntity {
   price: number;
   category: string;
   status: 'active' | 'inactive';
-}
-
-// Form related types
-export interface FormField {
-  name: string;
-  label: string;
-  type: 'text' | 'number' | 'select' | 'date' | 'textarea';
-  required?: boolean;
-  options?: Array<{
-    label: string;
-    value: string | number;
-  }>;
 }
 
 // Table related types

@@ -1,46 +1,134 @@
 import React from 'react';
-import { Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import styles from '../../styles/DataTable.module.css';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  TableSortLabel
+} from '@mui/material';
 
-interface Column {
-  key: string;
-  header: string;
-  render?: (value: any) => React.ReactNode;
+interface Column<T> {
+  key: keyof T;
+  title: string;
+  render?: (value: T[keyof T], record: T) => React.ReactNode;
+  sortable?: boolean;
 }
 
-interface DataTableProps {
-  columns: Column[];
-  data: any[];
-  onRowClick?: (row: any) => void;
+interface DataTableProps<T> {
+  columns: Column<T>[];
+  data: T[];
+  onRowClick?: (record: T) => void;
+  pagination?: {
+    total: number;
+    current: number;
+    pageSize: number;
+    onChange: (page: number, pageSize: number) => void;
+  };
+  sorting?: {
+    field: keyof T | null;
+    order: 'asc' | 'desc';
+    onChange: (field: keyof T, order: 'asc' | 'desc') => void;
+  };
 }
 
-const DataTable: React.FC<DataTableProps> = ({ columns, data, onRowClick }) => {
-  // Convert our column format to Ant Design's format
-  const antColumns: ColumnsType<any> = columns.map(col => ({
-    title: col.header,
-    dataIndex: col.key,
-    key: col.key,
-    render: col.render,
-  }));
+function DataTable<T extends { id: string | number }>({
+  columns,
+  data,
+  onRowClick,
+  pagination,
+  sorting
+}: DataTableProps<T>) {
+  const handleChangePage = (_: unknown, newPage: number) => {
+    if (pagination) {
+      pagination.onChange(newPage + 1, pagination.pageSize);
+    }
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (pagination) {
+      pagination.onChange(1, parseInt(event.target.value, 10));
+    }
+  };
+
+  const handleSort = (field: keyof T) => {
+    if (sorting && sorting.onChange) {
+      const isAsc = sorting.field === field && sorting.order === 'asc';
+      sorting.onChange(field, isAsc ? 'desc' : 'asc');
+    }
+  };
+
+  const renderCellContent = (column: Column<T>, record: T): React.ReactNode => {
+    const value = record[column.key];
+    if (column.render) {
+      return column.render(value, record);
+    }
+    if (value === null || value === undefined) {
+      return '';
+    }
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    }
+    return String(value);
+  };
 
   return (
-    <div className={styles.tableWrapper}>
-      <Table
-        columns={antColumns}
-        dataSource={data}
-        onRow={(record) => ({
-          onClick: () => onRowClick?.(record),
-        })}
-        className={styles.table}
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-        }}
-      />
-    </div>
+    <Paper>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell key={String(column.key)}>
+                  {column.sortable && sorting ? (
+                    <TableSortLabel
+                      active={sorting.field === column.key}
+                      direction={sorting.field === column.key ? sorting.order : 'asc'}
+                      onClick={() => handleSort(column.key)}
+                    >
+                      {column.title}
+                    </TableSortLabel>
+                  ) : (
+                    column.title
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((record) => (
+              <TableRow
+                key={record.id}
+                hover={!!onRowClick}
+                onClick={() => onRowClick?.(record)}
+                sx={{ cursor: onRowClick ? 'pointer' : 'default' }}
+              >
+                {columns.map((column) => (
+                  <TableCell key={`${record.id}-${String(column.key)}`}>
+                    {renderCellContent(column, record)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {pagination && (
+        <TablePagination
+          component="div"
+          count={pagination.total}
+          page={pagination.current - 1}
+          rowsPerPage={pagination.pageSize}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[10, 20, 50]}
+        />
+      )}
+    </Paper>
   );
-};
+}
 
 export default DataTable;

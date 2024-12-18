@@ -74,9 +74,11 @@ const authRouter = express.Router();
 authRouter.use(authLimiter);
 authRouter.get('/login', adController.login);
 authRouter.get('/callback', adController.handleCallback);
+authRouter.get('/logout', adController.logout);
 
 // User routes
 const userRouter = express.Router();
+userRouter.get('/me', adController.getCurrentUser);
 userRouter.get('/', adController.getAllUsers);
 userRouter.get('/search', adController.searchUsers);
 userRouter.get('/:userId', adController.getUserById);

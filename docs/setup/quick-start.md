@@ -20,15 +20,11 @@ Located in `/packages`:
 Located in `/platform`:
 - `integration` - Integration service (port 3002)
 - `notification` - Notification service (port 3003)
-- `analytics` - Analytics service (port 3004)
 
 ### Apps (Micro-frontends)
 Located in `/apps`:
-- `crm` - Customer Relationship Management (port 3010)
-- `ai-chat` - AI Chat Interface (port 3020)
-- `sales-comp` - Sales Compensation (port 3030)
-- `forecasting` - Sales Forecasting (port 3040)
-- `marketing` - Marketing Analytics (port 3050)
+- `admin` - Admin Dashboard
+- `xrm` - Extended Relationship Management (port 3010)
 
 ## Prerequisites
 
@@ -79,22 +75,18 @@ Located in `/apps`:
    b. **Services Configuration**
    ```bash
    # Copy .env files for all services
-   for service in analytics contact integration lead notification sales task; do
+   for service in contact integration lead notification task; do
      cp services/${service}-service/.env.example services/${service}-service/.env
    done
    ```
 
 4. **Database Setup**
    ```bash
-   # Create databases
-   psql -U postgres -c "CREATE DATABASE crm_db;"
-   psql -U postgres -c "CREATE DATABASE chat_db;"
-   psql -U postgres -c "CREATE DATABASE sales_db;"
-   psql -U postgres -c "CREATE DATABASE marketing_db;"
+   # Create database
+   psql -U postgres -c "CREATE DATABASE xrm_db;"
 
    # Initialize schemas
    cd services/contact-service && pnpm run db:init
-   cd ../sales-service && pnpm run db:init
    cd ../lead-service && pnpm run db:init
    ```
 
@@ -120,7 +112,6 @@ Located in `/apps`:
    # Verify services are running
    curl http://localhost:3002/health
    curl http://localhost:3003/health
-   curl http://localhost:3004/health
    ```
 
 2. **Access Frontend**
@@ -151,7 +142,7 @@ pnpm build
 ### Port Conflicts
 ```bash
 # Check ports in use
-netstat -ano | findstr "3000 3002 3003 3004"
+netstat -ano | findstr "3000 3002 3003"
 
 # Kill process if needed
 taskkill /PID <process_id> /F
@@ -161,15 +152,13 @@ taskkill /PID <process_id> /F
 
 ### Running Individual Apps
 ```bash
-# Start CRM app
-cd apps/crm
+# Start XRM app
+cd apps/xrm
 pnpm dev
 
-# Start AI Chat app
-cd apps/ai-chat
+# Start Admin app
+cd apps/admin
 pnpm dev
-
-# Start other apps similarly
 ```
 
 ### Working with Packages

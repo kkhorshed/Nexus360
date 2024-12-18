@@ -39,7 +39,7 @@ const apps: App[] = [
   },
   { 
     name: 'Sales Compensation',
-    url: 'http://localhost:3006/',
+    url: 'http://localhost:3004/',
     icon: <DollarIcon sx={{ fontSize: '24px' }} />,
     description: 'Commission and incentive tracking'
   }

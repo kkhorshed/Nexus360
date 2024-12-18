@@ -1,151 +1,77 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
-import type { MenuProps } from 'antd';
-import {
-  UserOutlined,
-  TeamOutlined,
-  ShoppingCartOutlined,
-  DollarOutlined,
-  FileTextOutlined,
-  SettingOutlined,
-  EyeOutlined,
-  LayoutOutlined,
-  ToolOutlined,
-} from '@ant-design/icons';
-import Header from './Header';
-import UIGrid from '../Common/UIGrid';
-import styles from '../../styles/MainLayout.module.css';
-
-const { Sider } = Layout;
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, useTheme } from '@mui/material';
+import { Dashboard as DashboardIcon, Settings as SettingsIcon } from '@mui/icons-material';
 
 interface MainLayoutProps {
-  children: React.ReactNode;
-  onGuideToggle: () => void;
-  showGuide: boolean;
-  onLayoutGuideToggle: () => void;
-  showLayoutGuide: boolean;
+  children?: React.ReactNode;
 }
 
-type MenuItem = Required<MenuProps>['items'][number];
+const DRAWER_WIDTH = 240;
 
-const MainLayout: React.FC<MainLayoutProps> = ({ 
-  children, 
-  onGuideToggle, 
-  showGuide,
-  onLayoutGuideToggle,
-  showLayoutGuide 
-}) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const theme = useTheme();
   const location = useLocation();
 
-  const menuItems: MenuItem[] = [
+  const menuItems = [
     {
-      key: 'main',
-      type: 'group',
-      label: 'Main',
-      children: [
-        {
-          key: '/companies',
-          icon: <TeamOutlined />,
-          label: <Link to="/companies">Companies</Link>,
-        },
-        {
-          key: '/contacts',
-          icon: <UserOutlined />,
-          label: <Link to="/contacts">Contacts</Link>,
-        },
-        {
-          key: '/teams',
-          icon: <TeamOutlined />,
-          label: <Link to="/teams">Teams</Link>,
-        },
-        {
-          key: '/deals',
-          icon: <DollarOutlined />,
-          label: <Link to="/deals">Deals</Link>,
-        },
-      ],
+      key: 'dashboard',
+      icon: <DashboardIcon />,
+      label: 'Dashboard',
+      path: '/dashboard'
     },
     {
-      key: 'catalog',
-      type: 'group',
-      label: 'Catalog',
-      children: [
-        {
-          key: '/products',
-          icon: <ShoppingCartOutlined />,
-          label: <Link to="/products">Products</Link>,
-        },
-      ],
-    },
-    {
-      key: 'system',
-      type: 'group',
-      label: 'System',
-      children: [
-        {
-          key: '/documentation',
-          icon: <FileTextOutlined />,
-          label: <Link to="/documentation">Documentation</Link>,
-        },
-        {
-          key: '/settings',
-          icon: <SettingOutlined />,
-          label: 'Settings',
-          children: [
-            {
-              key: '/settings/environment',
-              icon: <ToolOutlined />,
-              label: <Link to="/settings/environment">Environment Settings</Link>,
-            },
-            {
-              key: '/settings/layout',
-              icon: <LayoutOutlined />,
-              label: <Link to="/settings/layout">Layout Management</Link>,
-            }
-          ]
-        },
-        {
-          key: 'ui-guide',
-          icon: <EyeOutlined />,
-          label: 'UI Guide',
-          onClick: onGuideToggle,
-          className: showGuide ? styles.active : undefined
-        },
-        {
-          key: 'layout-guide',
-          icon: <LayoutOutlined />,
-          label: 'Layout Guide',
-          onClick: onLayoutGuideToggle,
-          className: showLayoutGuide ? styles.active : undefined
-        },
-      ],
-    },
+      key: 'settings',
+      icon: <SettingsIcon />,
+      label: 'Settings',
+      path: '/settings'
+    }
   ];
 
   return (
-    <div className={styles.mainLayout} id="App.container">
-      <div className={styles.headerContainer} id="App.header">
-        <Header />
-      </div>
-      <div className={styles.contentWrapper} id="App.contentWrapper">
-        <div className={styles.siderContainer} id="App.sider">
-          <Menu
-            mode="inline"
-            theme="light"
-            selectedKeys={[location.pathname]}
-            defaultOpenKeys={['settings']}
-            items={menuItems}
-            className={styles.menu}
-            id="App.menu"
-          />
-        </div>
-        <div className={styles.mainContainer} id="App.content">
-          {children}
-          <UIGrid show={showGuide} />
-        </div>
-      </div>
-    </div>
+    <Box sx={{ display: 'flex' }}>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: DRAWER_WIDTH,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: DRAWER_WIDTH,
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        <Box sx={{ overflow: 'auto', mt: 8 }}>
+          <List>
+            {menuItems.map((item) => (
+              <ListItem key={item.key} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={item.path}
+                  selected={location.pathname === item.path}
+                >
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          mt: 8,
+          backgroundColor: theme.palette.background.default
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
   );
 };
 

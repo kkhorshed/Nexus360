@@ -39,9 +39,9 @@ const createApiClient = (baseURL: string): AxiosInstance => {
 };
 
 // Default service URLs
-const DEFAULT_AUTH_URL = 'http://localhost:3001';
-const DEFAULT_INTEGRATION_URL = 'http://localhost:3002';
-const DEFAULT_NOTIFICATION_URL = 'http://localhost:3003';
+const DEFAULT_AUTH_URL = 'http://localhost:3001/api';
+const DEFAULT_INTEGRATION_URL = 'http://localhost:3002/api';
+const DEFAULT_NOTIFICATION_URL = 'http://localhost:3003/api';
 
 // Create API clients with environment-aware URLs
 export const authApi = createApiClient(

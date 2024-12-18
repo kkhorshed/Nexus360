@@ -1,55 +1,71 @@
 import React from 'react';
-import { Layout, Avatar, Space, Dropdown, MenuProps } from 'antd';
-import { UserOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons';
-import styles from '../../styles/Header.module.css';
+import { AppBar, Toolbar, Avatar, IconButton, Menu, MenuItem } from '@mui/material';
+import { Settings as SettingsIcon, Logout as LogoutIcon } from '@mui/icons-material';
 
-const { Header: AntHeader } = Layout;
+interface HeaderProps {
+  user?: {
+    name?: string;
+    avatar?: string;
+  };
+  onLogout?: () => void;
+}
 
-type MenuItem = Required<MenuProps>['items'][number];
+const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-const Header: React.FC = () => {
-  const handleLogout = () => {
-    window.location.href = 'http://localhost:3001/auth/logout';
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const userMenuItems: MenuItem[] = [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: 'Profile',
-      type: 'item',
-    },
-    {
-      key: 'settings',
-      icon: <SettingOutlined />,
-      label: 'Settings',
-      type: 'item',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: 'Logout',
-      danger: true,
-      onClick: handleLogout,
-      type: 'item',
-    },
-  ];
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleClose();
+    onLogout?.();
+  };
 
   return (
-    <AntHeader className={`${styles.header} app-header`}>
-      <div className={styles.logoContainer}>
-        <img src="/cequens-logo.svg" alt="CEQUENS Logo" className={styles.logo} />
-      </div>
-      <Dropdown menu={{ items: userMenuItems }} trigger={['click']} placement="bottomRight">
-        <Space className={styles.userInfo}>
-          <Avatar size="small" icon={<UserOutlined />} />
-          <span className={styles.userName}>John Doe</span>
-        </Space>
-      </Dropdown>
-    </AntHeader>
+    <AppBar position="static">
+      <Toolbar sx={{ justifyContent: 'flex-end' }}>
+        {user && (
+          <>
+            <IconButton
+              size="large"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              {user.avatar ? (
+                <Avatar src={user.avatar} alt={user.name} />
+              ) : (
+                <Avatar>{user.name?.[0]}</Avatar>
+              )}
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={handleClose}>
+                <SettingsIcon sx={{ mr: 1 }} /> Settings
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon sx={{ mr: 1 }} /> Logout
+              </MenuItem>
+            </Menu>
+          </>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

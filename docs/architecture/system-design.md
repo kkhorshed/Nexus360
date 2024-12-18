@@ -8,8 +8,8 @@ Nexus360 is a microservices-based platform integrating multiple business applica
 ```mermaid
 graph TD
     A[Client Browser] --> B[Auth Service]
-    A --> C[CRM App]
-    A --> D[AI Chat]
+    A --> C[XRM App]
+    A --> D[Admin Dashboard]
     B --> E[Azure AD]
     C --> B
     D --> B
@@ -24,36 +24,35 @@ graph TD
 - CORS configuration
 - Security middleware
 
-#### 2. CRM App (Port 3010)
-- React-based frontend
-- Deal management
-- Product catalog
-- User interface
+#### 2. XRM App (Port 3010)
+- Extended relationship management
+- Business process automation
+- Integration capabilities
 - Authentication integration
 
-#### 3. AI Chat (Port 3020)
-- Chat interface
-- AI integration
-- Real-time communication
-- Authentication integration
+#### 3. Admin Dashboard
+- System administration
+- User management
+- Configuration settings
+- Monitoring and reporting
 
 ## Authentication Flow
 
 ```mermaid
 sequenceDiagram
     participant U as User
-    participant C as CRM/Chat App
+    participant X as XRM/Admin App
     participant A as Auth Service
     participant AD as Azure AD
 
-    U->>C: Access Application
-    C->>A: Check Auth
+    U->>X: Access Application
+    X->>A: Check Auth
     A->>AD: Redirect to Azure Login
     AD->>A: Auth Code
     A->>AD: Token Request
     AD->>A: Access Token
-    A->>C: User Profile + Token
-    C->>U: Authenticated Session
+    A->>X: User Profile + Token
+    X->>U: Authenticated Session
 ```
 
 ## Data Flow
@@ -106,8 +105,8 @@ interface UserProfile {
 ```mermaid
 graph LR
     A[Auth Service] --> B[Azure AD]
-    C[CRM App] --> A
-    D[AI Chat] --> A
+    C[XRM App] --> A
+    D[Admin Dashboard] --> A
     A --> E[Graph API]
 ```
 
@@ -151,15 +150,25 @@ graph LR
 ```
 nexus360/
 ├── apps/
-│   ├── crm/
-│   └── ai-chat/
+│   ├── admin/
+│   └── xrm/
 ├── services/
 │   ├── auth-service/
-│   └── shared/
+│   ├── audit-service/
+│   ├── integration-service/
+│   └── notification/
 ├── packages/
 │   ├── ui/
-│   └── utils/
+│   ├── utils/
+│   └── api-client/
+├── platform/
+│   ├── integration/
+│   └── notification/
 └── docs/
+    ├── architecture/
+    ├── database/
+    ├── deployment/
+    └── setup/
 ```
 
 ### Development Flow
@@ -233,8 +242,8 @@ interface AppError {
 ```mermaid
 graph TD
     A[Load Balancer] --> B[Auth Service]
-    A --> C[CRM App]
-    A --> D[AI Chat]
+    A --> C[XRM App]
+    A --> D[Admin Dashboard]
     B --> E[Azure AD]
     F[CDN] --> C
     F --> D

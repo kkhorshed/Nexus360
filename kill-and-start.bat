@@ -1,0 +1,6 @@
+@echo off
+echo Killing any existing node processes...
+taskkill /F /IM node.exe
+timeout /t 2
+echo Starting services...
+node start-services.js

@@ -1,37 +1,75 @@
-import React, { createContext, useContext } from 'react';
-import { message } from 'antd';
+import React, { createContext, useContext, useState } from 'react';
+import { Snackbar, Alert, AlertColor } from '@mui/material';
 
 interface MessageContextType {
-    success: (content: string) => void;
-    error: (content: string) => void;
-    warning: (content: string) => void;
-    info: (content: string) => void;
+  success: (message: string) => void;
+  error: (message: string) => void;
+  info: (message: string) => void;
+  warning: (message: string) => void;
+}
+
+interface MessageState {
+  open: boolean;
+  message: string;
+  severity: AlertColor;
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined);
 
 export const useMessage = () => {
-    const context = useContext(MessageContext);
-    if (!context) {
-        throw new Error('useMessage must be used within a MessageProvider');
-    }
-    return context;
+  const context = useContext(MessageContext);
+  if (!context) {
+    throw new Error('useMessage must be used within a MessageProvider');
+  }
+  return context;
 };
 
 export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [messageApi, contextHolder] = message.useMessage();
+  const [messageState, setMessageState] = useState<MessageState>({
+    open: false,
+    message: '',
+    severity: 'info'
+  });
 
-    const value: MessageContextType = {
-        success: (content) => messageApi.success(content),
-        error: (content) => messageApi.error(content),
-        warning: (content) => messageApi.warning(content),
-        info: (content) => messageApi.info(content),
-    };
+  const handleClose = () => {
+    setMessageState(prev => ({ ...prev, open: false }));
+  };
 
-    return (
-        <MessageContext.Provider value={value}>
-            {contextHolder}
-            {children}
-        </MessageContext.Provider>
-    );
+  const showMessage = (message: string, severity: AlertColor) => {
+    setMessageState({
+      open: true,
+      message,
+      severity
+    });
+  };
+
+  const value: MessageContextType = {
+    success: (message: string) => showMessage(message, 'success'),
+    error: (message: string) => showMessage(message, 'error'),
+    info: (message: string) => showMessage(message, 'info'),
+    warning: (message: string) => showMessage(message, 'warning')
+  };
+
+  return (
+    <MessageContext.Provider value={value}>
+      {children}
+      <Snackbar
+        open={messageState.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={messageState.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {messageState.message}
+        </Alert>
+      </Snackbar>
+    </MessageContext.Provider>
+  );
 };
+
+export default MessageContext;

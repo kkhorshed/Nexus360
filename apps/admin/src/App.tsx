@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from '@mui/material';
 import Layout from './components/layout/Layout';
 import Users from './features/users/Users';
-import theme from './styles/theme';
+import theme from './theme';
 
 const App: React.FC = () => {
   return (

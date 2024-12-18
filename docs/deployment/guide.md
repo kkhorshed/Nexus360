@@ -6,12 +6,14 @@ Comprehensive guide for deploying Nexus360 platform.
 
 ### Services
 - Auth Service (Port 3006)
-- CRM App (Port 3010)
-- AI Chat (Port 3020)
+- Integration Service (Port 3002)
+- Notification Service (Port 3003)
+- Admin Dashboard
+- XRM App (Port 3010)
 
 ### Dependencies
 - Node.js 16+
-- npm or pnpm
+- pnpm
 - Azure AD Application
 - PostgreSQL Database (optional)
 
@@ -41,10 +43,10 @@ PORT=3006
 NODE_ENV=production
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS=https://your-crm-domain,https://your-chat-domain
+CORS_ALLOWED_ORIGINS=https://your-xrm-domain,https://your-admin-domain
 ```
 
-#### CRM App (.env)
+#### XRM App (.env)
 ```env
 VITE_AUTH_URL=https://your-auth-domain
 VITE_API_URL=https://your-auth-domain/api
@@ -56,11 +58,11 @@ VITE_API_URL=https://your-auth-domain/api
 
 ```bash
 # Build all applications
-npm run build
+pnpm -r build
 
 # Individual builds
-cd apps/crm && npm run build
-cd apps/ai-chat && npm run build
+cd apps/xrm && pnpm build
+cd ../admin && pnpm build
 ```
 
 ### 2. Server Setup
@@ -89,16 +91,30 @@ server {
     }
 }
 
-# CRM App
+# XRM App
 server {
     listen 443 ssl;
-    server_name crm.your-domain.com;
+    server_name xrm.your-domain.com;
 
     ssl_certificate /path/to/cert.pem;
     ssl_certificate_key /path/to/key.pem;
 
     location / {
-        root /path/to/crm/dist;
+        root /path/to/xrm/dist;
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+# Admin Dashboard
+server {
+    listen 443 ssl;
+    server_name admin.your-domain.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    location / {
+        root /path/to/admin/dist;
         try_files $uri $uri/ /index.html;
     }
 }
@@ -116,6 +132,22 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 3006
+      }
+    },
+    {
+      name: 'integration-service',
+      script: 'services/integration-service/dist/index.js',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3002
+      }
+    },
+    {
+      name: 'notification-service',
+      script: 'services/notification-service/dist/index.js',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3003
       }
     }
   ]
@@ -143,13 +175,16 @@ ufw allow 22
 ```bash
 # Using certbot
 certbot --nginx -d auth.your-domain.com
-certbot --nginx -d crm.your-domain.com
+certbot --nginx -d xrm.your-domain.com
+certbot --nginx -d admin.your-domain.com
 ```
 
 ## Monitoring
 
 ### Health Checks
 - Auth Service: https://auth.your-domain.com/api/health
+- Integration Service: https://integration.your-domain.com/health
+- Notification Service: https://notification.your-domain.com/health
 - Monitor response times and error rates
 
 ### Logging

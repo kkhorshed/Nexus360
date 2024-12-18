@@ -7,14 +7,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@nexus360/ui': path.resolve(__dirname, '../../packages/ui/src'),
-    },
-  },
-  optimizeDeps: {
-    include: ['@nexus360/ui'],
+      '@nexus360/utils': path.resolve(__dirname, '../../packages/utils/src'),
+      '@nexus360/ui': path.resolve(__dirname, '../../packages/ui/src')
+    }
   },
   server: {
-    port: 3002,
-  },
+    port: 3002
+  }
 });

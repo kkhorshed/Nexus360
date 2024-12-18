@@ -42,6 +42,10 @@ export class ADService {
     this.msalClient = new ConfidentialClientApplication(msalConfig);
   }
 
+  getRedirectUri(): string {
+    return this.redirectUri;
+  }
+
   async getAuthUrl(): Promise<string> {
     try {
       logger.info(`Using redirect URI: ${this.redirectUri}`);

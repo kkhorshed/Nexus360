@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { authApi } from '@nexus360/api-client';
+import { authApi, createEndpoint } from '@nexus360/api-client';
+import type { ApiResponse } from '@nexus360/utils';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
   requiredRoles?: string[];
   redirectPath?: string;
 }
+
+interface AuthUser {
+  id: string;
+  email: string;
+  roles: string[];
+}
+
+const authEndpoint = createEndpoint<AuthUser>(authApi, '/auth');
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({
   children,
@@ -19,7 +28,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await authApi.get('/auth/me');
+        const response = await authEndpoint.get();
         setIsAuthenticated(true);
         setUserRoles(response.data.roles || []);
       } catch (error) {
