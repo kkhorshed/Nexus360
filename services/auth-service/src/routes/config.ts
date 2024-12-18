@@ -18,10 +18,13 @@ router.get('/azure', async (req: Request, res: Response, next: NextFunction) => 
   try {
     logger.info('Fetching Azure configuration');
     
-    const config = await configService.getAzureConfig();
-    // Don't send the client secret back to the client
-    const { clientSecret, ...safeConfig } = config;
-    res.json(safeConfig);
+    const config = {
+      tenantId: process.env.AZURE_AD_TENANT_ID || '',
+      clientId: process.env.AZURE_AD_CLIENT_ID || ''
+      // Don't send client secret
+    };
+    
+    res.json(config);
   } catch (error) {
     logger.error('Error in Azure config endpoint:', error);
     next(error);
@@ -38,13 +41,6 @@ router.post('/azure', async (req: Request, res: Response, next: NextFunction) =>
       logger.error('Missing required configuration fields');
       return res.status(400).json({ error: 'Missing required configuration fields' });
     }
-    
-    // Save configuration to database
-    await configService.setAzureConfig({
-      tenantId,
-      clientId,
-      clientSecret
-    });
 
     // Update environment variables
     process.env.AZURE_AD_TENANT_ID = tenantId;
@@ -69,11 +65,12 @@ router.post('/azure/test', async (req: Request, res: Response, next: NextFunctio
   try {
     logger.info('Testing Azure AD connection');
     
-    // Get config from database
-    const config = await configService.getAzureConfig();
+    const tenantId = process.env.AZURE_AD_TENANT_ID;
+    const clientId = process.env.AZURE_AD_CLIENT_ID;
+    const clientSecret = process.env.AZURE_AD_CLIENT_SECRET;
     
-    if (!config.tenantId || !config.clientId || !config.clientSecret) {
-      logger.error('No Azure configuration found in database');
+    if (!tenantId || !clientId || !clientSecret) {
+      logger.error('No Azure configuration found in environment');
       return res.status(400).json({ 
         error: 'Azure AD configuration not found. Please save configuration first.' 
       });

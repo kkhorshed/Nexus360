@@ -29,7 +29,8 @@ import {
 import { DataTable } from '@nexus360/ui';
 import PageWrapper from '../../components/common/PageWrapper';
 import DataFilter, { FilterOption } from '../../components/common/DataFilter';
-import { useUsers, useUserRoles } from './hooks';
+import { useUsers } from './hooks';
+import { useAuth } from '../auth/hooks';
 import { User, Column, AppPermission } from './types';
 import ManageUserPermissionsDialog from './ManageUserPermissionsDialog';
 
@@ -137,6 +138,7 @@ const columns: Column<User>[] = [
 ];
 
 const Users: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const {
     users,
     totalUsers,
@@ -151,8 +153,6 @@ const Users: React.FC = () => {
     searchUsers,
     fetchUsers
   } = useUsers();
-
-  const { roles } = useUserRoles();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -269,6 +269,10 @@ const Users: React.FC = () => {
       ))}
     </Grid>
   );
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <PageWrapper

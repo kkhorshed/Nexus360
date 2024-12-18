@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { User, UserFilters, UserViewState, AppPermission } from './types';
+import { useAuth } from '../auth/hooks';
 
 const AUTH_SERVICE_URL = 'http://localhost:3000';
 
@@ -13,33 +14,53 @@ interface ADUser {
   userPrincipalName: string;
 }
 
-const mapADUserToUser = async (adUser: ADUser): Promise<User> => {
-  // Fetch user groups to map to roles
-  const groupsResponse = await fetch(
-    `${AUTH_SERVICE_URL}/api/users/${adUser.id}/groups`,
-    {
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+const mapADUserToUser = async (adUser: ADUser, headers: HeadersInit): Promise<User> => {
+  try {
+    // Fetch user groups to map to roles
+    const groupsResponse = await fetch(
+      `${AUTH_SERVICE_URL}/api/users/${adUser.id}/groups`,
+      {
+        mode: 'cors',
+        headers
       }
-    }
-  );
-  const groups = await groupsResponse.json();
+    );
 
-  return {
-    id: adUser.id,
-    displayName: adUser.displayName,
-    userPrincipalName: adUser.userPrincipalName,
-    jobTitle: adUser.jobTitle,
-    department: adUser.department,
-    mail: adUser.email,
-    roles: groups,
-    status: 'active', // You might want to determine this based on AD status
-    appPermissions: [] // This should be populated from your app-specific permissions
-  };
+    if (!groupsResponse.ok) {
+      throw new Error('Failed to fetch user groups');
+    }
+
+    const groups = await groupsResponse.json();
+
+    return {
+      id: adUser.id,
+      displayName: adUser.displayName,
+      userPrincipalName: adUser.userPrincipalName,
+      jobTitle: adUser.jobTitle,
+      department: adUser.department,
+      mail: adUser.email,
+      roles: groups,
+      status: 'active',
+      appPermissions: []
+    };
+  } catch (err) {
+    console.error('Error mapping AD user:', err);
+    // Return user with minimal data if groups fetch fails
+    return {
+      id: adUser.id,
+      displayName: adUser.displayName,
+      userPrincipalName: adUser.userPrincipalName,
+      jobTitle: adUser.jobTitle,
+      department: adUser.department,
+      mail: adUser.email,
+      roles: [],
+      status: 'active',
+      appPermissions: []
+    };
+  }
 };
 
 export const useUsers = () => {
+  const { getAuthHeaders, login } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,26 +82,39 @@ export const useUsers = () => {
     setError(null);
     try {
       const response = await fetch(`${AUTH_SERVICE_URL}/api/users`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        mode: 'cors',
+        headers: getAuthHeaders()
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch users');
+        if (response.status === 401) {
+          login();
+          return;
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to fetch users');
       }
 
       const adUsers: ADUser[] = await response.json();
-      const mappedUsers = await Promise.all(adUsers.map(mapADUserToUser));
+      
+      // Handle case where Azure AD is not configured
+      if (!Array.isArray(adUsers)) {
+        setUsers([]);
+        return;
+      }
+
+      const mappedUsers = await Promise.all(adUsers.map(user => mapADUserToUser(user, getAuthHeaders())));
       setUsers(mappedUsers);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while fetching users';
+      setError(errorMessage);
       console.error('Error fetching users:', err);
+      // Set empty array on error to prevent UI from breaking
+      setUsers([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [getAuthHeaders, login]);
 
   const searchUsers = useCallback(async (query: string = '') => {
     setLoading(true);
@@ -89,27 +123,40 @@ export const useUsers = () => {
       const response = await fetch(
         `${AUTH_SERVICE_URL}/api/users/search?query=${encodeURIComponent(query)}`,
         {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+          mode: 'cors',
+          headers: getAuthHeaders()
         }
       );
 
       if (!response.ok) {
-        throw new Error('Failed to search users');
+        if (response.status === 401) {
+          login();
+          return;
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to search users');
       }
 
       const adUsers: ADUser[] = await response.json();
-      const mappedUsers = await Promise.all(adUsers.map(mapADUserToUser));
+      
+      // Handle case where Azure AD is not configured
+      if (!Array.isArray(adUsers)) {
+        setUsers([]);
+        return;
+      }
+
+      const mappedUsers = await Promise.all(adUsers.map(user => mapADUserToUser(user, getAuthHeaders())));
       setUsers(mappedUsers);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while searching users';
+      setError(errorMessage);
       console.error('Error searching users:', err);
+      // Set empty array on error to prevent UI from breaking
+      setUsers([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [getAuthHeaders, login]);
 
   const updateUserPermissions = useCallback(async (
     userId: string,
@@ -119,15 +166,21 @@ export const useUsers = () => {
     try {
       const response = await fetch(`${AUTH_SERVICE_URL}/api/users/${userId}/permissions`, {
         method: 'PUT',
+        mode: 'cors',
         headers: {
+          ...getAuthHeaders(),
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({ roles, appPermissions })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update user permissions');
+        if (response.status === 401) {
+          login();
+          return;
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to update user permissions');
       }
 
       // Update local state
@@ -139,10 +192,11 @@ export const useUsers = () => {
 
       return true;
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while updating permissions';
       console.error('Error updating user permissions:', err);
-      throw err;
+      throw new Error(errorMessage);
     }
-  }, []);
+  }, [getAuthHeaders, login]);
 
   const updateViewState = useCallback((updates: Partial<UserViewState>) => {
     setViewState(prev => ({ ...prev, ...updates }));
@@ -215,10 +269,6 @@ export const useUsers = () => {
   const { page, pageSize } = viewState.pagination;
   const paginatedUsers = sortedUsers.slice(page * pageSize, (page + 1) * pageSize);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
   return {
     users: paginatedUsers,
     totalUsers: filteredUsers.length,
@@ -234,41 +284,4 @@ export const useUsers = () => {
     handlePageSizeChange,
     handleViewChange
   };
-};
-
-export const useUserRoles = () => {
-  const [roles, setRoles] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchRoles = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${AUTH_SERVICE_URL}/api/roles`, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch roles');
-      }
-
-      const data = await response.json();
-      setRoles(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-      console.error('Error fetching roles:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchRoles();
-  }, [fetchRoles]);
-
-  return { roles, loading, error };
 };

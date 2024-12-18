@@ -11,9 +11,9 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: '*', // Allow all origins temporarily for debugging
+  origin: config.cors.allowedOrigins,
   credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 

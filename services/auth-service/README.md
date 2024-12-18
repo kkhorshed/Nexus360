@@ -1,115 +1,137 @@
 # Auth Service
 
-## Azure AD Configuration Storage
+## Overview
+The Auth Service is a robust authentication and user management system built on Azure Active Directory (Azure AD). It provides secure authentication, user management, and group membership functionality through Microsoft Graph API integration.
 
-The Azure AD configuration is securely stored in PostgreSQL using the following schema:
+## Features
+- Azure AD Authentication
+- User Management
+- Group Management
+- Token Management
+- Secure Error Handling
 
-```sql
-CREATE TABLE app_config (
-    key VARCHAR(50) PRIMARY KEY,
-    value TEXT NOT NULL,
-    encrypted BOOLEAN DEFAULT false,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-```
+## Architecture
 
-### Security Features
+### Core Components
+1. **User Routes** ([Documentation](docs/routes/users.md))
+   - User management endpoints
+   - Search functionality
+   - Group membership queries
 
-1. Encryption:
-   - Sensitive values (like client secrets) are encrypted before storage
-   - Uses AES-256-GCM encryption with salt and IV
-   - Encryption key is configured via ENCRYPTION_KEY environment variable
+2. **AD Service** ([Documentation](docs/services/adService.md))
+   - Azure AD integration
+   - Microsoft Graph API operations
+   - Authentication handling
 
-2. Database Security:
-   - Values are stored in a dedicated config table
-   - Encrypted values are marked with encrypted=true
-   - Timestamps track creation and updates
-   - Uses database transactions for atomic updates
+3. **Token Cache** ([Documentation](docs/services/tokenCache.md))
+   - In-memory token management
+   - Expiration handling
+   - Refresh token support
 
-## Environment Variables
+4. **Custom Errors** ([Documentation](docs/errors/customErrors.md))
+   - Structured error handling
+   - HTTP status code mapping
+   - Consistent error responses
 
-Required environment variables:
+## Setup
+
+### Prerequisites
+- Node.js (v14 or higher)
+- Azure AD Tenant
+- Microsoft Graph API access
+
+### Environment Variables
 ```env
-# Database Configuration
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-
-# Encryption Configuration
-ENCRYPTION_KEY=your-encryption-key-min-32-chars-long
-
-# Default Azure AD Configuration (optional)
-AZURE_AD_TENANT_ID=your-tenant-id
-AZURE_AD_CLIENT_ID=your-client-id
-AZURE_AD_CLIENT_SECRET=your-client-secret
+AZURE_AD_CLIENT_ID=your_client_id
+AZURE_AD_CLIENT_SECRET=your_client_secret
+AZURE_AD_TENANT_ID=your_tenant_id
+AZURE_AD_REDIRECT_URI=your_redirect_uri
 ```
 
-## Setup Instructions
+### Installation
+```bash
+npm install
+```
 
-1. Database Setup:
-   ```bash
-   # Run the migration script
-   psql -U your_user -d your_database -f src/db/migrations/001_create_config_table.sql
-   ```
+### Running the Service
+```bash
+npm run dev    # Development mode
+npm start      # Production mode
+```
 
-2. Environment Setup:
-   - Copy `.env.example` to `.env`
-   - Update database connection string
-   - Set encryption key
-   - (Optional) Set default Azure AD credentials
+## API Endpoints
 
-3. Start the Service:
-   ```bash
-   npm run dev
-   ```
+### User Management
+- `GET /users` - Get all users
+- `GET /users/search` - Search users
+- `GET /users/:id` - Get user by ID
+- `GET /users/:id/groups` - Get user's groups
 
-## Configuration Management
+### Authentication
+- OAuth 2.0 flow with Azure AD
+- Token management and refresh
+- Group-based authorization
 
-The configuration can be managed through:
+## Security Features
+- Azure AD integration
+- Token-based authentication
+- Secure error handling
+- Input validation
+- Rate limiting support
 
-1. Admin Interface:
-   - Navigate to Settings > Azure Configuration
-   - Input Azure AD credentials
-   - Test connection
-   - Save configuration (automatically encrypted)
+## Error Handling
+The service implements a comprehensive error handling system:
+- Custom error types for different scenarios
+- Consistent error responses
+- Proper HTTP status codes
+- Detailed error logging
 
-2. API Endpoints:
-   - GET /api/config/azure - Get current configuration
-   - POST /api/config/azure - Update configuration
-   - POST /api/config/azure/test - Test current configuration
+## Development
 
-## Security Considerations
+### Project Structure
+```
+auth-service/
+├── src/
+│   ├── routes/          # API routes
+│   ├── services/        # Core services
+│   ├── errors/          # Custom error types
+│   ├── types/           # TypeScript types
+│   └── utils/           # Utility functions
+├── docs/               # Documentation
+│   ├── routes/         # Route documentation
+│   ├── services/       # Service documentation
+│   └── errors/         # Error handling docs
+└── tests/              # Test files
+```
 
-1. Database Security:
-   - Use strong PostgreSQL user passwords
-   - Configure proper database access controls
-   - Enable SSL for database connections
-   - Regular database backups
+### Best Practices
+1. Follow TypeScript best practices
+2. Implement proper error handling
+3. Write comprehensive tests
+4. Document new features
+5. Follow security guidelines
 
-2. Encryption:
-   - Use a strong ENCRYPTION_KEY (min 32 characters)
-   - Store ENCRYPTION_KEY securely (e.g., Azure Key Vault in production)
-   - Rotate encryption keys periodically
+## Testing
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:coverage # Coverage report
+```
 
-3. Access Control:
-   - API endpoints require authentication
-   - Configuration access is logged
-   - Failed attempts are monitored
+## Monitoring
+- Error logging
+- Performance metrics
+- Azure AD integration status
+- Token management statistics
 
-## Backup and Recovery
+## Contributing
+1. Follow the existing code structure
+2. Add appropriate documentation
+3. Include tests for new features
+4. Update relevant documentation
 
-1. Database Backup:
-   ```bash
-   pg_dump -U your_user -d your_database -t app_config > config_backup.sql
-   ```
+## License
+[Your License Here]
 
-2. Database Restore:
-   ```bash
-   psql -U your_user -d your_database -f config_backup.sql
-   ```
-
-## Development Notes
-
-- The service uses a singleton pattern for database connections
-- Configuration changes are validated before saving
-- Failed configurations are automatically rolled back
-- All operations are logged for auditing
+## Support
+[Your Support Information]

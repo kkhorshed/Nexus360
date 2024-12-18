@@ -1,19 +1,21 @@
 import { Router } from 'express';
-import { ADService } from '../services/adService';
+import { requireAuth } from '../middleware/authMiddleware';
+import { ConfigurationError } from '../errors/customErrors';
 
 const router = Router();
 
 // Helper function to check if error is related to missing Azure config
 const isMissingConfigError = (error: unknown): boolean => {
-  return error instanceof Error && 
-    error.message.includes('Missing required Azure AD configuration');
+  return error instanceof ConfigurationError || 
+    (error instanceof Error && error.message.includes('Missing required Azure AD configuration'));
 };
 
-// Initialize ADService only when needed
+// Protect all user routes with authentication middleware
+router.use(requireAuth);
+
 router.get('/', async (req, res, next) => {
   try {
-    const adService = new ADService();
-    const users = await adService.getAllUsers();
+    const users = await req.services!.graph.getAllUsers();
     res.json(users);
   } catch (error: unknown) {
     // If Azure AD is not configured, return empty array
@@ -32,8 +34,7 @@ router.get('/search', async (req, res, next) => {
       throw new Error('Search query is required');
     }
 
-    const adService = new ADService();
-    const users = await adService.searchUsers(query);
+    const users = await req.services!.graph.searchUsers(query);
     res.json(users);
   } catch (error: unknown) {
     // If Azure AD is not configured, return empty array
@@ -47,8 +48,7 @@ router.get('/search', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const adService = new ADService();
-    const user = await adService.getUserById(req.params.id);
+    const user = await req.services!.graph.getUserById(req.params.id);
     res.json(user);
   } catch (error: unknown) {
     next(error);
@@ -57,8 +57,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.get('/:id/groups', async (req, res, next) => {
   try {
-    const adService = new ADService();
-    const groups = await adService.getUserGroups(req.params.id);
+    const groups = await req.services!.graph.getUserGroups(req.params.id);
     res.json(groups);
   } catch (error: unknown) {
     // If Azure AD is not configured, return empty array
