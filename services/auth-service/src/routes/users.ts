@@ -83,6 +83,25 @@ router.get('/search', async (req: Request, res: Response, next: NextFunction) =>
   }
 });
 
+// Sync all users from Azure AD
+router.post('/sync', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Get all users from Azure AD
+    const graphUsers = await req.services!.graph.getAllUsers();
+    const azureUsers = graphUsers.map(user => mapAzureUser(user as AzureGraphUser));
+    
+    // Sync all users to the database
+    const result = await usersData.syncUsers(azureUsers);
+    res.json(result);
+  } catch (error) {
+    if (isMissingConfigError(error)) {
+      res.status(400).json({ message: 'Azure AD integration not configured' });
+    } else {
+      next(error);
+    }
+  }
+});
+
 // Get user by ID
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {

@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = () => {
-    // Redirect directly to auth service login endpoint
+    // Redirect to auth service login endpoint
     window.location.href = 'http://localhost:3000/api/auth/login';
   };
 

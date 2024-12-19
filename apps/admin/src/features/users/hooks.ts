@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { User, UserFilters, UserViewState, AppPermission, SyncResult } from './types';
 import { useAuth } from '../auth/hooks';
 
-const AUTH_SERVICE_URL = 'http://localhost:3000';
+const AUTH_SERVICE_URL = 'http://localhost:3000/api'; // Updated base URL
 
 interface DBUser {
   id: string;
@@ -73,7 +73,7 @@ export const useUsers = () => {
     setLoading(true);
     setError(null);
     try {
-      const syncResponse = await fetch(`${AUTH_SERVICE_URL}/api/users/sync`, {
+      const syncResponse = await fetch(`${AUTH_SERVICE_URL}/users/sync`, {
         method: 'POST',
         mode: 'cors',
         headers: getAuthHeaders()
@@ -90,7 +90,7 @@ export const useUsers = () => {
 
       const syncResult: SyncResult = await syncResponse.json();
 
-      const response = await fetch(`${AUTH_SERVICE_URL}/api/users`, {
+      const response = await fetch(`${AUTH_SERVICE_URL}/users`, {
         mode: 'cors',
         headers: getAuthHeaders()
       });
@@ -121,7 +121,7 @@ export const useUsers = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${AUTH_SERVICE_URL}/api/users/search?query=${encodeURIComponent(query)}`,
+        `${AUTH_SERVICE_URL}/users/search?query=${encodeURIComponent(query)}`,
         {
           mode: 'cors',
           headers: getAuthHeaders()
@@ -156,7 +156,7 @@ export const useUsers = () => {
     appPermissions: AppPermission[]
   ) => {
     try {
-      const response = await fetch(`${AUTH_SERVICE_URL}/api/users/${userId}/permissions`, {
+      const response = await fetch(`${AUTH_SERVICE_URL}/users/${userId}/permissions`, {
         method: 'PUT',
         mode: 'cors',
         headers: {

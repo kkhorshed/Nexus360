@@ -6,10 +6,10 @@ const execAsync = util.promisify(exec);
 // Configuration for selected services
 const services = {
   platform: [
-    { name: 'auth', path: 'services/auth-service', port: 3000 }
+    { name: 'auth', path: 'services/auth-service', port: 3000 }  // Auth service tries 3000 first, falls back to 3001
   ],
   apps: [
-    { name: 'frontend', path: 'frontend', port: 3001 },
+    { name: 'frontend', path: 'frontend', port: 3001 },  // Frontend on 3001
     { name: 'admin', path: 'apps/admin', port: 3002 },
     { name: 'xrm', path: 'apps/xrm', port: 3003 },
     { name: 'sales-compensation', path: 'apps/sales-compensation', port: 3004 }
@@ -42,7 +42,8 @@ async function killAllPorts() {
   console.log('Cleaning up ports...');
   const ports = [
     ...services.platform.map(s => s.port),
-    ...services.apps.map(s => s.port)
+    ...services.apps.map(s => s.port),
+    3001  // Include fallback port for auth service
   ];
 
   await Promise.all(ports.map(port => killProcessOnPort(port)));
