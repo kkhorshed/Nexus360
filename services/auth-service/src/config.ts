@@ -6,7 +6,7 @@ dotenv.config();
 
 const config: Config = {
   env: process.env.NODE_ENV || 'development',
-  port: process.env.PORT || 3000,  // Set to 3000 as required
+  port: process.env.PORT || 3000,  // Primary port 3000, will fall back to 3001 if unavailable
   logLevel: (process.env.LOG_LEVEL || 'info') as Config['logLevel'],
   auth: {
     jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
