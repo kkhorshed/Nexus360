@@ -5,12 +5,10 @@ import Dashboard from './features/dashboard/Dashboard';
 import Users from './features/users/Users';
 import Roles from './features/roles/Roles';
 import AuditLogs from './features/audit/AuditLogs';
-
-// Placeholder components for routes that haven't been implemented yet
-const UserManagement = () => <div>User Management</div>;
-const AdminSettings = () => <div>Admin Settings</div>;
-const AccessControl = () => <div>Access Control</div>;
-const ActivityLog = () => <div>Activity Log</div>;
+import UserManagement from './features/settings/UserManagement';
+import AdminSettings from './features/settings/AdminSettings';
+import AccessControl from './features/settings/AccessControl';
+import ActivityLog from './features/settings/ActivityLog';
 
 function App() {
   return (
