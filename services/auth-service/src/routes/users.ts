@@ -113,8 +113,50 @@ router.get('/test/photo-url', async (req: Request, res: Response, next: NextFunc
   }
 });
 
+// Handle OPTIONS request for CORS preflight
+router.options('/:id/photo', (req: Request, res: Response) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.status(204).end();
+});
+
 // Protect all other routes with authentication middleware
 router.use(authMiddleware);
+
+// Get all users
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const dbUsers = await usersData.getAllUsers();
+    logger.info('Retrieved users from DB:', dbUsers);
+    res.json(dbUsers);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Search users
+router.get('/search', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { query = '' } = req.query;
+    if (typeof query !== 'string') {
+      throw new Error('Search query must be a string');
+    }
+
+    // If query is empty, return all users
+    if (!query.trim()) {
+      const allUsers = await usersData.getAllUsers();
+      return res.json(allUsers);
+    }
+
+    // Return users from DB that match the search
+    const dbUsers = await usersData.searchUsers(query);
+    res.json(dbUsers);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // Get user profile photo
 router.get('/:id/photo', async (req: Request, res: Response, next: NextFunction) => {
@@ -173,48 +215,6 @@ router.get('/:id/photo', async (req: Request, res: Response, next: NextFunction)
     } else {
       next(error);
     }
-  }
-});
-
-// Handle OPTIONS request for CORS preflight
-router.options('/:id/photo', (req: Request, res: Response) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.status(204).end();
-});
-
-// Get all users
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dbUsers = await usersData.getAllUsers();
-    logger.info('Retrieved users from DB:', dbUsers);
-    res.json(dbUsers);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Search users
-router.get('/search', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { query = '' } = req.query;
-    if (typeof query !== 'string') {
-      throw new Error('Search query must be a string');
-    }
-
-    // If query is empty, return all users
-    if (!query.trim()) {
-      const allUsers = await usersData.getAllUsers();
-      return res.json(allUsers);
-    }
-
-    // Return users from DB that match the search
-    const dbUsers = await usersData.searchUsers(query);
-    res.json(dbUsers);
-  } catch (error) {
-    next(error);
   }
 });
 
