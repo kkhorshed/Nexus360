@@ -50,35 +50,139 @@ const mapAzureUser = (azureUser: AzureGraphUser): AzureUser => {
 // Use development auth middleware in development mode
 const authMiddleware = process.env.NODE_ENV === 'development' ? devAuth : requireAuth;
 
-// Protect all user routes with authentication middleware
+// Health check endpoint (no auth required)
+router.get('/health', (req: Request, res: Response) => {
+  res.json({ status: 'ok' });
+});
+
+// Test endpoint to get photo URL by email (no auth required for testing)
+router.get('/test/photo-url', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.services?.graph) {
+      throw new ConfigurationError('Graph service not initialized');
+    }
+
+    const email = req.query.email as string;
+    if (!email) {
+      res.status(400).json({ message: 'Email parameter is required' });
+      return;
+    }
+
+    logger.info('Looking up user by email:', email);
+
+    // First get user by email
+    const users = await req.services.graph.searchUsers(email);
+    const user = users.find(u => u.email === email || u.userPrincipalName === email);
+
+    if (!user) {
+      logger.info('User not found:', email);
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    logger.info('Found user:', { id: user.id, email: user.email });
+
+    // Now check if photo exists
+    try {
+      await req.services.graph.getUserProfilePhoto(user.id);
+      const photoUrl = `http://localhost:3001/api/users/${user.id}/photo`;
+      
+      logger.info('Photo exists, returning URL:', photoUrl);
+      
+      res.json({ 
+        userId: user.id,
+        photoUrl,
+        graphUrl: `https://graph.microsoft.com/v1.0/users/${user.id}/photos/120x120/$value`,
+        message: 'Photo exists and should be accessible'
+      });
+    } catch (error: any) {
+      if (error.statusCode === 404) {
+        logger.info('No photo found for user:', user.id);
+        res.json({ 
+          userId: user.id,
+          photoUrl: null,
+          message: 'User found but no photo exists'
+        });
+      } else {
+        throw error;
+      }
+    }
+  } catch (error) {
+    logger.error('Error in test/photo-url:', error);
+    next(error);
+  }
+});
+
+// Protect all other routes with authentication middleware
 router.use(authMiddleware);
 
-// Sync all users from Azure AD
-router.post('/sync', async (req: Request, res: Response, next: NextFunction) => {
+// Get user profile photo
+router.get('/:id/photo', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Get all users from Azure AD
-    const graphUsers = await req.services!.graph.getAllUsers();
-    const azureUsers = graphUsers as AzureGraphUser[];
+    if (!req.services?.graph) {
+      throw new ConfigurationError('Graph service not initialized');
+    }
 
-    // Map and sync users to DB
-    const mappedUsers = azureUsers.map(mapAzureUser);
-    logger.info('Mapped users:', mappedUsers);
-    
-    const result = await usersData.syncUsers(mappedUsers);
-    logger.info('Sync result:', result);
-
-    res.json({
-      total: azureUsers.length,
-      updated: result.updated,
-      failed: result.failed
+    // Log request details
+    logger.info('Fetching profile photo for user:', {
+      userId: req.params.id,
+      headers: {
+        ...req.headers,
+        authorization: req.headers.authorization ? '[redacted]' : undefined
+      }
     });
-  } catch (error) {
+
+    try {
+      const photoData = await req.services.graph.getUserProfilePhoto(req.params.id);
+
+      // Set appropriate headers
+      res.setHeader('Content-Type', 'image/jpeg');
+      res.setHeader('Cache-Control', 'private, max-age=3600');
+      // Add CORS headers
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+      // Log response details
+      logger.info('Sending profile photo response:', {
+        contentLength: photoData.byteLength,
+        headers: res.getHeaders()
+      });
+
+      // Send the photo data
+      res.send(photoData);
+    } catch (error: any) {
+      // If photo not found, return a 404
+      if (error.statusCode === 404) {
+        logger.info(`No profile photo found for user ${req.params.id}`);
+        res.status(404).json({ message: 'Profile photo not found' });
+        return;
+      }
+      throw error;
+    }
+  } catch (error: any) {
+    logger.error('Error handling profile photo request:', {
+      userId: req.params.id,
+      error: error.message,
+      stack: error.stack
+    });
+
     if (isMissingConfigError(error)) {
       res.status(400).json({ message: 'Azure AD integration not configured' });
     } else {
       next(error);
     }
   }
+});
+
+// Handle OPTIONS request for CORS preflight
+router.options('/:id/photo', (req: Request, res: Response) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.status(204).end();
 });
 
 // Get all users
