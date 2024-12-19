@@ -2,11 +2,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './features/auth/AuthProvider';
 import Layout from './components/layout/Layout';
 import Dashboard from './features/dashboard/Dashboard';
+import Users from './features/users/Users';
+import Roles from './features/roles/Roles';
 import AuditLogs from './features/audit/AuditLogs';
 
 // Placeholder components for routes that haven't been implemented yet
-const Users = () => <div>Users</div>;
-const Roles = () => <div>Roles</div>;
 const UserManagement = () => <div>User Management</div>;
 const AdminSettings = () => <div>Admin Settings</div>;
 const AccessControl = () => <div>Access Control</div>;
