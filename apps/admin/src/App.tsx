@@ -1,32 +1,42 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './features/auth/AuthProvider';
-import { TestProfilePicture } from './features/users/components/TestProfilePicture';
-import { Box, Typography, Button } from '@mui/material';
+import Layout from './components/layout/Layout';
+import Dashboard from './features/dashboard/Dashboard';
+import AuditLogs from './features/audit/AuditLogs';
 
-const Home = () => (
-  <Box sx={{ p: 4, textAlign: 'center' }}>
-    <Typography variant="h4" gutterBottom>
-      Profile Picture Test Page
-    </Typography>
-    <Button 
-      component={Link} 
-      to="/test-photo" 
-      variant="contained" 
-      color="primary"
-      sx={{ mt: 2 }}
-    >
-      Go to Photo Test
-    </Button>
-  </Box>
-);
+// Placeholder components for routes that haven't been implemented yet
+const Users = () => <div>Users</div>;
+const Roles = () => <div>Roles</div>;
+const UserManagement = () => <div>User Management</div>;
+const AdminSettings = () => <div>Admin Settings</div>;
+const AccessControl = () => <div>Access Control</div>;
+const ActivityLog = () => <div>Activity Log</div>;
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/test-photo" element={<TestProfilePicture />} />
+          <Route path="/" element={<Layout />}>
+            {/* Default route redirects to dashboard */}
+            <Route index element={<Dashboard />} />
+            
+            {/* Main routes */}
+            <Route path="users" element={<Users />} />
+            <Route path="roles" element={<Roles />} />
+            <Route path="audit" element={<AuditLogs />} />
+            
+            {/* Settings routes */}
+            <Route path="settings">
+              <Route path="usermanagement" element={<UserManagement />} />
+              <Route path="adminsetting" element={<AdminSettings />} />
+              <Route path="accesscontrol" element={<AccessControl />} />
+              <Route path="activitylog" element={<ActivityLog />} />
+            </Route>
+
+            {/* Catch all route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>

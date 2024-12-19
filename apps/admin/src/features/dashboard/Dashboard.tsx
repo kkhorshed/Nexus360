@@ -1,12 +1,12 @@
 import React from 'react';
-import { Grid, Paper, Typography, Box } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, useTheme } from '@mui/material';
 import {
-  People as UsersIcon,
-  Security as RolesIcon,
-  Assessment as AuditIcon,
+  Assessment as AssessmentIcon,
+  People as PeopleIcon,
+  Security as SecurityIcon,
   Settings as SettingsIcon
 } from '@mui/icons-material';
-import PageWrapper, { PageSection } from '../../components/common/PageWrapper';
+import PageWrapper from '../../components/common/PageWrapper';
 
 interface StatCardProps {
   title: string;
@@ -15,106 +15,93 @@ interface StatCardProps {
   color: string;
 }
 
-const StatCard = ({ title, value, icon, color }: StatCardProps) => (
-  <Paper
-    elevation={0}
-    sx={{
-      p: 3,
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      bgcolor: 'background.paper',
-      position: 'relative',
-      overflow: 'hidden',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color }) => {
+  return (
+    <Card 
+      sx={{ 
         height: '100%',
-        backgroundColor: color,
-      },
-    }}
-  >
-    <Box
-      sx={{
-        p: 1.5,
-        borderRadius: 2,
-        bgcolor: `${color}15`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        mr: 2,
+        border: '1px solid',
+        borderColor: 'divider',
+        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: 4
+        }
       }}
     >
-      <Box sx={{ color }}>{icon}</Box>
-    </Box>
-    <Box>
-      <Typography variant="h6" component="div">
-        {value}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {title}
-      </Typography>
-    </Box>
-  </Paper>
-);
+      <CardContent>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              backgroundColor: `${color}15`,
+              color: color,
+              mr: 2
+            }}
+          >
+            {icon}
+          </Box>
+          <Typography variant="h4" component="div" sx={{ fontWeight: 600 }}>
+            {value}
+          </Typography>
+        </Box>
+        <Typography variant="body1" color="text.secondary">
+          {title}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
 
-export default function Dashboard() {
+const Dashboard: React.FC = () => {
+  const theme = useTheme();
+  
   const stats = [
     {
       title: 'Total Users',
-      value: '156',
-      icon: <UsersIcon />,
-      color: '#2196f3'
-    },
-    {
-      title: 'Active Roles',
-      value: '12',
-      icon: <RolesIcon />,
-      color: '#4caf50'
-    },
-    {
-      title: 'Audit Logs',
       value: '1,234',
-      icon: <AuditIcon />,
-      color: '#ff9800'
+      icon: <PeopleIcon />,
+      color: theme.palette.primary.main
     },
     {
-      title: 'System Settings',
-      value: '8',
+      title: 'Active Sessions',
+      value: '856',
+      icon: <AssessmentIcon />,
+      color: theme.palette.success.main
+    },
+    {
+      title: 'Security Alerts',
+      value: '12',
+      icon: <SecurityIcon />,
+      color: theme.palette.warning.main
+    },
+    {
+      title: 'System Health',
+      value: '98%',
       icon: <SettingsIcon />,
-      color: '#9c27b0'
+      color: theme.palette.info.main
     }
   ];
 
   return (
-    <PageWrapper 
-      title="Admin Dashboard" 
-      description="Overview of system administration metrics"
+    <PageWrapper
+      title="Dashboard"
+      description="System overview and key metrics"
     >
-      <PageSection>
-        <Grid container spacing={3}>
-          {stats.map((stat) => (
-            <Grid item xs={12} sm={6} md={3} key={stat.title}>
-              <StatCard {...stat} />
-            </Grid>
-          ))}
-        </Grid>
-      </PageSection>
-
-      <PageSection title="Recent Activity">
-        <Typography variant="body1" color="text.secondary">
-          No recent activity to display.
-        </Typography>
-      </PageSection>
-
-      <PageSection title="System Status">
-        <Typography variant="body1" color="text.secondary">
-          All systems operational.
-        </Typography>
-      </PageSection>
+      <Grid container spacing={3}>
+        {stats.map((stat, index) => (
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <StatCard {...stat} />
+          </Grid>
+        ))}
+      </Grid>
     </PageWrapper>
   );
-}
+};
+
+export default Dashboard;
