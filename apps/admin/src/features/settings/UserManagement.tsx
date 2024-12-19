@@ -273,58 +273,58 @@ const UserManagement = () => {
             }}
           />
         </TableContainer>
+
+        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+          <DialogTitle>
+            Manage Permissions - {selectedUser?.display_name}
+          </DialogTitle>
+          <DialogContent>
+            <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Application</InputLabel>
+                <Select value={selectedApp} onChange={handleAppChange}>
+                  <MenuItem value="">
+                    <em>Select an application</em>
+                  </MenuItem>
+                  {applications.map((app) => (
+                    <MenuItem key={app.id} value={app.id}>
+                      {app.display_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl fullWidth>
+                <InputLabel>Role</InputLabel>
+                <Select
+                  value={selectedRole}
+                  onChange={handleRoleChange}
+                  disabled={!selectedApp}
+                >
+                  <MenuItem value="">
+                    <em>Select a role</em>
+                  </MenuItem>
+                  {roles.map((role) => (
+                    <MenuItem key={role.id} value={role.id}>
+                      {role.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button
+              onClick={handleAssignRole}
+              variant="contained"
+              disabled={!selectedApp || !selectedRole}
+            >
+              Assign Role
+            </Button>
+          </DialogActions>
+        </Dialog>
       </PageSection>
-
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
-        <DialogTitle>
-          Manage Permissions - {selectedUser?.display_name}
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Application</InputLabel>
-              <Select value={selectedApp} onChange={handleAppChange}>
-                <MenuItem value="">
-                  <em>Select an application</em>
-                </MenuItem>
-                {applications.map((app) => (
-                  <MenuItem key={app.id} value={app.id}>
-                    {app.display_name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel>Role</InputLabel>
-              <Select
-                value={selectedRole}
-                onChange={handleRoleChange}
-                disabled={!selectedApp}
-              >
-                <MenuItem value="">
-                  <em>Select a role</em>
-                </MenuItem>
-                {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    {role.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button
-            onClick={handleAssignRole}
-            variant="contained"
-            disabled={!selectedApp || !selectedRole}
-          >
-            Assign Role
-          </Button>
-        </DialogActions>
-      </Dialog>
     </PageWrapper>
   );
 };
